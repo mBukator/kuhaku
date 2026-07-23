@@ -1,0 +1,65 @@
+/**
+ * kuhaku — motion.css
+ * The --motion-* namespace (Part 5). Kuhaku's own vocabulary — no shadcn equivalent.
+ * Reduced-motion compliance is token-level by doctrine (5.8): the table collapses
+ * here once, and every Tier 2 component complies through the tokens it already reads.
+ * Spring linear() approximations are BUILD OUTPUT (pipeline-emitted), never hand-written.
+ */
+
+:root {
+    /* ——— Durations (5.2) ——— */
+    --motion-duration-instant: 50ms;
+    --motion-duration-fast: 150ms;
+    --motion-duration-default: 250ms;
+    --motion-duration-slow: 400ms;
+    --motion-duration-slower: 600ms;
+
+    /* ——— Easings (5.3) ——— */
+    --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --motion-ease-in-out: cubic-bezier(0.66, 0, 0.34, 1);
+    --motion-ease-anticipate: cubic-bezier(0.44, -0.24, 0.28, 1);
+
+    /* ——— Springs (5.4) — consumed by lib/motion ——— */
+    --motion-spring-snappy-stiffness: 500;
+    --motion-spring-snappy-damping: 32;
+    --motion-spring-snappy-mass: 1;
+    --motion-spring-soft-stiffness: 260;
+    --motion-spring-soft-damping: 26;
+    --motion-spring-soft-mass: 1;
+
+    /* ——— Choreography (5.10) ——— */
+    --motion-stagger-tight: 25ms;
+    --motion-stagger-default: 45ms;
+    --motion-stagger-loose: 80ms;
+    --motion-hold: 80ms;
+    --motion-delay-hint: 400ms;
+}
+
+/* ——— Reduced motion: cut to end-state (5.8) ——— */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --motion-duration-instant: 0ms;
+        --motion-duration-fast: 0ms;
+        --motion-duration-default: 0ms;
+        --motion-duration-slow: 0ms;
+        --motion-duration-slower: 0ms;
+        --motion-stagger-tight: 0ms;
+        --motion-stagger-default: 0ms;
+        --motion-stagger-loose: 0ms;
+        --motion-hold: 0ms;
+        /* --motion-delay-hint stays 400ms: intent confirmation is not motion. */
+    }
+}
+
+/* ——— Strict mode: same collapse as a page-level decision (Part 6) ——— */
+[data-a11y="strict"] {
+    --motion-duration-instant: 0ms;
+    --motion-duration-fast: 0ms;
+    --motion-duration-default: 0ms;
+    --motion-duration-slow: 0ms;
+    --motion-duration-slower: 0ms;
+    --motion-stagger-tight: 0ms;
+    --motion-stagger-default: 0ms;
+    --motion-stagger-loose: 0ms;
+    --motion-hold: 0ms;
+}

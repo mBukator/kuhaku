@@ -1,0 +1,126 @@
+:root {
+    --radius: 0.75rem;
+    --radius-sm: calc(var(--radius) - 6px);
+    --radius-md: calc(var(--radius) - 3px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 6px);
+    --radius-2xl: calc(var(--radius) + 12px);
+    --radius-full: 9999px;
+
+    --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+    --font-mono: var(--font-geist-mono, ui-monospace, "SF Mono", monospace);
+    --text-display: clamp(4rem, 2.2rem + 6vw, 9rem);
+
+    --neutral-0: oklch(1 0 0);
+    --neutral-50: oklch(0.985 0.002 95);
+    --neutral-100: oklch(0.965 0.003 95);
+    --neutral-200: oklch(0.925 0.004 95);
+    --neutral-300: oklch(0.87 0.005 95);
+    --neutral-400: oklch(0.71 0.006 95);
+    --neutral-500: oklch(0.56 0.006 95);
+    --neutral-600: oklch(0.45 0.005 95);
+    --neutral-700: oklch(0.37 0.005 95);
+    --neutral-800: oklch(0.28 0.004 95);
+    --neutral-850: oklch(0.245 0.004 95);
+    --neutral-900: oklch(0.205 0.003 95);
+    --neutral-950: oklch(0.145 0.003 95);
+
+    --background: var(--neutral-50);
+    --foreground: var(--neutral-950);
+    --card: var(--neutral-0);
+    --card-foreground: var(--neutral-950);
+    --popover: var(--neutral-0);
+    --popover-foreground: var(--neutral-950);
+    --primary: var(--neutral-950);
+    --primary-foreground: var(--neutral-50);
+    --secondary: var(--neutral-100);
+    --secondary-foreground: var(--neutral-950);
+    --muted: var(--neutral-100);
+    --muted-foreground: var(--neutral-500);
+    --accent: var(--neutral-100);
+    --accent-foreground: var(--neutral-950);
+    --destructive: oklch(0.55 0.2 27);
+    --destructive-foreground: var(--neutral-50);
+    --success: oklch(0.55 0.12 150);
+    --success-foreground: var(--neutral-50);
+    --warning: oklch(0.72 0.14 75);
+    --warning-foreground: var(--neutral-950);
+    --border: var(--neutral-200);
+    --input: var(--neutral-300);
+    --ring: oklch(0.56 0.006 95 / 60%);
+
+    --chart-1: oklch(0.6 0.12 262);
+    --chart-2: oklch(0.6 0.14 50);
+    --chart-3: oklch(0.6 0.09 195);
+    --chart-4: oklch(0.6 0.11 300);
+    --chart-5: oklch(0.6 0.11 142);
+
+    --sidebar: var(--neutral-50);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+}
+
+.dark {
+    --background: var(--neutral-950);
+    --foreground: var(--neutral-100);
+    --card: var(--neutral-900);
+    --card-foreground: var(--neutral-100);
+    --popover: var(--neutral-850);
+    --popover-foreground: var(--neutral-100);
+    --primary: var(--neutral-100);
+    --primary-foreground: var(--neutral-950);
+    --secondary: var(--neutral-850);
+    --secondary-foreground: var(--neutral-100);
+    --muted: var(--neutral-900);
+    --muted-foreground: var(--neutral-400);
+    --accent: var(--neutral-800);
+    --accent-foreground: var(--neutral-100);
+    --destructive: oklch(0.69 0.19 25);
+    --destructive-foreground: var(--neutral-950);
+    --success: oklch(0.72 0.14 152);
+    --success-foreground: var(--neutral-950);
+    --warning: oklch(0.78 0.14 80);
+    --warning-foreground: var(--neutral-950);
+    --border: oklch(1 0 0 / 12%);
+    --input: oklch(1 0 0 / 16%);
+    --ring: oklch(0.71 0.006 95 / 60%);
+
+    --chart-1: oklch(0.72 0.12 262);
+    --chart-2: oklch(0.72 0.14 50);
+    --chart-3: oklch(0.72 0.1 195);
+    --chart-4: oklch(0.72 0.11 300);
+    --chart-5: oklch(0.72 0.12 142);
+
+    --sidebar: var(--neutral-900);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--accent);
+    --sidebar-accent-foreground: var(--accent-foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+}
+
+/* ——— Strict mode — AAA token swaps ——— */
+[data-a11y="strict"] {
+    --muted-foreground: oklch(0.4 0.005 95);
+    --destructive: oklch(0.55 0.2 27);
+    --success: oklch(0.42 0.12 150);
+    --border: var(--neutral-300);
+    --input: var(--neutral-400);
+    --ring: var(--foreground);
+}
+
+.dark[data-a11y="strict"],
+[data-a11y="strict"] .dark {
+    --muted-foreground: oklch(0.78 0.005 95);
+    --border: oklch(1 0 0 / 24%);
+    --input: oklch(1 0 0 / 24%);
+    --ring: var(--foreground);
+    /* Open tuning item (Part 9): dark status hues at 7:1 for text uses. */
+}
