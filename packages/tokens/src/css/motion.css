@@ -1,25 +1,22 @@
-/**
- * kuhaku — motion.css
- * The --motion-* namespace (Part 5). Kuhaku's own vocabulary — no shadcn equivalent.
- * Reduced-motion compliance is token-level by doctrine (5.8): the table collapses
- * here once, and every Tier 2 component complies through the tokens it already reads.
- * Spring linear() approximations are BUILD OUTPUT (pipeline-emitted), never hand-written.
- */
+/* kuhaku — the --motion-* namespace. Reduced-motion compliance is token-level:
+   the table collapses here once, and every component complies through the
+   tokens it already reads. Spring linear() curves are build output — never
+   hand-write them. Rationale: kuhaku.dev/foundations/motion */
 
 :root {
-    /* ——— Durations (5.2) ——— */
+    /* Durations */
     --motion-duration-instant: 50ms;
     --motion-duration-fast: 150ms;
     --motion-duration-default: 250ms;
     --motion-duration-slow: 400ms;
     --motion-duration-slower: 600ms;
 
-    /* ——— Easings (5.3) ——— */
+    /* Easings */
     --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --motion-ease-in-out: cubic-bezier(0.66, 0, 0.34, 1);
     --motion-ease-anticipate: cubic-bezier(0.44, -0.24, 0.28, 1);
 
-    /* ——— Springs (5.4) — consumed by lib/motion ——— */
+    /* Springs — consumed by lib/motion */
     --motion-spring-snappy-stiffness: 500;
     --motion-spring-snappy-damping: 32;
     --motion-spring-snappy-mass: 1;
@@ -27,7 +24,7 @@
     --motion-spring-soft-damping: 26;
     --motion-spring-soft-mass: 1;
 
-    /* ——— Choreography (5.10) ——— */
+    /* Choreography */
     --motion-stagger-tight: 25ms;
     --motion-stagger-default: 45ms;
     --motion-stagger-loose: 80ms;
@@ -35,7 +32,7 @@
     --motion-delay-hint: 400ms;
 }
 
-/* ——— Reduced motion: cut to end-state (5.8) ——— */
+/* Reduced motion: cut to end-state */
 @media (prefers-reduced-motion: reduce) {
     :root {
         --motion-duration-instant: 0ms;
@@ -51,7 +48,7 @@
     }
 }
 
-/* ——— Strict mode: same collapse as a page-level decision (Part 6) ——— */
+/* Strict mode: the same collapse, as a page-level decision */
 [data-a11y="strict"] {
     --motion-duration-instant: 0ms;
     --motion-duration-fast: 0ms;
@@ -63,3 +60,7 @@
     --motion-stagger-loose: 0ms;
     --motion-hold: 0ms;
 }
+
+/* Two survivors live as component-level literals, not tokens: the 100ms
+   overlay fade and the 200ms Tier 1 mount fade. Springs collapse to instant
+   in lib/motion, reading the same two signals. */
