@@ -1,0 +1,60 @@
+name: Feature request
+description: Propose a component, token, CLI capability, or docs improvement
+title: "feat: "
+labels: ["enhancement"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              New components require a proposal judged against the published register filter (spec Part 9). Restraint is a design filter here - argue why this earns its place rather than adding surface.
+    - type: dropdown
+      id: kind
+      attributes:
+          label: Kind
+          options:
+              - New component
+              - Token / foundation change
+              - CLI capability
+              - Docs improvement
+      validations:
+          required: true
+    - type: textarea
+      id: summary
+      attributes:
+          label: Summary
+          description: One or two sentences - what you want and why.
+      validations:
+          required: true
+    - type: textarea
+      id: problem
+      attributes:
+          label: Problem
+          description: The concrete need this addresses.
+      validations:
+          required: true
+    - type: textarea
+      id: proposal
+      attributes:
+          label: Proposal
+          description: What it should do.
+      validations:
+          required: true
+    - type: dropdown
+      id: tier
+      attributes:
+          label: Motion tier (for a new component)
+          description: How does motion relate to this component?
+          options:
+              - "Tier 1 - motion is the component (identity)"
+              - "Tier 2 - motion carries information"
+              - "Tier 3 - withheld (dignified stillness)"
+              - Not applicable
+    - type: textarea
+      id: register
+      attributes:
+          label: Register check
+          description: Why does this earn its place rather than adding API surface? (spec Part 9, resolved question 6)
+    - type: textarea
+      id: alternatives
+      attributes:
+          label: Alternatives considered
