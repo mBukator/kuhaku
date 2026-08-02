@@ -19,6 +19,7 @@ resolved.
 | `.github/`               | PR + issue templates (CI/CodeQL/dependabot deferred)           |
 | `AGENTS.md`              | Tool-agnostic agent source of truth (overview, critical rules) |
 | `CLAUDE.md` + `.claude/` | Claude layer: imports AGENTS.md + path-scoped `.claude/rules/` |
+| `.claude/skills/`        | Project skills (`kuhaku-writing`)                              |
 
 ## `packages/tokens`
 
@@ -49,7 +50,7 @@ resolved.
 | `source.config.ts`    | Fumadocs collections + schemas                                   |
 | `lib/`                | `source.ts` (loader), `cn.ts` (re-exports cnfast), layout/shared |
 | `components/mdx.tsx`  | MDX component overrides                                          |
-| `spec/kuhaku-spec.md` | The full v1.0 design specification (source of truth)             |
+| `spec/kuhaku-spec.md` | The full v1.0 design specification                               |
 
 ---
 
@@ -73,5 +74,5 @@ resolved.
   same lint/typecheck/format/build gate locally and there are no external contributors yet. Add
   `workflows/ci.yml`, `codeql.yml`, `dependabot.yml`, and `CODEOWNERS` closer to launch, and the
   npm-publish `release.yml` when packages go public.
-- **Dark strict-mode status hues** are an open tuning item (spec Appendix C, item 1) — flagged in
-  `theme.css` at the point of use.
+- **Dark strict-mode status hues** are an open tuning item - flagged in `theme.css` at the point of
+  use.
