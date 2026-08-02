@@ -92,9 +92,15 @@ Full detail: `.claude/rules/motion.md`
 
 ### Writing style (MUST follow)
 
-- **Prefer hyphens (`-`) over em dashes (`—`) and en dashes (`–`)** in all generated text: commit
-  messages, PR titles/bodies, code comments, docs, and CLI output strings.
-- **NEVER mention Claude or AI in commit messages, even in `Co-Authored-By`.**
+kuhaku speaks in one voice: calm, confident, declarative, argued. Full rules in
+`.claude/rules/writing.md`. In short:
+
+- Hyphens (`-`), never em dashes (`—`) or en dashes (`–`), in all generated text.
+- No exclamation marks, no emoji, no hype adjectives; show the behavior and state the reason.
+- Bold only for genuine emphasis, never as decoration on bullet lead-ins or labels (a bolded "TLDR"
+  is the one accepted exception).
+- Never mention Claude or AI in commit messages or PRs (titles and bodies), not even in a
+  `Co-Authored-By` trailer.
 
 ---
 
@@ -117,6 +123,7 @@ working in that area.
 | `.claude/rules/cli.md`           | `packages/cli/**`                                                  |
 | `.claude/rules/docs.md`          | `apps/docs/**`                                                     |
 | `.claude/rules/documentation.md` | `packages/**`, `apps/docs/content/**`                              |
+| `.claude/rules/writing.md`       | `**/*.{md,mdx}` (prose voice and formatting)                       |
 
 ---
 

@@ -59,9 +59,11 @@ surfaces, while --{status} stays a fill audited against its foreground.
 
 ## Writing style
 
-- **Prefer hyphens (`-`) over em dashes (`—`) and en dashes (`–`)** in commit messages, PR
-  titles/bodies, comments, and docs.
-- **NEVER mention Claude or AI in commit messages, even in Co-Authored-By.**
+Full rules in `.claude/rules/writing.md`. For commits and PRs:
+
+- Hyphens (`-`), not em dashes or en dashes, in commit messages, PR titles and bodies, comments.
+- Never mention Claude or AI in commit messages or PRs, not even in a Co-Authored-By trailer.
+- Bold only for genuine emphasis, never as decoration.
 
 ## Before opening a PR
 
