@@ -7,7 +7,7 @@ paths:
 
 For wedge two, **the docs site is the product** — and the registry host, and the machine interface.
 It is three surfaces on one codebase: a book (Foundations), a reference (every component), and a
-machine interface (registry routes, llms surfaces, search, OG). Reference: spec Part 9.
+machine interface (registry routes, llms surfaces, search, OG).
 
 ---
 

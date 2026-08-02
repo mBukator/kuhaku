@@ -7,7 +7,7 @@ paths:
 
 `packages/registry` is the source of truth for all 114 components plus `registry.json`. The build
 compiles source into static registry-item JSON emitted to `apps/docs/public/r/[name].json`.
-Reference: spec Part 8. "Own front door, standard plumbing."
+"Own front door, standard plumbing."
 
 ---
 

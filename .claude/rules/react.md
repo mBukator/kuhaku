@@ -30,7 +30,7 @@ deliberate boundary, not a habit.
 - Custom hooks are `useXxx`, camelCase, and live where they are shared (`registry:hook` items in
   `packages/registry`).
 
-## The hot/cold split (motion performance — spec Part 5.9)
+## The hot/cold split (motion performance)
 
 Pointer- and scroll-driven components must not re-render per frame:
 

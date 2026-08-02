@@ -6,8 +6,7 @@ paths:
 
 # Motion (the differentiation wedge)
 
-Motion is the reason Kuhaku exists. Reference: spec Part 5. The rules below are a contract, not
-defaults.
+Motion is the reason Kuhaku exists. The rules below are a contract, not defaults.
 
 ---
 

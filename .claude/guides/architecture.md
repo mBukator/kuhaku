@@ -1,7 +1,6 @@
 # Architecture Guide
 
-How the kuhaku monorepo fits together. The design reasoning lives in
-`apps/docs/spec/kuhaku-spec.md`; this guide is the engineering map.
+The engineering map of the monorepo: how the workspaces fit together and how the build flows.
 
 ---
 
@@ -10,7 +9,7 @@ How the kuhaku monorepo fits together. The design reasoning lives in
 | Workspace           | Responsibility                                                                                                                                                                                                                                                                                             |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `packages/tokens`   | The CSS token layer _as data_: `theme.css` (color, type, radius, strict swaps), `motion.css` (the `--motion-*` table), `tailwind.css` (the `@theme` mapping). Plain CSS — no Tailwind logic here. Consumed by the registry build **and** the docs token pages, so shipped values and docs cannot disagree. |
-| `packages/registry` | Source of truth for all 114 components, organized by the spec's Part 7 categories, plus `registry.json` — the manifest declaring every item, its files, dependencies, and type.                                                                                                                            |
+| `packages/registry` | Source of truth for all 114 components, organized by category, plus `registry.json` — the manifest declaring every item, its files, dependencies, and type.                                                                                                                                                |
 | `packages/cli`      | The `kuhaku` npm package: `init` / `add` / `apply` / `diff` orchestration over shadcn's resolution logic. Currently a stub (`src/index.ts`).                                                                                                                                                               |
 | `apps/docs`         | Next.js 16 App Router + Fumadocs. Documentation, marketing surface, **registry host** (`/r/[name].json` route handlers reading build output), and machine surfaces (`/llms.txt`, `/llms-full.txt`, `/llms.mdx`, `/api/search`, OG routes).                                                                 |
 
@@ -49,7 +48,7 @@ packages/tokens ──► packages/registry ──► packages/cli
                   /r route handlers serve the registry)
 ```
 
-## The three motion tiers (spec Part 5.5)
+## The three motion tiers
 
 - **Tier 1 — identity.** Motion _is_ the component (backgrounds, cursors, hero type). Behind/around
   content only. Tuning props, no opt-out.

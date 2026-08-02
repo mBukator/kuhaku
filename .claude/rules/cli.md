@@ -6,7 +6,7 @@ paths:
 # CLI (`kuhaku`)
 
 The `kuhaku` CLI is the branded front door, but it speaks the shadcn registry protocol internally,
-byte for byte. Reference: spec Part 8. Principle: **own front door, standard plumbing.**
+byte for byte. Principle: own front door, standard plumbing.
 
 ---
 
