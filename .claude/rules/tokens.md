@@ -8,7 +8,7 @@ paths:
 `packages/tokens` is the CSS token layer — `theme.css` (color, type, radius, strict swaps),
 `motion.css` (the `--motion-*` table), `tailwind.css` (the `@theme` mapping). It is plain CSS and
 consumed by both the registry build and the docs' token-reference pages, so **documentation and
-shipped values cannot disagree.** Reference: spec Parts 2–6.
+shipped values cannot disagree.**
 
 ---
 

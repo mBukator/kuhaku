@@ -6,8 +6,8 @@ paths:
 
 # Accessibility
 
-Accessibility is a mechanical gate, not a vibe (spec Part 6, verified per spec Part 8's QA
-pipeline). Quietness lives in chroma and motion restraint, **never in contrast**.
+Accessibility is a mechanical gate, not a vibe. Quietness lives in chroma and motion restraint,
+never in contrast.
 
 ---
 
