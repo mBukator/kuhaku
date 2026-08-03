@@ -8,10 +8,10 @@ These rules apply to ALL code in the repository, regardless of file type or work
 
 Before creating any variable, function, constant, type, component, or hook, verify:
 
-1. **Clarity** — can someone understand its purpose without reading the implementation?
-2. **Accuracy** — does the name describe what it holds or does?
-3. **Readability** — readable at a glance (not too long, not abbreviated)?
-4. **Single responsibility** — does it reflect one focused purpose?
+1. Clarity — can someone understand its purpose without reading the implementation?
+2. Accuracy — does the name describe what it holds or does?
+3. Readability — readable at a glance (not too long, not abbreviated)?
+4. Single responsibility — does it reflect one focused purpose?
 
 ---
 

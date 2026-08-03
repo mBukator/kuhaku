@@ -13,15 +13,15 @@ CLI command emits network traffic on its own initiative.
 
 The `kuhaku` CLI writes into other people's projects. Therefore:
 
-- **Confine all writes to the detected target project root.** Never write outside it.
-- **Never construct file paths from unchecked input.** Resolve, normalize, and verify containment.
-- **Confirm before overwriting adopter files**, and always honor `--dry-run` and `--diff`.
+- Confine all writes to the detected target project root. Never write outside it.
+- Never construct file paths from unchecked input. Resolve, normalize, and verify containment.
+- Confirm before overwriting adopter files, and always honor `--dry-run` and `--diff`.
 - Installed code belongs to the adopter — "updating" is re-installation by consent, never mutation.
 
 ## 3. No arbitrary code execution
 
 - No `eval`, no `new Function`.
-- **Validate registry JSON against the registry-item schema before acting on it.** Treat every
+- Validate registry JSON against the registry-item schema before acting on it. Treat every
   fetched registry payload as untrusted until validated.
 
 ## 4. Safe subprocess execution
@@ -45,7 +45,7 @@ The registry build must:
 
 - validate every item against the shadcn registry-item schema,
 - verify the `registryDependencies` graph is acyclic and complete,
-- **fail the build — not the adopter** — when an item references an undeclared registry dependency.
+- fail the build — not the adopter — when an item references an undeclared registry dependency.
 
 ## 6. The Base-UI-never-leaks boundary
 

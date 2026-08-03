@@ -46,4 +46,4 @@ Closes #
 - [ ] Components consume semantic tokens, not `--neutral-*`
 - [ ] No public API references `@base-ui/*` (the never-leak boundary holds)
 - [ ] Motion follows the tier contract (Tier 2 tuned via `--motion-*` tokens only)
-- [ ] Docs / spec updated in the same change where behavior changed
+- [ ] Docs updated in the same change where behavior changed

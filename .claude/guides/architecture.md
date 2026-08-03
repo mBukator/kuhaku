@@ -6,12 +6,12 @@ The engineering map of the monorepo: how the workspaces fit together and how the
 
 ## Workspaces
 
-| Workspace           | Responsibility                                                                                                                                                                                                                                                                                             |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/tokens`   | The CSS token layer _as data_: `theme.css` (color, type, radius, strict swaps), `motion.css` (the `--motion-*` table), `tailwind.css` (the `@theme` mapping). Plain CSS — no Tailwind logic here. Consumed by the registry build **and** the docs token pages, so shipped values and docs cannot disagree. |
-| `packages/registry` | Source of truth for all 114 components, organized by category, plus `registry.json` — the manifest declaring every item, its files, dependencies, and type.                                                                                                                                                |
-| `packages/cli`      | The `kuhaku` npm package: `init` / `add` / `apply` / `diff` orchestration over shadcn's resolution logic. Currently a stub (`src/index.ts`).                                                                                                                                                               |
-| `apps/docs`         | Next.js 16 App Router + Fumadocs. Documentation, marketing surface, **registry host** (`/r/[name].json` route handlers reading build output), and machine surfaces (`/llms.txt`, `/llms-full.txt`, `/llms.mdx`, `/api/search`, OG routes).                                                                 |
+| Workspace           | Responsibility                                                                                                                                                                                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `packages/tokens`   | The CSS token layer _as data_: `theme.css` (color, type, radius, strict swaps), `motion.css` (the `--motion-*` table), `tailwind.css` (the `@theme` mapping). Plain CSS — no Tailwind logic here. Consumed by the registry build and the docs token pages, so shipped values and docs cannot disagree. |
+| `packages/registry` | Source of truth for all 114 components, organized by category, plus `registry.json` — the manifest declaring every item, its files, dependencies, and type.                                                                                                                                            |
+| `packages/cli`      | The `kuhaku` npm package: `init` / `add` / `apply` / `diff` orchestration over shadcn's resolution logic. Currently a stub (`src/index.ts`).                                                                                                                                                           |
+| `apps/docs`         | Next.js 16 App Router + Fumadocs. Documentation, marketing surface, **registry host** (`/r/[name].json` route handlers reading build output), and machine surfaces (`/llms.txt`, `/llms-full.txt`, `/llms.mdx`, `/api/search`, OG routes).                                                             |
 
 ---
 
@@ -28,12 +28,12 @@ Root scripts fan out via Turbo: `bun run build` → `turbo run build`, etc.
 
 `turbo build` compiles `packages/registry` source into static registry-item JSON:
 
-1. **inline** file contents into each item,
-2. **validate** every item against the shadcn registry-item schema,
+1. inline file contents into each item,
+2. validate every item against the shadcn registry-item schema,
 3. run the **never-leak lint** (fail if any exported type references `@base-ui/*`),
 4. verify the **`registryDependencies` graph is acyclic and complete** (a missing dependency fails
    the build, not the adopter),
-5. **emit** to `apps/docs/public/r/[name].json`.
+5. emit to `apps/docs/public/r/[name].json`.
 
 The docs site consumes its own registry output, which makes the documentation an integration test:
 a component that renders on its docs page is a component that installs.
@@ -50,10 +50,10 @@ packages/tokens ──► packages/registry ──► packages/cli
 
 ## The three motion tiers
 
-- **Tier 1 — identity.** Motion _is_ the component (backgrounds, cursors, hero type). Behind/around
+- Tier 1 — identity. Motion _is_ the component (backgrounds, cursors, hero type). Behind/around
   content only. Tuning props, no opt-out.
-- **Tier 2 — information.** The functional core. On by default, tuned only via `--motion-*` tokens.
-- **Tier 3 — withheld.** Display/layout/typography. No motion. (Tier 3-kinetic — Skeleton/Spinner/
+- Tier 2 — information. The functional core. On by default, tuned only via `--motion-*` tokens.
+- Tier 3 — withheld. Display/layout/typography. No motion. (Tier 3-kinetic — Skeleton/Spinner/
   Progress — where motion is semantic content.)
 
 ---

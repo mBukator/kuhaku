@@ -56,23 +56,23 @@ resolved.
 
 ## Open items (deferred, tracked so they are not forgotten)
 
-- **No test runner yet (stack decided).** Install with the first component (nothing to test while the
+- No test runner yet (stack decided). Install with the first component (nothing to test while the
   registry is empty). Decided stack: **Vitest** (runner; what Base UI uses) · **Vitest Browser Mode**
   with the Playwright provider + `vitest-axe` for component/a11y tests (real Chromium, not jsdom) ·
   **Playwright** for the APG keyboard matrix + E2E · visual-regression screenshots deferred. Run
   Vitest **on Node** (`bun run test`), not `bun run --bun vitest` (known bun:test/fake-timer issues).
   When it lands: add a `test` script, a `pre-push`/CI test step, and `.claude/rules/testing.md`.
-- **knip is a manual check for now.** `bun run knip` reports expected scaffold items (the `cn` util,
+- knip is a manual check for now. `bun run knip` reports expected scaffold items (the `cn` util,
   fumadocs exports) until feature code exists; it is not a `pre-push` gate yet. Wire it into
   `pre-push`/CI once components land.
-- **CLI is a stub.** `packages/cli/src/index.ts` prints a placeholder; init/add/apply/diff unbuilt.
-- **Registry is empty.** `registry.json` has `items: []`; the build pipeline (inline → validate →
+- CLI is a stub. `packages/cli/src/index.ts` prints a placeholder; init/add/apply/diff unbuilt.
+- Registry is empty. `registry.json` has `items: []`; the build pipeline (inline → validate →
   never-leak lint → graph check → emit `apps/docs/public/r/`) is unimplemented.
-- **Root ESLint gap.** Only `apps/docs` has ESLint. lint-staged runs Prettier only (no ESLint) for
+- Root ESLint gap. Only `apps/docs` has ESLint. lint-staged runs Prettier only (no ESLint) for
   now; add a root `eslint.config.mjs` and wire ESLint into lint-staged when non-docs TS grows.
-- **GitHub CI + meta deferred.** `.github/` has PR + issue templates only. The husky hooks run the
+- GitHub CI + meta deferred. `.github/` has PR + issue templates only. The husky hooks run the
   same lint/typecheck/format/build gate locally and there are no external contributors yet. Add
   `workflows/ci.yml`, `codeql.yml`, `dependabot.yml`, and `CODEOWNERS` closer to launch, and the
   npm-publish `release.yml` when packages go public.
-- **Dark strict-mode status hues** are an open tuning item - flagged in `theme.css` at the point of
+- Dark strict-mode status hues are an open tuning item - flagged in `theme.css` at the point of
   use.
