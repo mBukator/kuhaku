@@ -15,15 +15,15 @@ relevant Part before touching foundations, motion, components, or distribution).
 Kuhaku (空白) is a motion-first design system distributed like shadcn: open source-code
 distribution through a shadcn-compatible registry, built on Base UI, opinionated like Apple.
 
-| Property        | Value                                                |
-| --------------- | ---------------------------------------------------- |
-| **Repo**        | Turborepo monorepo (`apps/*`, `packages/*`)          |
-| **Package mgr** | `bun@1.3.11`                                         |
-| **Node**        | >=20                                                 |
-| **Language**    | TypeScript strict, ESM (`moduleResolution: bundler`) |
-| **CLI**         | `kuhaku` · packages `@kuhaku/*`                      |
-| **License**     | MIT                                                  |
-| **Status**      | Pre-release. Nothing is stable yet.                  |
+| Property    | Value                                                |
+| ----------- | ---------------------------------------------------- |
+| Repo        | Turborepo monorepo (`apps/*`, `packages/*`)          |
+| Package mgr | `bun@1.3.11`                                         |
+| Node        | >=20                                                 |
+| Language    | TypeScript strict, ESM (`moduleResolution: bundler`) |
+| CLI         | `kuhaku` · packages `@kuhaku/*`                      |
+| License     | MIT                                                  |
+| Status      | Pre-release. Nothing is stable yet.                  |
 
 ---
 
@@ -32,12 +32,12 @@ distribution through a shadcn-compatible registry, built on Base UI, opinionated
 Kuhaku is organized around three Japanese aesthetic principles. Knowing them is how you make
 decisions that fit the system instead of fighting it:
 
-- **Kuhaku (空白) — space.** Emptiness is the material, not the gap. Generous spacing, restraint,
+- Kuhaku (空白) — space. Emptiness is the material, not the gap. Generous spacing, restraint,
   what is deliberately left blank. Airy defaults; density is the argued exception.
-- **Ma (間) — time.** The interval is part of the motion: the delay before a tooltip, the stagger
+- Ma (間) — time. The interval is part of the motion: the delay before a tooltip, the stagger
   between items, the hold between an exit and its answering entrance. Intervals are composed, never
   residual.
-- **Jo-ha-kyū (序破急) — pacing.** Every motion has one shape: gentle onset, acceleration, decisive
+- Jo-ha-kyū (序破急) — pacing. Every motion has one shape: gentle onset, acceleration, decisive
   close. Nothing lurches in; nothing trails out. Exits are faster than entrances.
 
 ---
@@ -59,21 +59,21 @@ Full detail: `.claude/guides/architecture.md`
 
 ### Security & architecture invariants (MUST follow)
 
-1. **Base UI never leaks.** Import `@base-ui/react/*` internally only. No barrel re-export of Base
+1. Base UI never leaks. Import `@base-ui/react/*` internally only. No barrel re-export of Base
    UI, no public prop typed as a `@base-ui/*` type. Enforced by the registry-build lint.
 2. **Components consume semantic tokens, never `--neutral-*`.** The internal ramp is wiring.
-3. **No telemetry, no network calls home.** Privacy-first.
-4. **CLI writes are confined to the target project root**; never construct paths from unchecked
+3. No telemetry, no network calls home. Privacy-first.
+4. CLI writes are confined to the target project root; never construct paths from unchecked
    input; confirm before overwriting adopter files; honor `--dry-run`/`--diff`.
-5. **No `eval` / `new Function`.** Validate registry JSON against the schema before acting on it.
-6. **Any child-process call uses `execa` with an args array, never string interpolation.**
+5. No `eval` / `new Function`. Validate registry JSON against the schema before acting on it.
+6. Any child-process call uses `execa` with an args array, never string interpolation.
 
 Full detail: `.claude/rules/security.md`
 
 ### TypeScript (MUST follow)
 
 - `type` over `interface` (interface only for declaration merging)
-- **Never `any`** — use `unknown` + narrowing
+- Never `any` — use `unknown` + narrowing
 - `===`/`!==`; `??` (not `||`) for defaults; optional chaining
 - Early-return guard clauses over nested `if`; functions < ~50 lines
 - `import type` for type-only imports; explicit return types on exported functions
@@ -82,9 +82,9 @@ Full detail: `.claude/rules/typescript.md`
 
 ### Motion (MUST follow — this is the wedge)
 
-- **Motion is functional or it does not exist** (causality / provenance / continuity / attention).
+- Motion is functional or it does not exist (causality / provenance / continuity / attention).
 - **Tier 2 components consume `--motion-*` tokens only — never per-component motion props.**
-- **Compositor-only**: animate `transform` and `opacity`. The one sanctioned layout animation is
+- Compositor-only: animate `transform` and `opacity`. The one sanctioned layout animation is
   height expansion via `grid-template-rows: 0fr → 1fr`.
 - Reduced-motion and AAA strict mode are token-level remaps — do not hand-roll per-component.
 

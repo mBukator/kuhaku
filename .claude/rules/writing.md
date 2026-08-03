@@ -23,9 +23,11 @@ apply to commit messages, PR titles and bodies, code comments, and CLI output st
 
 ## Formatting
 
-- Bold only for genuine emphasis. Never bold bullet lead-ins, labels, or the first phrase of a line
-  as decoration - if everything is bold, nothing is. A bolded "TLDR" label is the one accepted
-  exception.
+- Bold is for genuine emphasis: a word or short phrase that must stand out - a hard requirement
+  (`MUST`, `never`), a warning, or a key term on first use. Use it sparingly.
+- Do not use bold as decoration: not on bullet or numbered lead-ins, not on table-cell labels, not
+  on filler words. Write `- Dev tooling: the baseline` (not `- **Dev tooling**: the baseline`) and
+  `Tier 1 is identity motion` (not `**Tier 1.** Identity motion`). A bolded "TLDR" label is fine.
 - Hyphens (`-`), never em dashes (`—`) or en dashes (`–`).
 - Headings are sentence case.
 

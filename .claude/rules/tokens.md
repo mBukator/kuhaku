@@ -14,10 +14,10 @@ shipped values cannot disagree.**
 
 ## Color
 
-- **Author every color in OKLCH.** Its lightness channel is perceptually uniform, which is what
+- Author every color in OKLCH. Its lightness channel is perceptually uniform, which is what
   makes the accent-preset system safe: presets change H and C but **hold L**, so a contrast audit
   done against the default survives the swap.
-- **Components reference semantic tokens only** (`--background`, `--primary`, `--muted-foreground`,
+- Components reference semantic tokens only (`--background`, `--primary`, `--muted-foreground`,
   …), never `--neutral-*`. The neutral ramp is internal wiring.
 - Semantic names are **shadcn's, verbatim** — do not rename them; interop is the whole point.
 - New color tokens ship with a measured contrast note in a comment, matching the existing style

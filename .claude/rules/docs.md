@@ -31,7 +31,7 @@ machine interface (registry routes, llms surfaces, search, OG).
 
 Live preview → install (**both commands** — `kuhaku add` and `shadcn add @kuhaku/…`) → usage →
 **API table generated from the TypeScript source** (types and docs cannot disagree) → **Motion
-behavior** (Tier 2: the quantified spec restated; Tier 3: the stillness statement) → Accessibility
+behavior** (Tier 2: the quantified motion behavior restated; Tier 3: the stillness statement) → Accessibility
 (the contract + its Playwright matrix link) → Examples gallery → Related (the disambiguation lines).
 Animated (Tier 1) pages foreground the tuning props instead of the API table.
 

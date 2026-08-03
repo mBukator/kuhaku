@@ -4,10 +4,10 @@
 
 ## Branches
 
-| Branch      | Purpose                           | Rules                          |
-| ----------- | --------------------------------- | ------------------------------ |
-| **main**    | Production-ready, tagged releases | No direct commits; PR required |
-| **develop** | Integration branch                | No direct commits; PR required |
+| Branch  | Purpose                           | Rules                          |
+| ------- | --------------------------------- | ------------------------------ |
+| main    | Production-ready, tagged releases | No direct commits; PR required |
+| develop | Integration branch                | No direct commits; PR required |
 
 Branch types, created from `develop`: `feat/*`, `fix/*`, `docs/*`, `chore/*`, `refactor/*`.
 Name them descriptively: `feat/button-press-spring`, not `feature-1`.
@@ -75,10 +75,10 @@ Merge strategy: **squash and merge** into `develop` for a clean, linear history.
 
 ## GitHub templates (MUST use)
 
-- **Pull requests** — fill in and follow `.github/pull_request_template.md` completely (every
+- Pull requests — fill in and follow `.github/pull_request_template.md` completely (every
   section plus the checklist). When creating a PR with `gh pr create`, pass this template's content
   as the body; never open a PR with an ad-hoc description.
-- **Issues** — use the matching template in `.github/ISSUE_TEMPLATE/`: `bug_report.md` for defects,
+- Issues — use the matching template in `.github/ISSUE_TEMPLATE/`: `bug_report.md` for defects,
   `feature_request.md` for proposals (which includes the register check for new components).
 
 ## Authoring commits

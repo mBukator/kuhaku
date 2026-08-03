@@ -14,7 +14,7 @@ byte for byte. Principle: own front door, standard plumbing.
 
 - The CLI is a **thin orchestration layer over shadcn's resolution logic.** Where drift risk exists,
   it **delegates** rather than reimplements, so upstream protocol evolution is inherited, not chased.
-- **Pass shadcn's inspection verbs and flags through unchanged**: `--dry-run`, `--diff`, `view`,
+- Pass shadcn's inspection verbs and flags through unchanged: `--dry-run`, `--diff`, `view`,
   `search`. Inventing synonyms for solved verbs is the CLI equivalent of renaming `--primary`.
 
 ## Commands

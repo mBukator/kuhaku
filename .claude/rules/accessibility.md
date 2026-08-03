@@ -13,12 +13,12 @@ never in contrast.
 
 ## The AA floor, audited per component
 
-- **Text-bearing** (Text, Heading, labels, table cells): 4.5:1 minimum.
-- **Interactive controls**: 3:1 non-text contrast for boundaries and state indicators (WCAG 1.4.11),
+- Text-bearing (Text, Heading, labels, table cells): 4.5:1 minimum.
+- Interactive controls: 3:1 non-text contrast for boundaries and state indicators (WCAG 1.4.11),
   visible focus, and a 24×24px minimum hit area (2.5.8) — primary controls exceed it.
-- **Dragging surfaces** (Slider, Carousel, Drawer): every drag has a single-pointer non-drag
+- Dragging surfaces (Slider, Carousel, Drawer): every drag has a single-pointer non-drag
   equivalent (2.5.7) — arrow keys, track click, buttons.
-- **Status primitives** (Toast, Alert, Banner, validation): color is never the only channel (1.4.1)
+- Status primitives (Toast, Alert, Banner, validation): color is never the only channel (1.4.1)
   — pair with text/icon; announce via live region (`polite`; `assertive` only for errors that block
   the current task).
 
@@ -41,7 +41,7 @@ follow pointer selection (no two-class interface).
 ## Density (numbers are commitments)
 
 - 40px default control height (`h-10`); `sm` 32px is a dense-context tool, not a style.
-- **44px minimum touch target** on coarse pointers — where the visual is smaller (checkbox, radio
+- 44px minimum touch target on coarse pointers — where the visual is smaller (checkbox, radio
   dot, slider thumb), extend the hit area with an invisible pseudo-element.
 - 8px minimum gap between adjacent interactives; 24px card padding; 96px section rhythm.
 - Never set interface text below 12px.

@@ -12,12 +12,12 @@ Applies to all TypeScript across the monorepo. Formatting (4-space, double quote
 
 ## Types
 
-- **Prefer `type` over `interface`.** Use `interface` only when you need declaration merging.
-- **Never use `any`.** Use `unknown` and narrow with type guards. `any` disables the checker that
+- Prefer `type` over `interface`. Use `interface` only when you need declaration merging.
+- Never use `any`. Use `unknown` and narrow with type guards. `any` disables the checker that
   is the point of TypeScript here.
-- **`import type`** for type-only imports (keeps them out of the runtime graph, matters for RSC and
+- `import type` for type-only imports (keeps them out of the runtime graph, matters for RSC and
   bundle size).
-- **Explicit return types on exported functions.** Inference is fine internally; the public surface
+- Explicit return types on exported functions. Inference is fine internally; the public surface
   should be legible and stable.
 - ESM only, `moduleResolution: "bundler"` — no `require`, import from package roots/subpaths.
 
@@ -26,7 +26,7 @@ Applies to all TypeScript across the monorepo. Formatting (4-space, double quote
 - `===` / `!==`, never `==` / `!=`.
 - `??` for defaults, not `||` (so `0`, `""`, `false` survive).
 - Optional chaining for safe access.
-- **Early-return guard clauses** over nested `if`/`else`. Check error conditions first and return.
+- Early-return guard clauses over nested `if`/`else`. Check error conditions first and return.
 - `const` by default; `let` only when reassigned; never `var`.
 
 ## Functions

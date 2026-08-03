@@ -24,8 +24,8 @@ Calm, confident, declarative, argued.
 ## Structure a docs page
 
 Live preview, then install (both commands), usage, an API table generated from the TypeScript source,
-motion behavior (moving components restate their quantified motion spec; still components state that
-they are still), then accessibility (the contract plus its keyboard-matrix test), examples, and
+motion behavior (moving components restate their quantified motion; still components state that they
+are still), then accessibility (the contract plus its keyboard-matrix test), examples, and
 related. Lead with the thing itself, not preamble. One compelling sentence beats a warm-up paragraph.
 
 ## Word choice
@@ -40,8 +40,9 @@ exclamation marks; emoji.
 
 ## Formatting
 
-- Bold only for genuine emphasis, never as decoration on bullet lead-ins or labels. A bolded "TLDR"
-  label is the one accepted exception.
+- Bold is for genuine emphasis - a word or short phrase that must stand out (a `MUST`, a warning, a
+  key term on first use), used sparingly. Not for bullet or numbered lead-ins, table-cell labels, or
+  filler words. A bolded "TLDR" label is fine.
 - Hyphens, never em or en dashes.
 - Sentence-case headings.
 

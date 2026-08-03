@@ -47,5 +47,5 @@ verifies the dependency graph is acyclic and complete, and emits to `apps/docs/p
 - Consume **semantic tokens** + Tailwind utilities, never `--neutral-*` directly.
 - Follow the tier and motion contract: @.claude/rules/motion.md. Follow the a11y contract:
   @.claude/rules/accessibility.md.
-- **Every component is a live integration test** — it must render on its own docs page, importing
+- Every component is a live integration test — it must render on its own docs page, importing
   from built registry output. A component that renders on its docs page is a component that installs.

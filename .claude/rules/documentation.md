@@ -11,11 +11,11 @@ When you add or change user-facing behavior, you MUST update the relevant docs i
 
 Mapping:
 
-- **New / changed token** → the matching Foundations page under `content/docs/` **and** the comment
+- New / changed token → the matching Foundations page under `content/docs/` and the comment
   in `theme.css` / `motion.css` (including any contrast measurement).
-- **New / changed component** → its component page **and** the component index.
-- **New / changed CLI verb or flag** → the CLI / Registry page, showing both install doors.
-- **Changed default or behavior** → whichever page documents that behavior.
+- New / changed component → its component page and the component index.
+- New / changed CLI verb or flag → the CLI / Registry page, showing both install doors.
+- Changed default or behavior → whichever page documents that behavior.
 
 Because the docs consume the token package and the built registry directly, a drift here is a
 correctness bug, not a documentation nicety — the docs are the integration test (see
