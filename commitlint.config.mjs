@@ -1,4 +1,3 @@
-/** Conventional Commits for the kuhaku monorepo. */
 export default {
     extends: ["@commitlint/config-conventional"],
     rules: {
