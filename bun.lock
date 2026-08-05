@@ -56,6 +56,10 @@
     "packages/tokens": {
       "name": "@kuhaku/tokens",
       "version": "0.0.0",
+      "devDependencies": {
+        "@types/node": "^26.1.1",
+        "typescript": "^6.0.3",
+      },
     },
   },
   "packages": {

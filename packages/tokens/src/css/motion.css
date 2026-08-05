@@ -1,3 +1,4 @@
+@import "./springs.generated.css";
 /* kuhaku — the --motion-* namespace. Reduced-motion compliance is token-level:
    the table collapses here once, and every component complies through the
    tokens it already reads. Spring linear() curves are build output — never
