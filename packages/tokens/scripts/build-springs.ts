@@ -39,34 +39,45 @@ function solve({ stiffness, damping, mass }: Spring) {
     const w0 = Math.sqrt(stiffness / mass);
     const zeta = damping / (2 * Math.sqrt(stiffness * mass));
 
+    let peak = 1;
     let position: (t: number) => number;
 
     if (zeta < 1) {
+        // Underdamped (bouncy)
         const wd = w0 * Math.sqrt(1 - zeta * zeta);
         position = (t) =>
             1 -
             Math.exp(-zeta * w0 * t) *
                 (Math.cos(wd * t) + ((zeta * w0) / wd) * Math.sin(wd * t));
+
+        const tPeak = Math.PI / wd;
+        peak = position(tPeak);
     } else if (zeta === 1) {
+        // Critically damped
         position = (t) => 1 - Math.exp(-w0 * t) * (1 + w0 * t);
     } else {
+        // Overdamped
         const r1 = -w0 * (zeta - Math.sqrt(zeta * zeta - 1));
         const r2 = -w0 * (zeta + Math.sqrt(zeta * zeta - 1));
-        const c1 = -r2 / (r1 - r2);
-        const c2 = r1 / (r1 - r2);
+
+        const c1 = r2 / (r1 - r2);
+        const c2 = -r1 / (r1 - r2);
+
         position = (t) => 1 + c1 * Math.exp(r1 * t) + c2 * Math.exp(r2 * t);
     }
 
     // Settling time: last moment outside the rest threshold, scanned backwards.
+    // The curve oscillates, so its envelope is not monotonic - a linear scan of
+    // the true position is correct where a binary search on it would not be. Two
+    // constant springs at build time make its cost irrelevant.
     let timeSeconds = 10;
     while (timeSeconds > 0 && Math.abs(position(timeSeconds) - 1) <= REST_THRESHOLD)
         timeSeconds -= 0.001;
     const durationMs = Math.round((timeSeconds + 0.001) * 1000);
 
-    let peak = 0;
-    for (let i = 0; i <= durationMs; i++) peak = Math.max(peak, position(i / 1000));
+    const overshoot = Math.max(0, (peak - 1) * 100);
 
-    return { position, durationMs, zeta, overshoot: (peak - 1) * 100 };
+    return { position, durationMs, zeta, overshoot };
 }
 
 /**
