@@ -1,0 +1,39 @@
+version: 2
+
+updates:
+    - package-ecosystem: npm
+      directories:
+          - "/"
+          - "apps/*"
+          - "packages/*"
+      target-branch: develop
+      schedule:
+          interval: weekly
+          day: monday
+          time: "06:00"
+          timezone: Europe/Warsaw
+      open-pull-requests-limit: 5
+      reviewers:
+          - mBukator
+      labels:
+          - dependencies
+      groups:
+          dev-dependencies:
+              dependency-type: development
+          production-dependencies:
+              dependency-type: production
+
+    - package-ecosystem: github-actions
+      directory: /
+      target-branch: develop
+      schedule:
+          interval: weekly
+          day: monday
+          time: "06:00"
+          timezone: Europe/Warsaw
+      open-pull-requests-limit: 5
+      reviewers:
+          - mBukator
+      labels:
+          - dependencies
+          - github-actions
