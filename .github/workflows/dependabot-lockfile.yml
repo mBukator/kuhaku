@@ -28,6 +28,12 @@ jobs:
         if: github.actor == 'dependabot[bot]'
         runs-on: ubuntu-latest
 
+        # The developer git hooks (husky) must not run for this automated
+        # bot commit - ci.yml is the real gate. HUSKY=0 skips hook install
+        # during bun install; --no-verify bypasses any that remain.
+        env:
+            HUSKY: "0"
+
         steps:
             - name: Checkout PR branch
               uses: actions/checkout@v6
@@ -52,5 +58,5 @@ jobs:
                   git config user.name "dependabot[bot]"
                   git config user.email "49699333+dependabot[bot]@users.noreply.github.com"
                   git add bun.lock
-                  git commit -m "build(deps): regenerate bun.lock" -m "Dependabot updated the manifests without regenerating the workspace lockfile; sync it so bun install --frozen-lockfile passes on CI."
-                  git push
+                  git commit --no-verify -m "build(deps): regenerate bun.lock" -m "Sync the workspace lockfile after Dependabot's manifest bump so frozen install passes."
+                  git push --no-verify
