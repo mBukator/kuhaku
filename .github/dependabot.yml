@@ -17,11 +17,22 @@ updates:
           - mBukator
       labels:
           - dependencies
+      # typescript 7 and eslint 10 are breaking migrations, not routine
+      # bumps - handle them deliberately rather than as auto-opened PRs.
+      ignore:
+          - dependency-name: typescript
+            update-types: ["version-update:semver-major"]
+          - dependency-name: eslint
+            update-types: ["version-update:semver-major"]
+      # Groups bundle only minor/patch. Remaining majors arrive as
+      # individual PRs so each breaking bump is reviewed on its own.
       groups:
           dev-dependencies:
               dependency-type: development
+              update-types: ["minor", "patch"]
           production-dependencies:
               dependency-type: production
+              update-types: ["minor", "patch"]
 
     - package-ecosystem: github-actions
       directory: /
