@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+coverage/
+bun.lock
+apps/docs/.source/
+apps/docs/public/r/
+apps/docs/spec/
+**/next-env.d.ts
+LICENSE
+packages/tokens/src/css/springs.generated.css

@@ -10,9 +10,24 @@
         "dev": "turbo run dev",
         "build": "turbo run build",
         "lint": "turbo run lint",
-        "typecheck": "turbo run typecheck"
+        "typecheck": "turbo run typecheck",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "knip": "knip",
+        "prepare": "husky"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,mjs,cjs,css,md,json,yml,yaml}": "prettier --write"
     },
     "devDependencies": {
+        "@commitlint/cli": "^19.6.1",
+        "@commitlint/config-conventional": "^19.6.0",
+        "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
+        "husky": "^9.1.7",
+        "knip": "^6.17.1",
+        "lint-staged": "^15.3.0",
+        "merlin-commit": "^1.0.1",
+        "prettier": "^3.4.2",
         "turbo": "^2"
     },
     "engines": {

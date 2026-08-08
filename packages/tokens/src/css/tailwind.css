@@ -1,0 +1,212 @@
+/* kuhaku — the Tailwind v4 exposure layer. Import this file and nothing else.
+   `inline` is required: without it Tailwind resolves colours once at :root
+   against light values, and dark mode silently breaks. */
+
+@import "tailwindcss";
+@import "./theme.css";
+@import "./motion.css";
+
+/* `strict:` exists for the rare case where the token swap isn't enough. */
+@custom-variant dark (&:is(.dark *));
+@custom-variant strict (&:is([data-a11y="strict"] *));
+
+@theme inline {
+    /* Semantic colour. The neutral ramp is deliberately not exposed — semantic
+     pairs are the interface, and mapping --neutral-* would hijack Tailwind's
+     own neutral palette. Raw steps stay reachable as bg-[var(--neutral-800)]. */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    /* Status — fill role */
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+
+    /* Status text role. Use text-danger / text-caution / text-positive for
+     text, icons, and borders; text-warning would reintroduce a 2.43:1 fail. */
+    --color-danger: var(--destructive-text);
+    --color-caution: var(--warning-text);
+    --color-positive: var(--success-text);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+
+    --color-sidebar: var(--sidebar);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+
+    /* Radius. Re-derived from --radius, not referencing theme.css's --radius-sm:
+     Tailwind's namespace IS --radius-*, so that would be a self-reference.
+     These formulas must match theme.css; the build asserts equality. */
+    --radius-sm: calc(var(--radius) - 6px);
+    --radius-md: calc(var(--radius) - 3px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 6px);
+    --radius-2xl: calc(var(--radius) + 12px);
+
+    /* Typeface — same namespace collision, same resolution. */
+    --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+    --font-mono: var(--font-geist-mono, ui-monospace, "SF Mono", monospace);
+
+    /* Type scale, mapped from --type-*. The double-dash form is Tailwind's
+     syntax for paired sub-values; values live in theme.css, once. */
+    --text-xs: var(--type-xs);
+    --text-xs--line-height: var(--type-xs-leading);
+    --text-xs--letter-spacing: var(--type-xs-tracking);
+
+    --text-sm: var(--type-sm);
+    --text-sm--line-height: var(--type-sm-leading);
+    --text-sm--letter-spacing: var(--type-sm-tracking);
+
+    --text-base: var(--type-base);
+    --text-base--line-height: var(--type-base-leading);
+    --text-base--letter-spacing: var(--type-base-tracking);
+
+    --text-lg: var(--type-lg);
+    --text-lg--line-height: var(--type-lg-leading);
+    --text-lg--letter-spacing: var(--type-lg-tracking);
+
+    --text-xl: var(--type-xl);
+    --text-xl--line-height: var(--type-xl-leading);
+    --text-xl--letter-spacing: var(--type-xl-tracking);
+
+    --text-2xl: var(--type-2xl);
+    --text-2xl--line-height: var(--type-2xl-leading);
+    --text-2xl--letter-spacing: var(--type-2xl-tracking);
+
+    --text-3xl: var(--type-3xl);
+    --text-3xl--line-height: var(--type-3xl-leading);
+    --text-3xl--letter-spacing: var(--type-3xl-tracking);
+
+    --text-4xl: var(--type-4xl);
+    --text-4xl--line-height: var(--type-4xl-leading);
+    --text-4xl--letter-spacing: var(--type-4xl-tracking);
+
+    --text-5xl: var(--type-5xl);
+    --text-5xl--line-height: var(--type-5xl-leading);
+    --text-5xl--letter-spacing: var(--type-5xl-tracking);
+
+    --text-6xl: var(--type-6xl);
+    --text-6xl--line-height: var(--type-6xl-leading);
+    --text-6xl--letter-spacing: var(--type-6xl-tracking);
+
+    --text-7xl: var(--type-7xl);
+    --text-7xl--line-height: var(--type-7xl-leading);
+    --text-7xl--letter-spacing: var(--type-7xl-tracking);
+
+    --text-8xl: var(--type-8xl);
+    --text-8xl--line-height: var(--type-8xl-leading);
+    --text-8xl--letter-spacing: var(--type-8xl-tracking);
+
+    --text-9xl: var(--type-9xl);
+    --text-9xl--line-height: var(--type-9xl-leading);
+    --text-9xl--letter-spacing: var(--type-9xl-tracking);
+
+    --text-display: var(--type-display);
+    --text-display--line-height: var(--type-display-leading);
+    --text-display--letter-spacing: var(--type-display-tracking);
+
+    /* Weight */
+    --font-weight-normal: var(--weight-normal);
+    --font-weight-medium: var(--weight-medium);
+    --font-weight-semibold: var(--weight-semibold);
+    --font-weight-bold: var(--weight-bold);
+
+    /* Overrides Tailwind's ease-out and ease-in-out deliberately: `ease-out`
+     should mean Kuhaku's curve. */
+    --ease-out: var(--motion-ease-out);
+    --ease-in-out: var(--motion-ease-in-out);
+    --ease-anticipate: var(--motion-ease-anticipate);
+}
+
+/* Tailwind v4 has no --duration-* namespace, so these are utilities. */
+@utility duration-instant {
+    transition-duration: var(--motion-duration-instant);
+}
+@utility duration-fast {
+    transition-duration: var(--motion-duration-fast);
+}
+@utility duration-default {
+    transition-duration: var(--motion-duration-default);
+}
+@utility duration-slow {
+    transition-duration: var(--motion-duration-slow);
+}
+@utility duration-slower {
+    transition-duration: var(--motion-duration-slower);
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--border);
+    }
+
+    body {
+        background-color: var(--background);
+        color: var(--foreground);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    /* Focus ring, :focus-visible only. Strict mode swaps --ring and adds an
+     outline; both are token work, so this rule never varies. */
+    :focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        box-shadow:
+            0 0 0 2px var(--background),
+            0 0 0 5px var(--ring);
+    }
+
+    [data-a11y="strict"] :focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 2px;
+    }
+
+    /* Ligatures off in code: glyphs that merge != misrepresent the stream. */
+    code,
+    kbd,
+    pre,
+    samp {
+        font-family: var(--font-mono);
+        font-variant-ligatures: none;
+    }
+
+    /* Compositor hints stay opt-in per component, never global. */
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+}

@@ -1,4 +1,12 @@
+/**
+ * kuhaku — theme.css
+ * The token layer, plain CSS. No Tailwind here by design:
+ * @theme inline mapping lives in the consuming app / registry:theme item.
+ * Sources of truth: Part 2 (color), Part 3 (type), Part 4 (radius), Part 6 (strict).
+ */
+
 :root {
+    /* ——— Radius ——— */
     --radius: 0.75rem;
     --radius-sm: calc(var(--radius) - 6px);
     --radius-md: calc(var(--radius) - 3px);
@@ -7,10 +15,81 @@
     --radius-2xl: calc(var(--radius) + 12px);
     --radius-full: 9999px;
 
+    /* ——— Typography hooks ——— */
     --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
     --font-mono: var(--font-geist-mono, ui-monospace, "SF Mono", monospace);
-    --text-display: clamp(4rem, 2.2rem + 6vw, 9rem);
 
+    /* ——— Type scale ———
+     Sizes are Tailwind's step values verbatim; every leading and tracking
+     below is Kuhaku's override — the opinion lives in the metrics, not the
+     sizes. Leading is unitless. Tracking never applies to mono.
+     Named --type-* rather than --text-* so the Tailwind layer can map these
+     without a self-referencing cycle; see tailwind.css. */
+    --type-xs: 0.75rem;
+    --type-xs-leading: 1.5;
+    --type-xs-tracking: 0.015em;
+
+    --type-sm: 0.875rem;
+    --type-sm-leading: 1.5;
+    --type-sm-tracking: 0.005em;
+
+    --type-base: 1rem;
+    --type-base-leading: 1.65;
+    --type-base-tracking: 0em;
+
+    --type-lg: 1.125rem;
+    --type-lg-leading: 1.6;
+    --type-lg-tracking: -0.005em;
+
+    --type-xl: 1.25rem;
+    --type-xl-leading: 1.5;
+    --type-xl-tracking: -0.01em;
+
+    --type-2xl: 1.5rem;
+    --type-2xl-leading: 1.4;
+    --type-2xl-tracking: -0.015em;
+
+    --type-3xl: 1.875rem;
+    --type-3xl-leading: 1.3;
+    --type-3xl-tracking: -0.02em;
+
+    --type-4xl: 2.25rem;
+    --type-4xl-leading: 1.2;
+    --type-4xl-tracking: -0.022em;
+
+    --type-5xl: 3rem;
+    --type-5xl-leading: 1.1;
+    --type-5xl-tracking: -0.025em;
+
+    --type-6xl: 3.75rem;
+    --type-6xl-leading: 1.05;
+    --type-6xl-tracking: -0.028em;
+
+    --type-7xl: 4.5rem;
+    --type-7xl-leading: 1;
+    --type-7xl-tracking: -0.03em;
+
+    --type-8xl: 6rem;
+    --type-8xl-leading: 1;
+    --type-8xl-tracking: -0.035em;
+
+    --type-9xl: 8rem;
+    --type-9xl-leading: 0.95;
+    --type-9xl-tracking: -0.04em;
+
+    /* The fluid hero step. Heading's `display` variant consumes this.
+     ~64px on a phone, ~121px at 1440, capped at 144px. */
+    --type-display: clamp(4rem, 2.2rem + 6vw, 9rem);
+    --type-display-leading: 1;
+    --type-display-tracking: -0.04em;
+
+    /* Weights. 700 is display-only, at --type-5xl and above. */
+    --weight-normal: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    /* ——— Neutral ramp — stone, hue 95 ——— */
     --neutral-0: oklch(1 0 0);
     --neutral-50: oklch(0.985 0.002 95);
     --neutral-100: oklch(0.965 0.003 95);
@@ -25,6 +104,7 @@
     --neutral-900: oklch(0.205 0.003 95);
     --neutral-950: oklch(0.145 0.003 95);
 
+    /* ——— Semantic tokens (light) ——— */
     --background: var(--neutral-50);
     --foreground: var(--neutral-950);
     --card: var(--neutral-0);
@@ -45,16 +125,25 @@
     --success-foreground: var(--neutral-50);
     --warning: oklch(0.72 0.14 75);
     --warning-foreground: var(--neutral-950);
+
+    /* Status text role — see doctrine note at end of file.
+     Measured against --background (n-50), the worst-case light surface. */
+    --destructive-text: oklch(0.55 0.2 27); /* 5.15:1 */
+    --success-text: oklch(0.527 0.14 150); /* 4.80:1 */
+    --warning-text: oklch(0.546 0.11 78); /* 4.80:1 */
+
     --border: var(--neutral-200);
     --input: var(--neutral-300);
     --ring: oklch(0.56 0.006 95 / 60%);
 
+    /* ——— Charts — preset hues, locked L ——— */
     --chart-1: oklch(0.6 0.12 262);
     --chart-2: oklch(0.6 0.14 50);
     --chart-3: oklch(0.6 0.09 195);
     --chart-4: oklch(0.6 0.11 300);
     --chart-5: oklch(0.6 0.11 142);
 
+    /* ——— Sidebar family — shadcn-compat aliases ——— */
     --sidebar: var(--neutral-50);
     --sidebar-foreground: var(--foreground);
     --sidebar-primary: var(--primary);
@@ -66,6 +155,7 @@
 }
 
 .dark {
+    /* ——— Semantic tokens (dark) ——— */
     --background: var(--neutral-950);
     --foreground: var(--neutral-100);
     --card: var(--neutral-900);
@@ -86,6 +176,13 @@
     --success-foreground: var(--neutral-950);
     --warning: oklch(0.78 0.14 80);
     --warning-foreground: var(--neutral-950);
+
+    /* Dark fills are already text-safe; the roles coincide.
+     Measured against --popover (n-850), the worst-case dark surface. */
+    --destructive-text: var(--destructive); /* 5.37:1 */
+    --success-text: var(--success); /* 6.93:1 */
+    --warning-text: var(--warning); /* 7.99:1 */
+
     --border: oklch(1 0 0 / 12%);
     --input: oklch(1 0 0 / 16%);
     --ring: oklch(0.71 0.006 95 / 60%);
@@ -106,11 +203,18 @@
     --sidebar-ring: var(--ring);
 }
 
-/* ——— Strict mode — AAA token swaps ——— */
+/* Strict mode — AAA swaps */
 [data-a11y="strict"] {
-    --muted-foreground: oklch(0.4 0.005 95);
-    --destructive: oklch(0.55 0.2 27);
-    --success: oklch(0.42 0.12 150);
+    --muted-foreground: oklch(0.4 0.005 95); /* 8.82:1 */
+
+    /* Fills darkened so fill/foreground pairs clear 7:1. */
+    --destructive: oklch(0.467 0.19 27); /* 7.32:1 */
+    --success: oklch(0.43 0.11 150); /* 7.38:1 */
+
+    --destructive-text: oklch(0.467 0.19 27); /* 7.32:1 */
+    --success-text: oklch(0.432 0.11 150); /* 7.32:1 */
+    --warning-text: oklch(0.447 0.09 78); /* 7.32:1 */
+
     --border: var(--neutral-300);
     --input: var(--neutral-400);
     --ring: var(--foreground);
@@ -118,9 +222,26 @@
 
 .dark[data-a11y="strict"],
 [data-a11y="strict"] .dark {
-    --muted-foreground: oklch(0.78 0.005 95);
+    --muted-foreground: oklch(0.78 0.005 95); /* 8.11:1 */
+
+    /* Red cannot hold chroma >= 0.16 at hue 25 in sRGB at any lightness, so
+     destructive trades saturation for lightness — only in strict mode. */
+    --destructive: oklch(0.755 0.14 25); /* 7.00:1 */
+    --success: oklch(0.725 0.14 152); /* 7.05:1 */
+    /* --warning unchanged: 0.78 0.14 80 already measures 7.99:1 */
+
+    --destructive-text: oklch(0.766 0.13 27); /* 7.32:1 */
+    --success-text: oklch(0.74 0.14 152); /* 7.44:1 */
+    --warning-text: oklch(0.78 0.14 80); /* 7.99:1 */
+
     --border: oklch(1 0 0 / 24%);
     --input: oklch(1 0 0 / 24%);
     --ring: var(--foreground);
-    /* Open tuning item (Part 9): dark status hues at 7:1 for text uses. */
 }
+
+/* Status tokens have two roles: --{status} is a FILL, paired with
+   --{status}-foreground and audited as a pair. 
+   --{status}-text is for text,
+   icons, and meaningful borders — always use it for coloured text. One hue
+   cannot do both: yellow as text on light measures 2.43:1 and fails AA.
+   Full argument: https://kuhaku.dev/foundations/color */

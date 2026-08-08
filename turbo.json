@@ -5,6 +5,9 @@
             "dependsOn": ["^build"],
             "outputs": [".next/**", "!.next/cache/**", "dist/**"]
         },
+        "@kuhaku/tokens#build": {
+            "outputs": ["src/css/springs.generated.css"]
+        },
         "dev": { "cache": false, "persistent": true },
         "lint": {},
         "typecheck": {}

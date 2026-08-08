@@ -1,0 +1,20 @@
+# Auto detect text files and normalize line endings to LF
+* text=auto eol=lf
+
+# Force LF for shell scripts (critical for cross-platform husky hooks)
+.husky/* text eol=lf
+
+# Ensure common web dev files use LF
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.mdx text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Lock file - treat as text but don't diff
+bun.lock text eol=lf -diff

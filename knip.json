@@ -1,0 +1,8 @@
+{
+    "$schema": "https://unpkg.com/knip@6/schema.json",
+    "ignoreDependencies": ["merlin-commit"],
+    "workspaces": {
+        "packages/cli": { "entry": ["src/index.ts"] },
+        "packages/tokens": { "entry": ["src/css/*.css"] }
+    }
+}
