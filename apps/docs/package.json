@@ -11,12 +11,12 @@
         "lint": "eslint"
     },
     "dependencies": {
-        "cnfast": "^0.0.8",
-        "fumadocs-core": "16.12.1",
-        "fumadocs-mdx": "15.2.0",
+        "cnfast": "^0.1.0",
+        "fumadocs-core": "16.14.2",
+        "fumadocs-mdx": "15.2.2",
         "fumadocs-ui": "npm:@fumadocs/base-ui@16.12.1",
         "lucide-react": "^1.25.0",
-        "next": "16.2.11",
+        "next": "16.3.0",
         "react": "^19.2.8",
         "react-dom": "^19.2.8"
     },
