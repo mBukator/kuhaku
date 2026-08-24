@@ -25,7 +25,7 @@
         "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
         "husky": "^9.1.7",
         "knip": "^6.17.1",
-        "lint-staged": "^15.3.0",
+        "lint-staged": "^17.3.0",
         "merlin-commit": "^1.0.1",
         "prettier": "^3.4.2",
         "turbo": "^2"
