@@ -24,6 +24,22 @@ registry:font | registry:hook | registry:lib`,
 The build **inlines file contents**, validates against the schema, runs the never-leak lint,
 verifies the dependency graph is acyclic and complete, and emits to `apps/docs/public/r/`.
 
+## Every `target` uses a placeholder - never a plain path
+
+`files[].target` **MUST** start with `@components/`, `@ui/`, `@lib/` or `@hooks/`. These resolve
+through the adopter's `components.json` aliases. A plain relative target (`lib/cn.ts`) is joined to
+the project root literally and never reads those aliases - while the `@/lib/...` imports inside the
+same file **are** rewritten through them. The two halves then disagree for any adopter who did not
+take shadcn's default aliases, and the component does not compile. Omitting `target` is not the
+alternative: the fallback keeps only the path segments after the destination directory's last
+segment, which flattens a nested component folder to its bare filenames.
+
+`@utils/` does not exist - `utils` names a file, not a directory. Placeholders are only recognized
+at the start of the string; `components/@ui/x.tsx` is treated as a literal path.
+
+This requires **`shadcn` >= 4.7.0** on the ecosystem door (`npx shadcn@latest add @kuhaku/…`). Pin
+that floor in `packages/cli` once it shells out, and state it on the CLI and registry doc pages.
+
 ## Dependency flow is the delivery mechanism
 
 - Anything that animates lists **`motion`** in `dependencies` — that is how the runtime reaches
@@ -43,7 +59,10 @@ verifies the dependency graph is acyclic and complete, and emits to `apps/docs/p
 
 ## Component conventions
 
-- Class composition uses **`cn` from `cnfast`** (the repo's util) — see `apps/docs/lib/cn.ts`.
+- Class composition uses **`cn` from the `cn` package** (the repo's util) — see `apps/docs/lib/cn.ts`.
+- Variant styling uses `cva` (`class-variance-authority`) when a component has enumerated style
+  props (`variant`, `size`). Booleans and values derived from other props stay as `cn`
+  conditionals - cva only sees props, and a single boolean gains nothing from a config object.
 - Consume **semantic tokens** + Tailwind utilities, never `--neutral-*` directly.
 - Follow the tier and motion contract: @.claude/rules/motion.md. Follow the a11y contract:
   @.claude/rules/accessibility.md.

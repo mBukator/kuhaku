@@ -43,14 +43,14 @@ resolved.
 
 ## `apps/docs`
 
-| Path                  | Purpose                                                          |
-| --------------------- | ---------------------------------------------------------------- |
-| `app/`                | App Router: docs, home, `/r`, llms, OG, search                   |
-| `content/docs/`       | MDX content                                                      |
-| `source.config.ts`    | Fumadocs collections + schemas                                   |
-| `lib/`                | `source.ts` (loader), `cn.ts` (re-exports cnfast), layout/shared |
-| `components/mdx.tsx`  | MDX component overrides                                          |
-| `spec/kuhaku-spec.md` | The full v1.0 design specification                               |
+| Path                  | Purpose                                                      |
+| --------------------- | ------------------------------------------------------------ |
+| `app/`                | App Router: docs, home, `/r`, llms, OG, search               |
+| `content/docs/`       | MDX content                                                  |
+| `source.config.ts`    | Fumadocs collections + schemas                               |
+| `lib/`                | `source.ts` (loader), `cn.ts` (re-exports cn), layout/shared |
+| `components/mdx.tsx`  | MDX component overrides                                      |
+| `spec/kuhaku-spec.md` | The full v1.0 design specification                           |
 
 ---
 

@@ -1,0 +1,23 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "types": ["node"],
+        "noEmit": true,
+        "paths": {
+            "@/lib/*": ["./src/lib/*"],
+            "@/components/ui/*": [
+                "./src/ui/actions-forms/*",
+                "./src/ui/layout-typography/*",
+                "./src/ui/feedback-status/*",
+                "./src/ui/overlays-navigation/*",
+                "./src/ui/data-display/*",
+                "./src/ui/animated/*",
+                "./src/ui/blocks/*"
+            ],
+            "@/hooks/*": ["./src/hooks/*"]
+        }
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx"]
+}
