@@ -30,6 +30,9 @@
         "prettier": "^3.4.2",
         "turbo": "^2"
     },
+    "overrides": {
+        "postcss": "8.5.23"
+    },
     "engines": {
         "node": ">=20"
     }
