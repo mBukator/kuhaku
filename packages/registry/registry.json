@@ -2,5 +2,64 @@
     "$schema": "https://ui.shadcn.com/schema/registry.json",
     "name": "kuhaku",
     "homepage": "https://kuhaku.dev",
-    "items": []
+    "items": [
+        {
+            "name": "cn",
+            "type": "registry:lib",
+            "title": "cn",
+            "description": "Class composition. Later Tailwind utilities win.",
+            "dependencies": ["cn"],
+            "files": [
+                {
+                    "path": "src/lib/cn.ts",
+                    "type": "registry:lib",
+                    "target": "@lib/cn.ts"
+                }
+            ]
+        },
+        {
+            "name": "motion",
+            "type": "registry:lib",
+            "title": "Motion runtime",
+            "description": "Motion tokens as TypeScript values, the spring definitions, and the reduced-motion/strict-mode suppression hook.",
+            "dependencies": ["motion"],
+            "files": [
+                {
+                    "path": "src/lib/motion/index.ts",
+                    "type": "registry:lib",
+                    "target": "@lib/motion/index.ts"
+                },
+                {
+                    "path": "src/lib/motion/springs.ts",
+                    "type": "registry:lib",
+                    "target": "@lib/motion/springs.ts"
+                }
+            ]
+        },
+        {
+            "name": "swap",
+            "type": "registry:component",
+            "title": "Swap",
+            "description": "The content cross-swap slot. One fixed grammar for confirming that something became something else.",
+            "files": [
+                {
+                    "path": "src/ui/layout-typography/swap/Swap.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/swap/Swap.tsx"
+                },
+                {
+                    "path": "src/ui/layout-typography/swap/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/swap/types.ts"
+                },
+                {
+                    "path": "src/ui/layout-typography/swap/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/swap/index.ts"
+                }
+            ],
+            "dependencies": ["motion"],
+            "registryDependencies": ["motion", "cn"]
+        }
+    ]
 }

@@ -1,0 +1,8 @@
+/**
+ * Editor tooling only. Gives Tailwind CSS IntelliSense the kuhaku theme while
+ * you edit components in this package, by re-exporting the tokens theme entry
+ * (which itself pulls in `tailwindcss`, the tokens, and the `@theme inline`
+ * mapping). It is NOT a registry item and is never shipped: adopters receive the
+ * theme from the registry:theme item, and components stay Tailwind-only source.
+ */
+@import "../tokens/src/css/tailwind.css";

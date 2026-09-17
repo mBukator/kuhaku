@@ -71,7 +71,7 @@ packages/tokens ──► packages/registry ──► packages/cli
 | Base UI      | `@base-ui/react` | Headless behavior layer (never leaks)   |
 | Motion       | `motion/react`   | Animation runtime (Tier 1 + springs)    |
 | TypeScript   | ^6               | Language (strict, `bundler` resolution) |
-| cnfast       | ^0.0.8           | `cn` class-composition util             |
+| cn           | ^0.2.5           | `cn` class-composition util             |
 
 ---
 
