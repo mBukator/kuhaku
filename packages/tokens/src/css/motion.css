@@ -17,7 +17,8 @@
     --motion-ease-in-out: cubic-bezier(0.66, 0, 0.34, 1);
     --motion-ease-anticipate: cubic-bezier(0.44, -0.24, 0.28, 1);
 
-    /* Springs — consumed by lib/motion */
+    /* Springs - declared once here; scripts/build-springs.ts reads them and
+       lib/motion mirrors them */
     --motion-spring-snappy-stiffness: 500;
     --motion-spring-snappy-damping: 32;
     --motion-spring-snappy-mass: 1;
@@ -29,6 +30,9 @@
     --motion-stagger-tight: 25ms;
     --motion-stagger-default: 45ms;
     --motion-stagger-loose: 80ms;
+    /* The micro-scale hold: a 100ms exit, 50ms, and a 150ms entrance land on the
+       300ms ceiling exactly; --motion-hold's 80ms would overrun it. */
+    --motion-hold-tight: 50ms;
     --motion-hold: 80ms;
     --motion-delay-hint: 400ms;
 }
@@ -44,6 +48,7 @@
         --motion-stagger-tight: 0ms;
         --motion-stagger-default: 0ms;
         --motion-stagger-loose: 0ms;
+        --motion-hold-tight: 0ms;
         --motion-hold: 0ms;
         /* --motion-delay-hint stays 400ms: intent confirmation is not motion. */
     }
@@ -59,6 +64,7 @@
     --motion-stagger-tight: 0ms;
     --motion-stagger-default: 0ms;
     --motion-stagger-loose: 0ms;
+    --motion-hold-tight: 0ms;
     --motion-hold: 0ms;
 }
 
