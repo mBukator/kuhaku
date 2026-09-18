@@ -36,6 +36,11 @@ one of four kinds of information — **causality** (you acted), **provenance** (
 
 - Animate **`transform` and `opacity` only.** No `width`/`height`/`top`/`left`/`margin`, no animated
   `box-shadow` (fake it with an opacity-animated pseudo-element), no animated `filter`/`backdrop-filter`.
+- The one exception is **Tier 1 identity motion where the blur _is_ the effect** (AnimatedText
+  `reveal`, TextHover `blur`, AnimatedTabs `blurPanels`). Animated `filter` is permitted there, behind
+  the fence, never on a functional surface, and only with the `IntersectionObserver` suspension and
+  the 1.5 `devicePixelRatio` clamp Tier 1 already owes. For Tier 2 the ban is absolute: blur arrives
+  at full value under a fade, never tweened.
 - The **one sanctioned layout animation** is height/width expansion via
   `grid-template-rows: 0fr → 1fr` (and `grid-template-columns` for horizontal).
 - `will-change` is a scalpel: apply on interaction start, remove on settle, never leave resident.
