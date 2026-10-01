@@ -113,14 +113,17 @@
     --popover-foreground: var(--neutral-950);
     --primary: var(--neutral-950);
     --primary-foreground: var(--neutral-50);
+    --primary-hover: var(--neutral-900); /* 17.16:1 with --primary-foreground */
     --secondary: var(--neutral-100);
     --secondary-foreground: var(--neutral-950);
+    --secondary-hover: var(--neutral-200); /* 15.87:1 with --secondary-foreground */
     --muted: var(--neutral-100);
     --muted-foreground: var(--neutral-500);
     --accent: var(--neutral-100);
     --accent-foreground: var(--neutral-950);
     --destructive: oklch(0.55 0.2 27);
     --destructive-foreground: var(--neutral-50);
+    --destructive-hover: oklch(0.5 0.2 27); /* 6.38:1 with --destructive-foreground */
     --success: oklch(0.55 0.12 150);
     --success-foreground: var(--neutral-50);
     --warning: oklch(0.72 0.14 75);
@@ -164,14 +167,17 @@
     --popover-foreground: var(--neutral-100);
     --primary: var(--neutral-100);
     --primary-foreground: var(--neutral-950);
+    --primary-hover: var(--neutral-200); /* 15.87:1 with --primary-foreground */
     --secondary: var(--neutral-850);
     --secondary-foreground: var(--neutral-100);
+    --secondary-hover: var(--neutral-800); /* 13.18:1 with --secondary-foreground */
     --muted: var(--neutral-900);
     --muted-foreground: var(--neutral-400);
     --accent: var(--neutral-800);
     --accent-foreground: var(--neutral-100);
     --destructive: oklch(0.69 0.19 25);
     --destructive-foreground: var(--neutral-950);
+    --destructive-hover: oklch(0.64 0.19 25); /* 5.38:1 with --destructive-foreground */
     --success: oklch(0.72 0.14 152);
     --success-foreground: var(--neutral-950);
     --warning: oklch(0.78 0.14 80);
@@ -210,6 +216,7 @@
     /* Fills darkened so fill/foreground pairs clear 7:1. */
     --destructive: oklch(0.467 0.19 27); /* 7.32:1 */
     --success: oklch(0.43 0.11 150); /* 7.38:1 */
+    --destructive-hover: oklch(0.43 0.19 27); /* 8.58:1 with --destructive-foreground */
 
     --destructive-text: oklch(0.467 0.19 27); /* 7.32:1 */
     --success-text: oklch(0.432 0.11 150); /* 7.32:1 */
@@ -226,8 +233,9 @@
 
     /* Red cannot hold chroma >= 0.16 at hue 25 in sRGB at any lightness, so
      destructive trades saturation for lightness — only in strict mode. */
-    --destructive: oklch(0.755 0.14 25); /* 7.00:1 */
+    --destructive: oklch(0.755 0.14 25); /* 8.54:1 with --destructive-foreground */
     --success: oklch(0.725 0.14 152); /* 7.05:1 */
+    --destructive-hover: oklch(0.72 0.14 25); /* 7.51:1 with --destructive-foreground */
     /* --warning unchanged: 0.78 0.14 80 already measures 7.99:1 */
 
     --destructive-text: oklch(0.766 0.13 27); /* 7.32:1 */
