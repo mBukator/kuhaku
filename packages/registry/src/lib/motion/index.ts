@@ -42,6 +42,38 @@ export const hold = {
 
 export const delayHint = 0.4;
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function readMotionSuppressed(): boolean {
+    return (
+        window.matchMedia(REDUCED_MOTION_QUERY).matches ||
+        document.documentElement.dataset.a11y === "strict" ||
+        document.body.dataset.a11y === "strict"
+    );
+}
+
+function subscribeToMotionSuppression(onChange: () => void): () => void {
+    const query = window.matchMedia(REDUCED_MOTION_QUERY);
+    query.addEventListener("change", onChange);
+
+    // Strict mode is an attribute, not a media query, so watch for it.
+    const observer = new MutationObserver(onChange);
+    const options = { attributes: true, attributeFilter: ["data-a11y"] };
+    observer.observe(document.documentElement, options);
+    observer.observe(document.body, options);
+
+    return () => {
+        query.removeEventListener("change", onChange);
+        observer.disconnect();
+    };
+}
+
+// The server cannot see either signal; hydration renders the motion-on
+// markup and React re-reads the real value straight after.
+function readServerMotionSuppressed(): boolean {
+    return false;
+}
+
 /**
  * True when motion should collapse to its end state.
  *
@@ -50,38 +82,17 @@ export const delayHint = 0.4;
  * duration tokens to zero; JavaScript-driven motion has no token to read,
  * so it reads this instead.
  *
- * @returns `false` during SSR and on the first client render, then corrects
- * after mount - animation must never be the reason markup mismatches.
+ * @returns `false` during SSR and hydration, so markup never mismatches.
+ * A component that mounts later - a check that appears on success, a spinner
+ * that appears on loading - reads the real value on its first render, so its
+ * entrance animation already honors suppression.
  */
 export function useMotionSuppressed(): boolean {
-    const [suppressed, setSuppressed] = React.useState(false);
-
-    React.useEffect(() => {
-        const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-        const read = () =>
-            query.matches ||
-            document.documentElement.dataset.a11y === "strict" ||
-            document.body.dataset.a11y === "strict";
-
-        const sync = () => setSuppressed(read());
-        sync();
-
-        query.addEventListener("change", sync);
-
-        // Strict mode is an attribute, not a media query, so watch for it.
-        const observer = new MutationObserver(sync);
-        const options = { attributes: true, attributeFilter: ["data-a11y"] };
-        observer.observe(document.documentElement, options);
-        observer.observe(document.body, options);
-
-        return () => {
-            query.removeEventListener("change", sync);
-            observer.disconnect();
-        };
-    }, []);
-
-    return suppressed;
+    return React.useSyncExternalStore(
+        subscribeToMotionSuppression,
+        readMotionSuppressed,
+        readServerMotionSuppressed
+    );
 }
 
 /**
