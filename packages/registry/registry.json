@@ -59,7 +59,7 @@
                 }
             ],
             "dependencies": ["motion"],
-            "registryDependencies": ["motion", "cn"]
+            "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
         }
     ]
 }

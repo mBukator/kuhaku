@@ -248,16 +248,17 @@ A component item declares:
         },
     ],
     "dependencies": ["@base-ui/react", "motion"], // npm deps, @version where pinned
-    "registryDependencies": ["motion", "cn", "swap", "spinner"], // @kuhaku items it composes
+    "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn", "@kuhaku/swap"], // namespaced: a bare name is shadcn's own item
 }
 ```
 
 Rules that bind this entry:
 
 - `registryDependencies` is the delivery mechanism, not prose. `date-picker` lists
-  `["popover", "calendar", "input"]` so installing it pulls them automatically. The graph MUST be
-  acyclic and complete - a reference to an undeclared item fails the build, not the adopter
-  (security invariant 5).
+  `["@kuhaku/popover", "@kuhaku/calendar", "@kuhaku/input"]` so installing it pulls them
+  automatically. Every entry is namespaced: shadcn resolves a bare name like `spinner` to its own
+  built-in item, never to a Kuhaku one. The graph MUST be acyclic and complete - a reference to an
+  undeclared item fails the build, not the adopter (security invariant 5).
 - npm `dependencies` is how the runtime reaches adopters with no peer-dependency ceremony: anything
   animating lists `motion`; heavy deps stay scoped to their one component.
 - Foundational items a component leans on: the base payload (`init` installs it), the
