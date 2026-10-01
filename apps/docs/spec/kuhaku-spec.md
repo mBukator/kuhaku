@@ -144,14 +144,17 @@ Token names are shadcn-compatible verbatim, so any existing shadcn theme or pres
 | `--popover-foreground` | neutral-950 | neutral-100 |
 | `--primary` | neutral-950 | neutral-100 |
 | `--primary-foreground` | neutral-50 | neutral-950 |
+| `--primary-hover` | neutral-900 | neutral-200 |
 | `--secondary` | neutral-100 | neutral-850 |
 | `--secondary-foreground` | neutral-950 | neutral-100 |
+| `--secondary-hover` | neutral-200 | neutral-800 |
 | `--muted` | neutral-100 | neutral-900 |
 | `--muted-foreground` | neutral-500 | neutral-400 |
 | `--accent` | neutral-100 | neutral-800 |
 | `--accent-foreground` | neutral-950 | neutral-100 |
 | `--destructive` | oklch(0.55 0.20 27) | oklch(0.69 0.19 25) |
 | `--destructive-foreground` | neutral-50 | neutral-950 |
+| `--destructive-hover` | oklch(0.50 0.20 27) | oklch(0.64 0.19 25) |
 | `--success` | oklch(0.55 0.12 150) | oklch(0.72 0.14 152) |
 | `--success-foreground` | neutral-50 | neutral-950 |
 | `--warning` | oklch(0.72 0.14 75) | oklch(0.78 0.14 80) |
@@ -160,7 +163,7 @@ Token names are shadcn-compatible verbatim, so any existing shadcn theme or pres
 | `--input` | neutral-300 | oklch(1 0 0 / 16%) |
 | `--ring` | oklch(0.56 0.006 95 / 60%) | oklch(0.71 0.006 95 / 60%) |
 
-Three decisions in this table carry argument, and a fourth was corrected in review. First, dark-mode borders are alpha hairlines (white at 12–16%), not opaque ramp steps: an alpha border composites correctly over every elevation level, so a card border and a popover border are one token, not two — fewer tokens, no drift. Light mode keeps opaque borders because alpha-black hairlines over warm surfaces shift visibly green-gray. Second, dark-mode foreground is neutral-100, not white: full-white text on near-black produces halation (glow-bleed at letter edges) at body sizes; 0.965 removes it while conceding nothing measurable in contrast. Third, `--warning-foreground` is dark in both modes — amber never gets light text, in anyone's system, because amber's luminance makes white text unreadable at any chroma worth calling amber. Fourth (the review correction): `--accent` is not the brand accent — in the shadcn vocabulary it is the *hover wash* behind menu items, command rows, and calendar days; a surface token, one perceptible step of emphasis from the surface it sits on. In light mode emphasis steps darker (neutral-100 on white); in dark mode it follows the elevation rule — higher is lighter — and must sit one legible step above the popover it most often lives on, hence **neutral-800**, not 850 (850 would render menu hover invisible on an 850 popover).
+Four decisions in this table carry argument, and a fifth was corrected in review. First, dark-mode borders are alpha hairlines (white at 12–16%), not opaque ramp steps: an alpha border composites correctly over every elevation level, so a card border and a popover border are one token, not two — fewer tokens, no drift. Light mode keeps opaque borders because alpha-black hairlines over warm surfaces shift visibly green-gray. Second, dark-mode foreground is neutral-100, not white: full-white text on near-black produces halation (glow-bleed at letter edges) at body sizes; 0.965 removes it while conceding nothing measurable in contrast. Third, `--warning-foreground` is dark in both modes — amber never gets light text, in anyone's system, because amber's luminance makes white text unreadable at any chroma worth calling amber. Fourth: `--primary-hover`, `--secondary-hover`, and `--destructive-hover` are semantic state fills rather than a shared overlay, because a dark primary and a chromatic destructive button need distinct one-step hover changes while preserving their foreground contrast. Fifth (the review correction): `--accent` is not the brand accent — in the shadcn vocabulary it is the *hover wash* behind menu items, command rows, and calendar days; a surface token, one perceptible step of emphasis from the surface it sits on. In light mode emphasis steps darker (neutral-100 on white); in dark mode it follows the elevation rule — higher is lighter — and must sit one legible step above the popover it most often lives on, hence **neutral-800**, not 850 (850 would render menu hover invisible on an 850 popover).
 
 Dark-mode status foregrounds flip to dark text by arithmetic, not style: dark-mode status *fills* rise in lightness (chroma compresses, L rises — see the strategy below) to stay visible as shapes against near-black (WCAG 1.4.11), and at L ≈ 0.69–0.78 white text cannot reach 4.5:1 on them while dark text clears 6:1 comfortably. The foreground is the only value the audited fill permits — the same reason no system anywhere puts white text on amber.
 
@@ -531,6 +534,8 @@ Strict mode is one attribute on the root (`<html data-a11y="strict">`), implemen
 | `--muted-foreground` (light) | neutral-500 | oklch(0.40 0.005 95) | 7.2:1 on `background` and `muted` |
 | `--muted-foreground` (dark) | neutral-400 | oklch(0.78 0.005 95) | 7.4:1 on dark surfaces |
 | `--destructive` (light) | L 0.55 | oklch(0.44 0.19 27) | 7:1-capable as text; fill keeps white fg at 7:1 |
+| `--destructive-hover` (light) | oklch(0.50 0.20 27) | oklch(0.43 0.19 27) | 8.58:1 against `--destructive-foreground`, one lightness step below the strict fill |
+| `--destructive-hover` (dark) | oklch(0.64 0.19 25) | oklch(0.72 0.14 25) | 7.51:1 against `--destructive-foreground`, one lightness step below the strict fill |
 | `--success` / `--warning` text uses | L 0.55 / dark-text | darkened to L ≈ 0.42 / unchanged | status *text* reaches 7:1; chips re-pair automatically |
 | `--border`, `--input` | alpha / neutral-300 | one step stronger (neutral-400-light; 24% alpha-dark) | boundaries ≥3:1 without relying on surface shift |
 | `--ring` | 60% alpha stone | opaque `--foreground` | maximum-contrast indicator |
