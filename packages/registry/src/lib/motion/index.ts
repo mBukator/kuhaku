@@ -7,6 +7,7 @@
  * The two must agree, so this file is written to mirror the token table
  * exactly; the build validates that it does.
  */
+import type { Transition } from "motion/react";
 import * as React from "react";
 
 export { springs, springSnappy, springSoft } from "./springs";
@@ -99,9 +100,6 @@ export function useMotionSuppressed(): boolean {
  * Collapses a transition to an instant cut when motion is suppressed.
  * Components pass their normal transition and get the honest one back.
  */
-export function withSuppression<T extends Record<string, unknown>>(
-    transition: T,
-    suppressed: boolean
-): T | { duration: 0; delay: 0 } {
+export function withSuppression(transition: Transition, suppressed: boolean): Transition {
     return suppressed ? { duration: 0, delay: 0 } : transition;
 }
