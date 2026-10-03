@@ -27,7 +27,7 @@ machine interface (registry routes, llms surfaces, search, OG).
   source. A demo that renders proves the component installs — that is the integration test.
 - Do not duplicate component source into the docs app.
 
-## The component page template (all 114 pages)
+## The component page template (all 115 pages)
 
 Live preview → install (**both commands** — `kuhaku add` and `shadcn add @kuhaku/…`) → usage →
 **API table generated from the TypeScript source** (types and docs cannot disagree) → **Motion

@@ -76,7 +76,7 @@ a tier does not allow, or filing the component under the wrong category.
   (functional; `-micro` for small controls, `-state` for stateful surfaces; consumes `--motion-*`
   tokens only, no per-component motion props), Tier 3 (withheld; no motion, no prop to add it), or
   Tier 3-kinetic (motion is the semantic content - Skeleton, Spinner, Progress). It governs the
-  implementation and the docs "Motion behavior" section (`.claude/rules/motion.md`). For the 114
+  implementation and the docs "Motion behavior" section (`.claude/rules/motion.md`). For the 115
   specced components you read the tier from the spec; you assign one only for a component the spec
   does not cover.
 - Category folder - which subfolder under `src/` the file lives in, which is the placement from 0.3

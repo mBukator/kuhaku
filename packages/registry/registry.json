@@ -85,6 +85,31 @@
             ],
             "dependencies": ["motion"],
             "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
+        },
+        {
+            "name": "checkmark",
+            "type": "registry:component",
+            "title": "Checkmark",
+            "description": "A check drawn in writing order. One grammar for every confirmation.",
+            "files": [
+                {
+                    "path": "src/ui/feedback-status/checkmark/Checkmark.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/checkmark/Checkmark.tsx"
+                },
+                {
+                    "path": "src/ui/feedback-status/checkmark/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/checkmark/types.ts"
+                },
+                {
+                    "path": "src/ui/feedback-status/checkmark/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/checkmark/index.ts"
+                }
+            ],
+            "dependencies": ["motion"],
+            "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
         }
     ]
 }
