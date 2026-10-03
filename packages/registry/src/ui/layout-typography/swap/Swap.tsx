@@ -7,14 +7,15 @@ import { forwardRef, useEffect, useMemo, useRef } from "react";
 
 import type { SwapProps } from "./types";
 
-const TIMELINE = {
+/** Seconds, because motion/react speaks seconds. */
+export const SWAP_TIMELINE = {
     enter: duration.fast,
     hold: hold.tight,
     exit: (duration.fast * 2) / 3, // Exits run at two-thirds of their entrance
-};
+} as const;
 
-const ENTER_DELAY = TIMELINE.exit + TIMELINE.hold;
-const TOTAL = ENTER_DELAY + TIMELINE.enter;
+export const SWAP_ENTER_DELAY = SWAP_TIMELINE.exit + SWAP_TIMELINE.hold;
+const TOTAL = SWAP_ENTER_DELAY + SWAP_TIMELINE.enter;
 
 if (process.env.NODE_ENV !== "production" && TOTAL > 0.3) {
     console.warn(`Swap exceeds 300ms micro-interaction ceiling (${TOTAL * 1000}ms)`);
@@ -42,11 +43,11 @@ export const Swap = forwardRef<HTMLSpanElement, SwapProps>(function Swap(
     }, [value]);
 
     const enterTransition = withSuppression(
-        { duration: TIMELINE.enter, delay: ENTER_DELAY, ease: ease.inOut },
+        { duration: SWAP_TIMELINE.enter, delay: SWAP_ENTER_DELAY, ease: ease.inOut },
         suppressed
     );
     const exitTransition = withSuppression(
-        { duration: TIMELINE.exit, ease: ease.inOut },
+        { duration: SWAP_TIMELINE.exit, ease: ease.inOut },
         suppressed
     );
 
