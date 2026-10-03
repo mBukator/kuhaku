@@ -110,6 +110,19 @@
             ],
             "dependencies": ["motion"],
             "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
+        },
+        {
+            "name": "use-confirmation-hold",
+            "type": "registry:hook",
+            "title": "useConfirmationHold",
+            "description": "The state an action control displays. Success and error hold for 1.5s, then settle to idle.",
+            "files": [
+                {
+                    "path": "src/hooks/use-confirmation-hold.ts",
+                    "type": "registry:hook",
+                    "target": "@hooks/use-confirmation-hold.ts"
+                }
+            ]
         }
     ]
 }
