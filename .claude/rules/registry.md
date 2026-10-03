@@ -5,7 +5,7 @@ paths:
 
 # Registry & Component Authoring
 
-`packages/registry` is the source of truth for all 114 components plus `registry.json`. The build
+`packages/registry` is the source of truth for all 115 components plus `registry.json`. The build
 compiles source into static registry-item JSON emitted to `apps/docs/public/r/[name].json`.
 "Own front door, standard plumbing."
 

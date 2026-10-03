@@ -3,7 +3,7 @@
 > *The motion-first design system where every interaction is crafted and every still surface is dignified. Built on Base UI, distributed like shadcn, opinionated like Apple.*
 
 **Status:** v1.0 of the specification — compiled July 2026, all nine parts approved.
-**Scope:** brand, foundations, 114 components (112 at Phase 1 launch), CLI/registry architecture, docs IA, phase plan.
+**Scope:** brand, foundations, 115 components (113 at Phase 1 launch), CLI/registry architecture, docs IA, phase plan.
 **Provenance:** produced part-by-part with checkpointed review; all amendments agreed during review are reconciled inline. Aliases, drops, and merges are consolidated in Appendix A; the component index in Appendix B; open work in Appendix C.
 
 **Contents**
@@ -454,7 +454,7 @@ The universal laws first, then the specifications. **The 300ms law:** no micro-i
 
 **Button.** Pointer-down: scale 1 → 0.97 over 100ms `ease-out` — Apple's press grammar, fast enough to feel synchronous, deep enough to read as compression. Release: spring back to 1 via `spring-snappy`; the ~4% overshoot is the tactile "click" rendered visually. Hover: `translateY(-1px)` plus background tint over 150ms — one pixel, the minimum detectable lift; two pixels is eagerness. Focus: the focus grammar below. Total worst case: 100 + 250 spring settle = within law.
 
-**Checkbox.** Check: box background and border-color cross over 150ms while the checkmark draws via stroke-dashoffset over 200ms `ease-out`, starting 50ms into the fill — overlapping, not sequential, so the whole event reads as one gesture (~250ms) rather than two steps. The draw direction follows the stroke's natural writing order; a checkmark is a tiny act of writing and should look written. Uncheck: no reverse theater — mark and fill fade together in 120ms. Undoing is kyū.
+**Checkbox.** Check: box fill and border cross through prepainted opacity layers over 150ms while the checkmark's two strokes draw through scale transforms over 200ms `ease-out`, starting 50ms into the fill — overlapping, not sequential, so the whole event reads as one gesture (~250ms) rather than two steps. Each stroke grows from its start point in writing order, keeping the draw compositor-only. Uncheck: no reverse theater — mark and fill fade together in 120ms. Undoing is kyū.
 
 **Switch.** The thumb travels on `spring-snappy`: one 4% overshoot past its endpoint, settle under 300ms — the overshoot is the point, the visual weight of a physical toggle striking its stop. Track color cross-fades over 150ms timed so the track completes as the thumb crosses midpoint; color confirms while motion is still in flight. Held pointer-down before release: the thumb widens to 108% along the travel axis over 100ms — the "gripped" affordance — and the stretch releases into the travel spring.
 
@@ -603,7 +603,7 @@ type CheckboxProps = {
 } & ComponentProps<'button'>;
 ```
 
-Motion, per 5.6: fill and border cross over 150ms while the check draws via stroke-dashoffset over 200ms starting at +50ms — one written gesture, ~250ms total; uncheck fades out in 120ms without reverse theater; indeterminate renders its dash with the same draw grammar. The 20px visual box carries a pseudo-element hit area to 44px (Part 6). Label association comes free inside Field; standalone use pairs with Label. Related: Switch, RadioGroup, Toggle.
+Motion, per 5.6: fill and border cross over 150ms while the Checkmark (7c) draws its strokes through scale transforms over 200ms starting at +50ms — one written gesture, ~250ms total; uncheck fades out in 120ms without reverse theater; indeterminate renders its dash with the same draw grammar. The 20px visual box carries a pseudo-element hit area to 44px (Part 6). Label association comes free inside Field; standalone use pairs with Label. Related: Switch, RadioGroup, Toggle.
 
 **RadioGroup** — exclusive choice among visible options. Tier 2-micro. Base: Base UI Radio/RadioGroup; roving tabindex, arrow-key movement, one tab stop per group — inherited, then verified per the Part 8 matrix.
 
@@ -778,6 +778,8 @@ One family-wide note, per the morph decision: every anchored surface in this par
 **Skeleton** — content's placeholder silhouette. Tier 3-kinetic. `Skeleton { shape?: 'text' | 'rect' | 'circle', lines?: number, width?, height? }` — `text` with `lines` renders a paragraph ghost with a shortened final line, the one typographic realism that stops skeletons reading as gray bricks. Motion: the 2000ms opacity breath (0.55 ↔ 0.85, `ease-in-out`) — deliberately below attention frequency. The 5.7 handoff rule applies and the docs demonstrate it: when real content arrives, skeleton and content cross-fade over 200ms *in reserved dimensions* — the skeleton's geometry must match the content's, because a loading state that reflows on resolution converts anticipation into punishment. `aria-hidden` always; the loading announcement belongs to the region's `aria-busy`, not the ghost. Reduced motion: pulse stops, static block remains — shape alone says "loading." Related: Spinner, Progress.
 
 **Spinner** - activity without a known endpoint. Tier 3-kinetic. `Spinner { size?: 'sm' | 'md' | 'lg', variant?: 'spinner' | 'dots' | 'bars' | 'dither' | 'ascii' | 'ripple' | 'orbit', label?: string }` - a curated set of seven in two registers, each earning its place. The classic register: `spinner` is the 900ms `linear` arc rotation and the default; `dots` is three dots in one travelling wave of scale and opacity, each a third of a cycle behind the last, so a single dot peaks at any moment; `bars` is its vertical sibling, three full-height bars pulsing `scaleY` and opacity with `--motion-stagger-tight` between them (choreography tokens reused, not reinvented). Bars, dots and their gaps are fractions of the box, so every size keeps one proportion. The pulsing variants cycle once a second: faster pulses read as agitation and, for some viewers, induce nausea. The raw-computational register: `dither`, `ripple`, and `orbit` share one 3×3 lattice, so they scale as a family - `dither` shimmers tight square pixels lit in ordered-dither (Bayer) rank, spreading the shimmer evenly instead of sweeping it, the register's signature at spinner scale; `ripple` sends a wavefront of scale and opacity out through spaced tiles, each delayed by its distance from the centre; `orbit` steps a lit head with a two-cell fading tail clockwise around the perimeter, 100ms per step, past a dim centre. `ascii` steps `| / - \` in `--font-mono` every 130ms, swapping whole frames the way a terminal redraws, never blending them. All render in `currentColor`, so they inherit context. Reduced motion, per variant under 5.8's essential-motion logic: every variant keeps moving at half speed or slower - `spinner` slows to 1400ms/rev, the pulsing and stepped variants double their cycle - because for a spinner the motion is the message, and a still one reads as stopped. Visible `label` optional; an sr-only "Loading" ships by default. Related: Progress, Skeleton, Button (`state="loading"` consumes `spinner` at `sm`).
+
+**Checkmark** - a check, written. Tier 2-micro. `Checkmark { delay?: number }` - the one drawn confirmation glyph, consumed by Button's `state="success"`, Checkbox, Select's selected item, CodeBlock's copy-confirm, and Toast, so every confirmation in the system is the same gesture. Its geometry is Lucide's check, reversed into writing order and split into its two strokes. Each stroke lies flat along its own axis, is rotated into place, and grows from its start point by `scaleX`, which keeps the draw compositor-only per 5.6; a dash-offset draw repaints on the main thread, exactly when a resolving request is busiest. The 200ms `ease-out` gesture is divided between the strokes in proportion to their length, so the pen moves at one speed. `delay` is the only prop and says *when*, never *how*: a glyph cannot know the timeline it is placed on, so the composing component places it (Button: after Swap's entrance plus `--motion-hold-tight`; Checkbox: 50ms into the fill). Select's 150ms draw arrives with Select. Reduced motion and strict mode render the check fully drawn on its first frame. `aria-hidden` by default; the outcome it confirms is announced by the surface that owns it. Related: Spinner, Swap, Checkbox, Button.
 
 **Status** — a condition, named. Tier 3, with one honest kinetic edge. `Status { tone: 'success' | 'warning' | 'danger' | 'neutral' | 'info', label?: string, pulse?: boolean }` — a dot in the tone's solid hue beside a `text-sm` label. Color never carries the meaning alone (1.4.1): the label, or an sr-only equivalent, is always present. `pulse` is off by default and classified 3-kinetic when on: a 2000ms soft opacity ring for *ongoing live activity* ("Recording", "Live") — the pulse is the message, same argument as indeterminate Progress, and the docs are strict that decorating a static "Operational" with a pulse is a register violation, not an emphasis technique. Reduced motion stills it; the label was always the real signal. Related: Badge, Chip, Progress.
 
@@ -1015,7 +1017,7 @@ The registry is the product. It lives at `kuhaku.dev/r/[name].json`, served by t
 | Type | Kuhaku usage |
 |---|---|
 | `registry:base` | **`@kuhaku/base`** — the entire system in one payload: theme CSS, motion tokens, font config, `lib/motion` helpers, core utilities, foundational components. `kuhaku init` is mechanically this one install |
-| `registry:component` | All 114 — each declaring files, npm `dependencies`, and `registryDependencies` (the Kuhaku items it composes) |
+| `registry:component` | All 115 — each declaring files, npm `dependencies`, and `registryDependencies` (the Kuhaku items it composes) |
 | `registry:theme` | The token layer alone: neutrals, semantic pairs, radius root, `--motion-*` table, `.dark` block, strict-mode swaps — installable into an existing shadcn project *without* Kuhaku's components, because the foundations are a legitimate product by themselves |
 | `registry:font` | Geist + Geist Mono via `next/font/google` (400–700 subset per Part 3), pointing at the fonts, never shipping them; a Fontsource variant ships as a sibling item for non-Next stacks |
 | `registry:hook` | `useThemeReveal`, `useReducedMotion`, the scroll and pointer-coalescing hooks Tier 1 shares |
@@ -1109,13 +1111,13 @@ The register governs all three. The docs are the first Kuhaku application, and e
 
 ## The component page template
 
-Shared by all 114 pages: live preview → install (both commands) → usage → **API table generated from the TypeScript source** (types and docs cannot disagree — the tokens promise extended to props) → **Motion behavior** (Tier 2 pages: the quantified spec restated exactly; Tier 3 pages: the stillness statement) → Accessibility (the contract *and* its Playwright matrix, linked) → Examples gallery (many composed looks of one canonical primitive) → Related, carrying the disambiguation lines.
+Shared by all 115 pages: live preview → install (both commands) → usage → **API table generated from the TypeScript source** (types and docs cannot disagree — the tokens promise extended to props) → **Motion behavior** (Tier 2 pages: the quantified spec restated exactly; Tier 3 pages: the stillness statement) → Accessibility (the contract *and* its Playwright matrix, linked) → Examples gallery (many composed looks of one canonical primitive) → Related, carrying the disambiguation lines.
 
 Animated pages swap the API table forward and foreground the tuning props, since for Tier 1 the tuning surface *is* the contract.
 
 ## Phase scope
 
-**Phase 1 — launch.** All eight Foundations. 112 of 114 components (84 primitives + 30 showcase, less the two below). All recipes. Full CLI (`init`, `add`, `apply`, presets, `diff`), the registry live at `/r`, both install paths, llms surfaces filled, MCP server, the skill layer, registry-directory listing, six preset codes, and the QA pipeline's four gates running in CI. The Tier 1 tuning playground ships in Phase 1 as one shared component instantiated across every showcase page.
+**Phase 1 — launch.** All eight Foundations. 113 of 115 components (85 primitives + 30 showcase, less the two below). All recipes. Full CLI (`init`, `add`, `apply`, presets, `diff`), the registry live at `/r`, both install paths, llms surfaces filled, MCP server, the skill layer, registry-directory listing, six preset codes, and the QA pipeline's four gates running in CI. The Tier 1 tuning playground ships in Phase 1 as one shared component instantiated across every showcase page.
 
 **Wave 2 (Phase 1.5).** ColorPicker and SwipeableList — specced, scheduled, honest about cost.
 
@@ -1195,7 +1197,7 @@ Each resolves to its target in documentation search; none ships as a separate co
 
 # Appendix B — Component index
 
-**84 primitives + 30 showcase = 114 components. 112 ship at Phase 1 launch** (ColorPicker and SwipeableList in Wave 2).
+**85 primitives + 30 showcase = 115 components. 113 ship at Phase 1 launch** (ColorPicker and SwipeableList in Wave 2).
 
 ## Primitives (Tier 2 / Tier 3)
 
@@ -1203,7 +1205,7 @@ Each resolves to its target in documentation search; none ships as a separate co
 
 **7b — Overlays & Navigation (20).** Dialog · AlertDialog · Sheet · Drawer · Popover · Tooltip · HoverCard · DropdownMenu · ContextMenu · Menubar · NavigationMenu · Command · CommandPalette · Tabs · Breadcrumb · Steps · Pagination · Sidebar · ThemeToggle · Dock
 
-**7c — Feedback & Status (9).** Alert · Banner · Toast · Progress · Skeleton · Spinner · Status · Badge · Chip
+**7c — Feedback & Status (10).** Alert · Banner · Toast · Progress · Skeleton · Spinner · Checkmark · Status · Badge · Chip
 
 **7d-1 — Content & Data: containers, disclosure, data (12).** Card · Separator · AspectRatio · ScrollArea · Accordion · Collapsible · Table · DataTable · Carousel · TreeView · Timeline · Stat
 
