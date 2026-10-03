@@ -60,6 +60,31 @@
             ],
             "dependencies": ["motion"],
             "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
+        },
+        {
+            "name": "spinner",
+            "type": "registry:component",
+            "title": "Spinner",
+            "description": "Activity without a known endpoint.",
+            "files": [
+                {
+                    "path": "src/ui/feedback-status/spinner/Spinner.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/spinner/Spinner.tsx"
+                },
+                {
+                    "path": "src/ui/feedback-status/spinner/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/spinner/types.ts"
+                },
+                {
+                    "path": "src/ui/feedback-status/spinner/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/spinner/index.ts"
+                }
+            ],
+            "dependencies": ["motion"],
+            "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
         }
     ]
 }
