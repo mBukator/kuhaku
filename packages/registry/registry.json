@@ -123,6 +123,43 @@
                     "target": "@hooks/use-confirmation-hold.ts"
                 }
             ]
+        },
+        {
+            "name": "button",
+            "type": "registry:component",
+            "title": "Button",
+            "description": "The action primitive. Every imperative in the interface, with its outcome confirmed in place.",
+            "files": [
+                {
+                    "path": "src/ui/actions-forms/button/Button.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/button/Button.tsx"
+                },
+                {
+                    "path": "src/ui/actions-forms/button/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/button/types.ts"
+                },
+                {
+                    "path": "src/ui/actions-forms/button/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/button/index.ts"
+                }
+            ],
+            "dependencies": [
+                "@base-ui/react",
+                "class-variance-authority",
+                "lucide-react",
+                "motion"
+            ],
+            "registryDependencies": [
+                "@kuhaku/cn",
+                "@kuhaku/motion",
+                "@kuhaku/swap",
+                "@kuhaku/spinner",
+                "@kuhaku/checkmark",
+                "@kuhaku/use-confirmation-hold"
+            ]
         }
     ]
 }

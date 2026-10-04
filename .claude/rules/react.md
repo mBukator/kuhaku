@@ -30,6 +30,29 @@ deliberate boundary, not a habit.
 - Custom hooks are `useXxx`, camelCase, and live where they are shared (`registry:hook` items in
   `packages/registry`).
 
+## File order
+
+Every name is declared before it is read, and related declarations sit together. A component file
+reads top to bottom in this order:
+
+1. `"use client"` (when needed), then imports.
+2. Module constants - timing values first (with the spec reference that justifies each number),
+   then derived constants built from them. A helper a constant is computed with sits directly
+   above that constant (`strokeBetween` in `Checkmark.tsx`), since it must exist first.
+3. Style definitions - the `cva` variants, then lookup records keyed by the same props (typed with
+   `satisfies Record<…>` so a missing key fails where it is written).
+4. Internal components and helpers, unexported.
+5. The exported component.
+
+Inside a component body, in blocks separated by one blank line:
+
+1. Hooks - React requires them first and unconditional.
+2. Derived values - the `is`/`has`/`can` booleans computed from props and hook results.
+3. Transitions and handlers, grouped by what they drive (press, label, shake), not by kind.
+4. The returned JSX.
+
+`Button.tsx` is the reference file for this order.
+
 ## The hot/cold split (motion performance)
 
 Pointer- and scroll-driven components must not re-render per frame:
