@@ -397,8 +397,8 @@ Five tokens. The scale is anchored on human perceptual thresholds, not aesthetic
 
 | Token | Value | Role |
 |---|---|---|
-| `--motion-duration-instant` | 50ms | Perceptually synchronous feedback: hover tints, active-state color, press-down onset |
-| `--motion-duration-fast` | 150ms | The micro-interaction workhorse: focus rings, small anchored surfaces, most exits |
+| `--motion-duration-instant` | 50ms | Perceptually synchronous feedback: active-state color, press-down onset |
+| `--motion-duration-fast` | 150ms | The micro-interaction workhorse: Button hover lift and tint, focus rings, small anchored surfaces, most exits |
 | `--motion-duration-default` | 250ms | Standard state change: dialog enter, accordion, validation morphs |
 | `--motion-duration-slow` | 400ms | Large spatial motion: sheet and drawer travel, complex reveals |
 | `--motion-duration-slower` | 600ms | Orchestrations: page transitions, Tier 1 sequences, staggered groups (total, not per-item) |
@@ -452,7 +452,7 @@ The three tiers are not intensity levels — they are three different *answers t
 
 The universal laws first, then the specifications. **The 300ms law:** no micro-interaction exceeds 300ms from input to full rest — feedback that outlives the gesture becomes theater. **The 50ms law:** the first visible response lands within 50ms of the input, ideally the next frame; the confirmation may *settle* for 250ms more, but it must *begin* at once. **The fidelity law:** springs and easings mediate presentation (scale, color, glow) but never input position — a slider thumb or drag surface tracks the pointer 1:1, because smoothing input is lag with good manners. **The one-voice law:** simultaneous property changes on one control share one timeline — border and ring move as a chord, never two blinking soloists.
 
-**Button.** Pointer-down: scale 1 → 0.97 over 100ms `ease-out` — Apple's press grammar, fast enough to feel synchronous, deep enough to read as compression. Release: spring back to 1 via `spring-snappy`; the ~4% overshoot is the tactile "click" rendered visually. Hover: `translateY(-1px)` plus background tint over 150ms — one pixel, the minimum detectable lift; two pixels is eagerness. Focus: the focus grammar below. Total worst case: 100 + 250 spring settle = within law.
+**Button.** Pointer-down: scale 1 → 0.97 over 100ms `ease-out` — Apple's press grammar, fast enough to feel synchronous, deep enough to read as compression. Release: spring back to 1 via `spring-snappy`; the ~4% overshoot is the tactile "click" rendered visually. Hover: `translateY(-1px)` plus background tint on the same 150ms `ease-in-out` timeline — one pixel, the minimum detectable lift; two pixels is eagerness. Focus: the focus grammar below. Total worst case: 100 + 250 spring settle = within law.
 
 **Checkbox.** Check: box fill and border cross through prepainted opacity layers over 150ms while the checkmark's two strokes draw through scale transforms over 200ms `ease-out`, starting 50ms into the fill — overlapping, not sequential, so the whole event reads as one gesture (~250ms) rather than two steps. Each stroke grows from its start point in writing order, keeping the draw compositor-only. Uncheck: no reverse theater — mark and fill fade together in 120ms. Undoing is kyū.
 
@@ -569,14 +569,24 @@ Density is where this section and the system's name meet, so the numbers are sta
 ```ts
 type ButtonProps = {
   variant?: 'primary' | 'secondary' | 'ghost' | 'destructive' | 'link';
-  size?: 'sm' | 'md' | 'lg' | 'icon';
+  size?: 'sm' | 'md' | 'lg' | 'icon-sm' | 'icon' | 'icon-lg';
   state?: 'idle' | 'loading' | 'success' | 'error';
   focusableWhenDisabled?: boolean;
-  render?: (props, state) => ReactElement;
-} & ComponentProps<'button'>;
+  nativeButton?: boolean;
+  render?: (props: ButtonRenderProps, state: ButtonState) => ReactElement;
+} & Omit<ComponentProps<'button'>, 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'>;
+
+type ButtonState = { disabled: boolean };
+type ButtonRenderProps = HTMLAttributes<HTMLElement> & { ref?: RefCallback<HTMLElement> };
 ```
 
-Variants map to the token pairs of Part 2 (`primary` = ink; `destructive` re-pairs automatically in strict mode). Motion, per 5.6: press scales to 0.97 in 100ms `ease-out`; release returns on `spring-snappy` (~4% overshoot, settled ≤250ms); hover lifts `translateY(-1px)` with background tint over 150ms; focus ring fades in 150ms as a chord with border shift. The `state` prop *(added on review)* cross-fades the label through the Swap primitive at frozen measured width: `loading` swaps in a Spinner (`aria-busy`, label preserved for AT), `success` draws the check via the checkbox stroke grammar, `error` swaps the error glyph with the 5.6 shake; success/error auto-revert to `idle` after 1.5s. A button that shrinks when busy is layout noise; the frozen width forbids it. Related: Toggle, Swap, Magnet (7f recipe).
+Variants map to the token pairs of Part 2 (`primary` = ink; `destructive` re-pairs automatically in strict mode). Motion, per 5.6: press scales to 0.97 in 100ms `ease-out`; release returns on `spring-snappy` (~4% overshoot, settled ≤250ms); hover lift and background tint share the 150ms `ease-in-out` timeline; focus ring fades in 150ms as a chord with border shift. The `state` prop *(added on review)* cross-fades the label through the Swap primitive at frozen measured width: `loading` swaps in a Spinner (`aria-busy`, label preserved for AT), `success` draws the Checkmark (7c), `error` swaps in Lucide's ✕ with the 5.6 shake; success/error auto-revert to `idle` after 1.5s. A button that shrinks when busy is layout noise; the frozen width forbids it. The indicator slot reserves a fixed 16px box, so a glyph leaving for `idle` exits in place instead of collapsing with its container. Button announces nothing on success or error: the glyphs confirm the outcome to sighted users, and the outcome itself belongs to the surface that reports it - a Toast for results, Field's message for validation - each a live region by design. Disabled renders at 50% opacity with a `not-allowed` cursor; WCAG exempts disabled controls from contrast minimums, and the dimming reads as unavailable without a second color. `loading` also blocks activation but is never dimmed - a working button is not an unavailable one - so the dimming keys on `data-disabled` without `data-state="loading"`. Every control after Button inherits this disabled look rather than inventing one. Related: Toggle, Swap, Checkmark, Magnet (7f recipe).
+
+The caller enters `loading`, `success`, or `error` by changing `state`. Loading persists until the prop changes. Entering `success` or `error` starts one 1.5s confirmation; Button then displays `idle` without changing the caller's prop. A later confirmation of the same kind requires the caller to leave and re-enter that state. If the prop changes during the hold, the previous confirmation ends immediately and its timer is canceled. This keeps a stale outcome from replacing newer feedback.
+
+`render` replaces the rendered element, and Button's motion and state reach whatever it returns. The function receives the merged props - classes, data attributes, handlers, a callback ref typed for any element, and the label stack as `children` - plus `{ disabled }`; spreading the props onto the returned element is the whole contract. Button wraps the element's type for motion once and caches the wrapper, so a component passed through `render` is declared at module level: one defined inside a parent's render is a new type on every render, and the button remounts with it. A non-button element (a `div`, a `span`) requires `nativeButton={false}`, which gives it `role="button"`, a tab stop, and Enter and Space activation. `render` is for composition, not navigation: a link rendered through it announces as a button. The four handler names motion claims for its own events (`onAnimationStart`, `onDrag`, `onDragStart`, `onDragEnd`) are left out of the props, since on a motion element they receive motion's arguments, not DOM events.
+
+The `link` variant is the hover-tint exception: it underlines on hover without adding a surface fill. It retains the Button's action semantics; navigation uses a link element.
 
 **Input** — single-line text entry. Tier 2-micro. Wraps Base UI's Input, which wires itself into Field state automatically.
 
@@ -1024,6 +1034,8 @@ The registry is the product. It lives at `kuhaku.dev/r/[name].json`, served by t
 | `registry:lib` | The motion runtime (spring token consumption, `linear()` emission), the Shader WebGL pipeline, the `$mod` keyboard resolver, `cn` |
 
 **Dependency flow** is the registry's quiet superpower and the answer to "how does `motion` reach adopters": every item that animates lists `motion` in its `dependencies`, so the CLI writes it into the adopter's `package.json` at install — no peer-dependency ceremony, no manual step. The same channel carries the argued exceptions: Sonner under Toast, Embla under Carousel, TanStack Table under DataTable, Shiki under CodeBlock. An adopter who never installs DataTable never hears of TanStack. `registryDependencies` meanwhile resolves composition — installing `date-picker` pulls `popover`, `calendar`, and `input` automatically, which is why Part 7's composition notes were never documentation flavor but dependency graph.
+
+Icons ride the same channel. Kuhaku's icon set is Lucide: an item that swaps in a static icon lists `lucide-react` in its `dependencies` and imports only the icons it uses, so an adopter ships only the glyphs their installed components need. An icon whose motion is its content is built in-house from Lucide's geometry - the Checkmark is the first - so drawn and imported glyphs read as one set.
 
 **The Base-UI-never-leaks rule, stated as architecture.** Component files import `@base-ui/react/*` internally and only internally: no barrel re-exports Base UI, no public prop is typed as a Base UI type, no Base UI part name appears in Kuhaku's public API — HoverCard wraps PreviewCard, and the adopter never learns this from the types. The rule is enforced, not aspired to: a lint rule in the registry build fails any component whose exported types reference `@base-ui/*`. The payoff is the Phase 2 option: any primitive can be re-implemented in-house, one at a time, and the diff adopters see is an implementation detail, because the API boundary was airtight from day one.
 
