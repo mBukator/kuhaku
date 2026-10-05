@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "checkmark",
+  "title": "Checkmark",
+  "description": "A check drawn in writing order. One grammar for every confirmation.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "@kuhaku/motion",
+    "@kuhaku/cn"
+  ],
+  "files": [
+    {
+      "path": "src/ui/feedback-status/checkmark/Checkmark.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/cn\";\nimport { ease, useMotionSuppressed, withSuppression } from \"@/lib/motion\";\nimport { motion, type Transition } from \"motion/react\";\n\nimport type { CheckmarkProps } from \"./types\";\n\ntype Point = { x: number; y: number };\n\ntype Stroke = Point & {\n    length: number;\n    angleDegrees: number;\n};\n\n/**\n * A stroke laid flat from `from`, then rotated into place. scaleX can only\n * lengthen a stroke that runs along its own x-axis; on a diagonal it would\n * change the angle instead.\n */\nfunction strokeBetween(from: Point, to: Point): Stroke {\n    const dx = to.x - from.x;\n    const dy = to.y - from.y;\n    return {\n        ...from,\n        length: Math.hypot(dx, dy),\n        angleDegrees: (Math.atan2(dy, dx) * 180) / Math.PI,\n    };\n}\n\nconst SHORT_STROKE = strokeBetween({ x: 4, y: 12 }, { x: 9, y: 17 });\nconst LONG_STROKE = strokeBetween({ x: 9, y: 17 }, { x: 20, y: 6 });\n\nconst DRAW_SECONDS = 0.2;\nconst SHORT_SHARE = SHORT_STROKE.length / (SHORT_STROKE.length + LONG_STROKE.length);\nconst SHORT_SECONDS = DRAW_SECONDS * SHORT_SHARE;\nconst LONG_SECONDS = DRAW_SECONDS - SHORT_SECONDS;\n\nfunction CheckStroke({ stroke, transition }: { stroke: Stroke; transition: Transition }) {\n    return (\n        <g\n            transform={`translate(${stroke.x} ${stroke.y}) rotate(${stroke.angleDegrees})`}\n        >\n            <motion.line\n                x1={0}\n                y1={0}\n                x2={stroke.length}\n                y2={0}\n                style={{ originX: 0 }}\n                initial={{ scaleX: 0 }}\n                animate={{ scaleX: 1 }}\n                transition={transition}\n            />\n        </g>\n    );\n}\n\nexport function Checkmark({\n    delay = 0,\n    className,\n    ...props\n}: CheckmarkProps): React.JSX.Element {\n    const suppressed = useMotionSuppressed();\n\n    const shortStroke = withSuppression(\n        { duration: SHORT_SECONDS, delay, ease: ease.out },\n        suppressed\n    );\n    const longStroke = withSuppression(\n        { duration: LONG_SECONDS, delay: delay + SHORT_SECONDS, ease: ease.out },\n        suppressed\n    );\n\n    return (\n        <svg\n            aria-hidden=\"true\"\n            {...props}\n            className={cn(\"size-4\", className)}\n            fill=\"none\"\n            stroke=\"currentColor\"\n            strokeLinecap=\"round\"\n            strokeWidth=\"2\"\n            viewBox=\"0 0 24 24\"\n        >\n            <CheckStroke stroke={SHORT_STROKE} transition={shortStroke} />\n            <CheckStroke stroke={LONG_STROKE} transition={longStroke} />\n        </svg>\n    );\n}\n",
+      "type": "registry:component",
+      "target": "@ui/checkmark/Checkmark.tsx"
+    },
+    {
+      "path": "src/ui/feedback-status/checkmark/types.ts",
+      "content": "import type { ComponentProps } from \"react\";\n\nexport type CheckmarkProps = {\n    /**\n     * Seconds before the draw begins. The draw itself is fixed grammar; only\n     * its start belongs to the composing component - after a swap's entrance,\n     * or 50ms into a checkbox fill.\n     *\n     * @default 0\n     */\n    delay?: number;\n} & ComponentProps<\"svg\">;\n",
+      "type": "registry:component",
+      "target": "@ui/checkmark/types.ts"
+    },
+    {
+      "path": "src/ui/feedback-status/checkmark/index.ts",
+      "content": "export { Checkmark } from \"./Checkmark\";\nexport type { CheckmarkProps } from \"./types\";\n",
+      "type": "registry:component",
+      "target": "@ui/checkmark/index.ts"
+    }
+  ],
+  "type": "registry:component"
+}

@@ -1,0 +1,165 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry.json",
+    "name": "kuhaku",
+    "homepage": "https://kuhaku.dev",
+    "items": [
+        {
+            "name": "cn",
+            "type": "registry:lib",
+            "title": "cn",
+            "description": "Class composition. Later Tailwind utilities win.",
+            "dependencies": ["cn"],
+            "files": [
+                {
+                    "path": "src/lib/cn.ts",
+                    "type": "registry:lib",
+                    "target": "@lib/cn.ts"
+                }
+            ]
+        },
+        {
+            "name": "motion",
+            "type": "registry:lib",
+            "title": "Motion runtime",
+            "description": "Motion tokens as TypeScript values, the spring definitions, and the reduced-motion/strict-mode suppression hook.",
+            "dependencies": ["motion"],
+            "files": [
+                {
+                    "path": "src/lib/motion/index.ts",
+                    "type": "registry:lib",
+                    "target": "@lib/motion/index.ts"
+                },
+                {
+                    "path": "src/lib/motion/springs.ts",
+                    "type": "registry:lib",
+                    "target": "@lib/motion/springs.ts"
+                }
+            ]
+        },
+        {
+            "name": "swap",
+            "type": "registry:component",
+            "title": "Swap",
+            "description": "The content cross-swap slot. One fixed grammar for confirming that something became something else.",
+            "files": [
+                {
+                    "path": "src/ui/layout-typography/swap/Swap.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/swap/Swap.tsx"
+                },
+                {
+                    "path": "src/ui/layout-typography/swap/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/swap/types.ts"
+                },
+                {
+                    "path": "src/ui/layout-typography/swap/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/swap/index.ts"
+                }
+            ],
+            "dependencies": ["motion"],
+            "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
+        },
+        {
+            "name": "spinner",
+            "type": "registry:component",
+            "title": "Spinner",
+            "description": "Activity without a known endpoint.",
+            "files": [
+                {
+                    "path": "src/ui/feedback-status/spinner/Spinner.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/spinner/Spinner.tsx"
+                },
+                {
+                    "path": "src/ui/feedback-status/spinner/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/spinner/types.ts"
+                },
+                {
+                    "path": "src/ui/feedback-status/spinner/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/spinner/index.ts"
+                }
+            ],
+            "dependencies": ["motion"],
+            "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
+        },
+        {
+            "name": "checkmark",
+            "type": "registry:component",
+            "title": "Checkmark",
+            "description": "A check drawn in writing order. One grammar for every confirmation.",
+            "files": [
+                {
+                    "path": "src/ui/feedback-status/checkmark/Checkmark.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/checkmark/Checkmark.tsx"
+                },
+                {
+                    "path": "src/ui/feedback-status/checkmark/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/checkmark/types.ts"
+                },
+                {
+                    "path": "src/ui/feedback-status/checkmark/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/checkmark/index.ts"
+                }
+            ],
+            "dependencies": ["motion"],
+            "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
+        },
+        {
+            "name": "use-confirmation-hold",
+            "type": "registry:hook",
+            "title": "useConfirmationHold",
+            "description": "The state an action control displays. Success and error hold for 1.5s, then settle to idle.",
+            "files": [
+                {
+                    "path": "src/hooks/use-confirmation-hold.ts",
+                    "type": "registry:hook",
+                    "target": "@hooks/use-confirmation-hold.ts"
+                }
+            ]
+        },
+        {
+            "name": "button",
+            "type": "registry:component",
+            "title": "Button",
+            "description": "The action primitive. Every imperative in the interface, with its outcome confirmed in place.",
+            "files": [
+                {
+                    "path": "src/ui/actions-forms/button/Button.tsx",
+                    "type": "registry:component",
+                    "target": "@ui/button/Button.tsx"
+                },
+                {
+                    "path": "src/ui/actions-forms/button/types.ts",
+                    "type": "registry:component",
+                    "target": "@ui/button/types.ts"
+                },
+                {
+                    "path": "src/ui/actions-forms/button/index.ts",
+                    "type": "registry:component",
+                    "target": "@ui/button/index.ts"
+                }
+            ],
+            "dependencies": [
+                "@base-ui/react",
+                "class-variance-authority",
+                "lucide-react",
+                "motion"
+            ],
+            "registryDependencies": [
+                "@kuhaku/cn",
+                "@kuhaku/motion",
+                "@kuhaku/swap",
+                "@kuhaku/spinner",
+                "@kuhaku/checkmark",
+                "@kuhaku/use-confirmation-hold"
+            ]
+        }
+    ]
+}

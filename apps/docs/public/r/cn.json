@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "cn",
+  "title": "cn",
+  "description": "Class composition. Later Tailwind utilities win.",
+  "dependencies": [
+    "cn"
+  ],
+  "files": [
+    {
+      "path": "src/lib/cn.ts",
+      "content": "export { cn } from \"cn\";\n",
+      "type": "registry:lib",
+      "target": "@lib/cn.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

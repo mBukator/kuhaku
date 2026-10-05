@@ -2,15 +2,18 @@
     "name": "@kuhaku/registry",
     "version": "0.0.0",
     "devDependencies": {
+        "@types/node": "^26.2.0",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.4",
-        "@types/node": "^26.2.0",
+        "execa": "^9.6.1",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
+        "shadcn": "^4.21.1",
         "typescript": "^6.0.3"
     },
     "private": true,
     "scripts": {
+        "build": "bun run scripts/registry-build.ts",
         "typecheck": "tsc --noEmit"
     },
     "type": "module",

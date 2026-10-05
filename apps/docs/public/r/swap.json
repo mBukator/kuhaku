@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "swap",
+  "title": "Swap",
+  "description": "The content cross-swap slot. One fixed grammar for confirming that something became something else.",
+  "dependencies": [
+    "motion"
+  ],
+  "registryDependencies": [
+    "@kuhaku/motion",
+    "@kuhaku/cn"
+  ],
+  "files": [
+    {
+      "path": "src/ui/layout-typography/swap/Swap.tsx",
+      "content": "\"use client\";\n\nimport { cn } from \"@/lib/cn\";\nimport { duration, ease, hold, useMotionSuppressed, withSuppression } from \"@/lib/motion\";\nimport { AnimatePresence, motion } from \"motion/react\";\nimport { forwardRef, useEffect, useMemo, useRef } from \"react\";\n\nimport type { SwapProps } from \"./types\";\n\n/** Seconds, because motion/react speaks seconds. */\nexport const SWAP_TIMELINE = {\n    enter: duration.fast,\n    hold: hold.tight,\n    exit: (duration.fast * 2) / 3, // Exits run at two-thirds of their entrance\n} as const;\n\nexport const SWAP_ENTER_DELAY = SWAP_TIMELINE.exit + SWAP_TIMELINE.hold;\nconst TOTAL = SWAP_ENTER_DELAY + SWAP_TIMELINE.enter;\n\nif (process.env.NODE_ENV !== \"production\" && TOTAL > 0.3) {\n    console.warn(`Swap exceeds 300ms micro-interaction ceiling (${TOTAL * 1000}ms)`);\n}\n\nconst OFFSET = 8; // Vertical travel for numeric swaps\n\nexport const Swap = forwardRef<HTMLSpanElement, SwapProps>(function Swap(\n    { value, children, inline = true, className, ...props },\n    ref\n) {\n    const suppressed = useMotionSuppressed();\n    const numeric = typeof value === \"number\";\n\n    const previous = useRef<string | number>(value);\n    const direction = useMemo(() => {\n        if (!numeric || typeof previous.current !== \"number\") {\n            return 0;\n        }\n        return Math.sign((value as number) - previous.current);\n    }, [value, numeric]);\n\n    useEffect(() => {\n        previous.current = value;\n    }, [value]);\n\n    const enterTransition = withSuppression(\n        { duration: SWAP_TIMELINE.enter, delay: SWAP_ENTER_DELAY, ease: ease.inOut },\n        suppressed\n    );\n    const exitTransition = withSuppression(\n        { duration: SWAP_TIMELINE.exit, ease: ease.inOut },\n        suppressed\n    );\n\n    return (\n        <span\n            ref={ref}\n            className={cn(\n                \"relative inline-grid place-items-center overflow-visible\",\n                \"[grid-template-areas:'swap']\",\n                \"*:[grid-area:swap]\",\n                !inline && \"grid\",\n                numeric && \"tabular-nums\",\n                className\n            )}\n            {...props}\n        >\n            <AnimatePresence mode=\"popLayout\" initial={false}>\n                <motion.span\n                    key={String(value)}\n                    initial={{\n                        opacity: 0,\n                        scale: 1.04,\n                        y: direction * OFFSET,\n                    }}\n                    animate={{\n                        opacity: 1,\n                        scale: 1,\n                        y: 0,\n                        transition: enterTransition,\n                    }}\n                    exit={{\n                        opacity: 0,\n                        scale: 0.94,\n                        y: direction * -OFFSET,\n                        transition: exitTransition,\n                    }}\n                >\n                    {children}\n                </motion.span>\n            </AnimatePresence>\n        </span>\n    );\n});\n",
+      "type": "registry:component",
+      "target": "@ui/swap/Swap.tsx"
+    },
+    {
+      "path": "src/ui/layout-typography/swap/types.ts",
+      "content": "import type * as React from \"react\";\n\nexport type SwapProps = Omit<React.HTMLAttributes<HTMLSpanElement>, \"children\"> & {\n    /**\n     * The identity of the current content. When it changes, the swap plays.\n     *\n     * Numeric values additionally derive direction: a value that increased\n     * enters from below, one that decreased enters from above. That inference\n     * is semantic, not configuration - there is no direction prop.\n     */\n    value: string | number;\n    /** The content for the current value. */\n    children: React.ReactNode;\n    /**\n     * Lay out as an inline element (default) or a block.\n     * Inline suits icons and digits inside text; block suits standalone slots.\n     *\n     * \\@default true\n     */\n    inline?: boolean;\n};\n",
+      "type": "registry:component",
+      "target": "@ui/swap/types.ts"
+    },
+    {
+      "path": "src/ui/layout-typography/swap/index.ts",
+      "content": "export { Swap } from \"./Swap\";\nexport type { SwapProps } from \"./types\";\nexport { SWAP_TIMELINE, SWAP_ENTER_DELAY } from \"./Swap\";\n",
+      "type": "registry:component",
+      "target": "@ui/swap/index.ts"
+    }
+  ],
+  "type": "registry:component"
+}

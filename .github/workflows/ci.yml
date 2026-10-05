@@ -37,3 +37,11 @@ jobs:
 
             - name: Build
               run: bun run build
+
+            - name: Registry output is committed
+              run: |
+                  if [ -n "$(git status --porcelain -- apps/docs/public/r)" ]; then
+                      git status --short -- apps/docs/public/r
+                      echo "apps/docs/public/r is stale: run bun run build and commit the result."
+                      exit 1
+                  fi

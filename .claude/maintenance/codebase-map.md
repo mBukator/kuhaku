@@ -31,9 +31,14 @@ resolved.
 
 ## `packages/registry`
 
-| Path            | Purpose                          |
-| --------------- | -------------------------------- |
-| `registry.json` | Manifest (currently `items: []`) |
+| Path                         | Purpose                                                                                     |
+| ---------------------------- | ------------------------------------------------------------------------------------------- |
+| `registry.json`              | Manifest: seven items (cn, motion, use-confirmation-hold, swap, spinner, checkmark, button) |
+| `src/`                       | Item source: `lib/`, `hooks/`, `ui/<category>/<item>/`                                      |
+| `scripts/registry-build.ts`  | `build`: runs the checks, then `shadcn build` into `apps/docs/public/r/`                    |
+| `scripts/registry-checks.ts` | Namespaced graph, file/target and import-completeness checks                                |
+| `scripts/never-leak.ts`      | Never-leak lint over in-memory declaration emit                                             |
+| `COMPONENT-WORKFLOW.md`      | End-to-end component authoring path                                                         |
 
 ## `packages/cli`
 
@@ -66,8 +71,6 @@ resolved.
   fumadocs exports) until feature code exists; it is not a `pre-push` gate yet. Wire it into
   `pre-push`/CI once components land.
 - CLI is a stub. `packages/cli/src/index.ts` prints a placeholder; init/add/apply/diff unbuilt.
-- Registry is empty. `registry.json` has `items: []`; the build pipeline (inline → validate →
-  never-leak lint → graph check → emit `apps/docs/public/r/`) is unimplemented.
 - Root ESLint gap. Only `apps/docs` has ESLint. lint-staged runs Prettier only (no ESLint) for
   now; add a root `eslint.config.mjs` and wire ESLint into lint-staged when non-docs TS grows.
 - GitHub CI + meta deferred. `.github/` has PR + issue templates only. The husky hooks run the

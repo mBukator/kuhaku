@@ -10,6 +10,13 @@
         },
         "dev": { "cache": false, "persistent": true },
         "lint": {},
-        "typecheck": {}
+        "typecheck": {},
+        "@kuhaku/registry#build": {
+            "cache": false
+        },
+        "docs#build": {
+            "dependsOn": ["^build", "@kuhaku/registry#build"],
+            "outputs": [".next/**", "!.next/cache/**"]
+        }
     }
 }
