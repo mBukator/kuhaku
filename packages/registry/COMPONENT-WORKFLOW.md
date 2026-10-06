@@ -11,26 +11,23 @@ infrastructure. The design intent is fully specified in `apps/docs/spec/kuhaku-s
 
 ---
 
-## Status as of 2026-09-18
+## Status as of 2026-10-04
 
-The registry has its first items but not its pipeline. Read the workflow with this in mind, because
-building the first component also means building the road:
+The registry has its items and its pipeline, but not yet its docs pages. Read the workflow with
+this in mind:
 
-- `registry.json` declares three items: `cn` and `motion` (`registry:lib`) and `swap`
-  (`registry:component`). No Tier 2 control has shipped yet.
-- `packages/registry/src/` holds `lib/cn.ts`, `lib/motion/`, and
-  `ui/layout-typography/swap/`. Button and Spinner exist as scaffolds only.
+- `registry.json` declares seven items: `cn` and `motion` (`registry:lib`), `use-confirmation-hold`
+  (`registry:hook`), and `swap`, `spinner`, `checkmark` and `button` (`registry:component`).
 - `packages/registry/tsconfig.json` maps `@/lib/*`, `@/components/ui/*` and `@/hooks/*`, so registry
   source imports through `@/` and still typechecks in the monorepo. Installed files rely on the same
   aliases being rewritten by the shadcn CLI.
-- Every `files[].target` uses a `components.json` placeholder (`@lib/`, `@ui/`). A plain relative
-  target ignores the adopter's aliases and breaks the install for anyone off the defaults.
-- `packages/registry/package.json` has dependencies (`@base-ui/react`, `cn`,
-  `class-variance-authority`, `motion`) and a `typecheck` script, but still no `build` script. The
-  inline -> validate -> lint -> graph -> emit pipeline in `.claude/guides/architecture.md` is
-  unimplemented.
-- `apps/docs` has no `app/r/[name]/route.ts`, no `public/r/` output directory, no component MDX
-  pages (only `content/docs/index.mdx` and `test.mdx`), and no `meta.json` navigation.
+- Every `files[].target` uses a `components.json` placeholder (`@lib/`, `@ui/`, `@hooks/`). A plain
+  relative target ignores the adopter's aliases and breaks the install for anyone off the defaults.
+- `bun run build` in `packages/registry` runs `scripts/registry-build.ts`: the Phase 3 checks, then
+  `shadcn build` into `apps/docs/public/r/`, which is committed so the served payload is reviewable
+  in every PR.
+- `apps/docs` serves `public/r/` as static files at `/r/[name].json`, but has no component MDX pages
+  (only `content/docs/index.mdx` and `test.mdx`) and no `meta.json` navigation.
 - `packages/cli/src/index.ts` is a stub; `kuhaku add` does not exist yet.
 - No test runner is wired. The stack is decided (Vitest + Vitest Browser Mode + `vitest-axe` +
   Playwright) and installs with the first component.
@@ -265,7 +262,7 @@ Rules that bind this entry:
   `registry:theme` item (which carries the token CSS plus the `@theme inline` mapping - `theme.css`
   deliberately keeps mode-dependent values out of `@theme inline`), the `registry:lib` cn, and the
   `lib/motion` runtime. Depend on these rather than restating tokens.
-- Exported types cannot reference `@base-ui/*`; the never-leak lint reads the emitted files.
+- Exported types cannot reference `@base-ui/*`; the never-leak lint reads the emitted declarations.
 
 Docs and shipped values may not disagree (`.claude/rules/documentation.md`) - the registry entry and
 the component page are one change.
@@ -274,21 +271,28 @@ the component page are one change.
 
 ## Phase 3 - build the registry
 
-Run `bun run build` (which runs `turbo run build`; `dependsOn: ["^build"]` builds `@kuhaku/tokens`
-springs first). The registry build (per `.claude/guides/architecture.md`) does five things:
+Run `bun run build` from the root (`turbo run build`; `docs#build` waits on
+`@kuhaku/registry#build`), or `bun run build` in `packages/registry` alone.
+`scripts/registry-build.ts` checks everything first and reports every violation in one run:
 
-1. inline each item's file contents into its JSON,
-2. validate every item against the shadcn registry-item schema,
-3. run the never-leak lint - fail if any exported type references `@base-ui/*`,
-4. verify the `registryDependencies` graph is acyclic and complete,
-5. emit `apps/docs/public/r/[name].json`.
+1. validate `registry.json` against shadcn's own `registrySchema` (from `shadcn/schema`), rejecting
+   `include` so every item passes the checks,
+2. require item names to be unique and kebab-case (the name becomes the output filename),
+3. require every `registryDependencies` entry to be `@kuhaku/<declared item>` and the graph to be
+   acyclic,
+4. require every `files[].path` to exist inside `packages/registry` and every `target` to start
+   with a placeholder,
+5. check that TypeScript imports are complete: an `@/` import must resolve to a file some item ships, and that
+   item must be the importer itself or appear in its `registryDependencies`; a relative import must
+   stay inside its own item; a package import must appear in `dependencies` (`react` and
+   `react-dom` excepted),
+6. run the never-leak lint: emit declarations in memory and fail any that mention `@base-ui/*`.
 
-First-component infrastructure: none of this exists yet. Building component 1 means writing this
-pipeline (a `build` script plus a `registry-build.ts` in `packages/registry`, following the
-`build-springs.ts` model - a plain Bun script that reads sources, validates, and writes output),
-adding `packages/registry` dependencies (`@base-ui/react`, `motion`, a schema validator), and
-creating the `apps/docs/public/r/` emit target. Until then, `registry.json` is a manifest with
-nothing to compile.
+Then it delegates inlining and emit to `shadcn build`, writing `apps/docs/public/r/[name].json` plus
+`registry.json`, and re-validates each emitted item against `registryItemSchema`. The output is
+committed: a component change carries its rebuilt JSON in the same commit, and the pre-push hook and
+CI fail when `apps/docs/public/r` differs from a fresh build. Turbo never caches the registry build,
+because its output lies outside the package.
 
 ---
 
@@ -315,9 +319,9 @@ separators, `...` for the rest). The collection is already defined in `apps/docs
 4.4 The page obeys its own foundations - 96px section rhythm, 65ch prose, dark by default. A docs
 page that violates a foundation falsifies the book it hosts.
 
-First-component infrastructure: the `app/r/[name]/route.ts` handler that serves `public/r/*.json`
-(the `/r/[name].json` machine surface and the ecosystem install door), the component-page
-template/layout, and the component index all get built here the first time. The `/llms.txt`,
+First-component infrastructure: the component-page template/layout and the component index get
+built here the first time. Next.js already serves `public/r/*.json` at `/r/[name].json`, the machine
+surface and the ecosystem install door, without a route handler. The `/llms.txt`,
 `/llms-full.txt`, and search surfaces already scaffold in `app/`.
 
 ---
@@ -353,6 +357,7 @@ check, and the docs demo rendering is the integration proof.
 Git workflow (`.claude/guides/git-workflow.md`):
 
 - Never commit to `develop`/`main` directly. Branch first, one branch per concern.
+- Run `bun run build` and commit the regenerated `apps/docs/public/r/` with the source change.
 - Conventional Commits, scope one of `tokens | registry | cli | docs | motion | a11y | repo | deps`
   (the enum in `commitlint.config.mjs`). A registry
   component usually touches `registry` (source plus manifest) and `docs` (page); commit them
@@ -382,11 +387,10 @@ One namespace, one registry, two doors, no second format.
 Steady state: read the spec Part, place the `.tsx` under the right category, author it (client leaf,
 wrap Base UI without leaking, semantic plus `--motion-*` tokens, tier and accessibility contract),
 add its item to `registry.json` with `dependencies` and `registryDependencies`, run `bun run build`
-(inline, validate, never-leak lint, graph check, emit to `public/r`), write the demo plus the
+(schema, graph, import and never-leak checks, then `shadcn build` to `public/r`), write the demo plus the
 templated MDX page plus `meta.json`, test (Vitest Browser Mode plus Playwright APG), pass the four
 gates, then branch, conventional commit with a body, and open a PR from the template, and update the
 codebase map.
 
-The current asterisk: the first component also builds the registry pipeline, the `/r` route and
-`public/r`, the docs component-page template, and installs the test stack, because right now the
-registry is empty and the plumbing is unimplemented.
+The current asterisk: the registry pipeline exists, but the docs component-page template and the
+test stack do not yet; the next component to reach its docs page builds them.

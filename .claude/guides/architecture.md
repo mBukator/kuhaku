@@ -26,14 +26,18 @@ Root scripts fan out via Turbo: `bun run build` → `turbo run build`, etc.
 
 ## Registry build pipeline
 
-`turbo build` compiles `packages/registry` source into static registry-item JSON:
+`turbo build` compiles `packages/registry` source into static registry-item JSON through
+`packages/registry/scripts/registry-build.ts`:
 
-1. inline file contents into each item,
-2. validate every item against the shadcn registry-item schema,
-3. run the **never-leak lint** (fail if any exported type references `@base-ui/*`),
-4. verify the **`registryDependencies` graph is acyclic and complete** (a missing dependency fails
-   the build, not the adopter),
-5. emit to `apps/docs/public/r/[name].json`.
+1. validate `registry.json` against shadcn's `registrySchema`,
+2. verify the **`registryDependencies` graph is namespaced, acyclic and complete**, down to the
+   imports: every `@/` import names an item the importer declares, every package import is in
+   `dependencies` (a missing dependency fails the build, not the adopter),
+3. run the **never-leak lint** (emit declarations in memory; fail if any mentions `@base-ui/*`),
+4. delegate inlining and emit to `shadcn build`, writing `apps/docs/public/r/[name].json`
+   (committed; CI fails when it differs from a fresh build; never cached),
+5. re-validate every emitted item against `registryItemSchema` and assert each file's content
+   equals its source.
 
 The docs site consumes its own registry output, which makes the documentation an integration test:
 a component that renders on its docs page is a component that installs.

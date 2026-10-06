@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-confirmation-hold",
+  "title": "useConfirmationHold",
+  "description": "The state an action control displays. Success and error hold for 1.5s, then settle to idle.",
+  "files": [
+    {
+      "path": "src/hooks/use-confirmation-hold.ts",
+      "content": "\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\nconst CONFIRMATION_HOLD_MILLISECONDS = 1500;\n\nexport type ActionState = \"idle\" | \"loading\" | \"success\" | \"error\";\ntype ConfirmationOutcome = \"success\" | \"error\";\n\nfunction isConfirmation(state: ActionState): state is ConfirmationOutcome {\n    return state === \"success\" || state === \"error\";\n}\n\n/**\n * The state an action control displays, given the state its caller set.\n *\n * `success` and `error` are confirmations: each holds for 1.5s from the\n * moment it is entered, then displays `idle` while the caller's prop stays\n * unchanged. A second confirmation of the same kind requires the caller to\n * leave that state and re-enter it. Any prop change during the hold ends it\n * and cancels its timer, so a stale outcome never replaces newer feedback.\n *\n * `idle` and `loading` pass through unchanged; loading persists until the\n * prop changes.\n */\nexport function useConfirmationHold(state: ActionState): ActionState {\n    const [settledState, setSettledState] = useState<ConfirmationOutcome | null>(null);\n    const [previousState, setPreviousState] = useState(state);\n\n    if (state !== previousState) {\n        setPreviousState(state);\n        setSettledState(null);\n    }\n\n    const displayedState =\n        isConfirmation(state) && settledState === state ? \"idle\" : state;\n\n    useEffect(() => {\n        if (!isConfirmation(state)) return;\n        const timer = setTimeout(\n            () => setSettledState(state),\n            CONFIRMATION_HOLD_MILLISECONDS\n        );\n        return () => clearTimeout(timer);\n    }, [state]);\n\n    return displayedState;\n}\n",
+      "type": "registry:hook",
+      "target": "@hooks/use-confirmation-hold.ts"
+    }
+  ],
+  "type": "registry:hook"
+}
