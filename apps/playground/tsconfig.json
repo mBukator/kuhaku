@@ -1,0 +1,10 @@
+{
+    // Inherits the registry's `paths`, which TypeScript resolves relative to the
+    // registry's tsconfig - so `@/lib/motion` and `@/components/ui/*` point at
+    // packages/registry/src here exactly as they do there.
+    "extends": "../../packages/registry/tsconfig.json",
+    "compilerOptions": {
+        "types": ["vite/client"]
+    },
+    "include": ["src", "vite.config.ts"]
+}

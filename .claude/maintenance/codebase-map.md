@@ -46,6 +46,15 @@ resolved.
 | -------------- | ---------------------------- |
 | `src/index.ts` | CLI entry (currently a stub) |
 
+## `apps/playground`
+
+| Path                        | Purpose                                                                             |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| `src/examples/<component>/` | One example per file (`ButtonDemo.tsx`); the folder is the page, the file a section |
+| `src/examples/index.ts`     | Builds the pages with `import.meta.glob`; no registration step                      |
+| `src/app/`                  | Shell: hash router, sidebar, dark/strict toolbar, page view                         |
+| `src/components/`           | Playground chrome: example preview (Preview/Code/Remount), controls                 |
+
 ## `apps/docs`
 
 | Path                  | Purpose                                                      |
