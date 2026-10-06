@@ -50,6 +50,7 @@ decisions that fit the system instead of fighting it:
 | `packages/registry` | Component source of truth + `registry.json`; shadcn registry-item schema, byte-for-byte.                 |
 | `packages/cli`      | The `kuhaku` CLI (`init`/`add`/`apply`/`diff`) — thin orchestration over shadcn's logic.                 |
 | `apps/docs`         | Next.js 16 + Fumadocs: docs site, registry host (`/r/[name].json`), and llms/MCP surfaces.               |
+| `apps/playground`   | Vite dev harness: one page per component, examples rendered from registry source.                        |
 
 Full detail: `.claude/guides/architecture.md`
 

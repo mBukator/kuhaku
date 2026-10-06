@@ -1,0 +1,7 @@
+/* The shipped token layer, unmodified - the playground renders exactly what
+   an adopter's app would. */
+@import "@kuhaku/tokens/css/tailwind.css";
+
+/* Registry source lives outside this workspace, so Tailwind's automatic
+   detection never sees its class names. */
+@source "../../../packages/registry/src";

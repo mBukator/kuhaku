@@ -12,6 +12,7 @@ The engineering map of the monorepo: how the workspaces fit together and how the
 | `packages/registry` | Source of truth for all 115 components, organized by category, plus `registry.json` — the manifest declaring every item, its files, dependencies, and type.                                                                                                                                            |
 | `packages/cli`      | The `kuhaku` npm package: `init` / `add` / `apply` / `diff` orchestration over shadcn's resolution logic. Currently a stub (`src/index.ts`).                                                                                                                                                           |
 | `apps/docs`         | Next.js 16 App Router + Fumadocs. Documentation, marketing surface, **registry host** (`/r/[name].json` route handlers reading build output), and machine surfaces (`/llms.txt`, `/llms-full.txt`, `/llms.mdx`, `/api/search`, OG routes).                                                             |
+| `apps/playground`   | Vite dev harness. One page per component, built from `src/examples/<component>/` with `import.meta.glob`; renders registry source directly through the registry tsconfig paths, with dark and strict toggles. Not part of the registry or the docs build.                                              |
 
 ---
 
