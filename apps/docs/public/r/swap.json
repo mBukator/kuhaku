@@ -4,7 +4,7 @@
   "title": "Swap",
   "description": "The content cross-swap slot. One fixed grammar for confirming that something became something else.",
   "dependencies": [
-    "motion"
+    "motion@^12.42.2"
   ],
   "registryDependencies": [
     "@kuhaku/motion",

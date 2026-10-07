@@ -52,6 +52,31 @@ function readRegistry(): Registry {
     return result.data;
 }
 
+function readPackageDependencies(): Map<string, string> {
+    const manifest: unknown = JSON.parse(
+        readFileSync(join(PACKAGE_ROOT, "package.json"), "utf8")
+    );
+    const dependencies =
+        typeof manifest === "object" && manifest !== null && "dependencies" in manifest
+            ? manifest.dependencies
+            : undefined;
+    if (
+        typeof dependencies !== "object" ||
+        dependencies === null ||
+        Array.isArray(dependencies)
+    ) {
+        throw new Error("package.json declares no dependencies");
+    }
+    const ranges = new Map<string, string>();
+    for (const [name, range] of Object.entries(dependencies)) {
+        if (typeof range !== "string") {
+            throw new Error(`package.json dependency "${name}" is not a version string`);
+        }
+        ranges.set(name, range);
+    }
+    return ranges;
+}
+
 function verifyOutput(registry: Registry): string[] {
     return registry.items.flatMap((item) => {
         const emitted: unknown = JSON.parse(
@@ -89,7 +114,11 @@ const sourcePaths = registry.items
     .filter((path) => SOURCE_EXTENSION.test(path));
 
 const violations = [
-    ...checkRegistry(registry, { packageRoot: PACKAGE_ROOT, compilerOptions }),
+    ...checkRegistry(registry, {
+        packageRoot: PACKAGE_ROOT,
+        compilerOptions,
+        packageDependencies: readPackageDependencies(),
+    }),
     ...checkNeverLeak(sourcePaths, compilerOptions, PACKAGE_ROOT),
 ];
 if (violations.length > 0) fail("registry check failed:", violations);

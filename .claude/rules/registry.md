@@ -18,7 +18,8 @@ Each item conforms to the shadcn registry-item schema and declares:
 - `name` (unique), `type` — one of `registry:base | registry:component | registry:theme |
 registry:font | registry:hook | registry:lib`,
 - `files` (path + type),
-- npm `dependencies` (with `@version` where pinned),
+- npm `dependencies`, each as `name@range` with the range from `packages/registry/package.json`
+  (the build fails an unversioned or mismatched entry),
 - `registryDependencies` — the `@kuhaku` items it composes.
 
 The build **inlines file contents**, validates against the schema, runs the never-leak lint,

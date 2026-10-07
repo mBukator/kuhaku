@@ -33,7 +33,8 @@ Root scripts fan out via Turbo: `bun run build` → `turbo run build`, etc.
 1. validate `registry.json` against shadcn's `registrySchema`,
 2. verify the **`registryDependencies` graph is namespaced, acyclic and complete**, down to the
    imports: every `@/` import names an item the importer declares, every package import is in
-   `dependencies` (a missing dependency fails the build, not the adopter),
+   `dependencies` (a missing dependency fails the build, not the adopter), and every
+   `dependencies` entry carries the range `package.json` declares,
 3. run the **never-leak lint** (emit declarations in memory; fail if any mentions `@base-ui/*`),
 4. delegate inlining and emit to `shadcn build`, writing `apps/docs/public/r/[name].json`
    (committed; CI fails when it differs from a fresh build; never cached),

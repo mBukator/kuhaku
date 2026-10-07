@@ -4,10 +4,10 @@
   "title": "Button",
   "description": "The action primitive. Every imperative in the interface, with its outcome confirmed in place.",
   "dependencies": [
-    "@base-ui/react",
-    "class-variance-authority",
-    "lucide-react",
-    "motion"
+    "@base-ui/react@^1.7.0",
+    "class-variance-authority@^0.7.1",
+    "lucide-react@^1.47.0",
+    "motion@^12.42.2"
   ],
   "registryDependencies": [
     "@kuhaku/cn",

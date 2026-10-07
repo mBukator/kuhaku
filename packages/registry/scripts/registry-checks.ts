@@ -9,6 +9,7 @@ type RegistryItem = Registry["items"][number];
 export type CheckContext = {
     packageRoot: string;
     compilerOptions: ts.CompilerOptions;
+    packageDependencies: ReadonlyMap<string, string>;
 };
 
 const NAMESPACE = "@kuhaku/";
@@ -26,6 +27,7 @@ export function checkRegistry(registry: Registry, context: CheckContext): string
         ...checkNames(registry.items),
         ...registry.items.flatMap((item) => [
             ...checkRegistryDependencies(item, declaredNames),
+            ...checkDependencyVersions(item, context.packageDependencies),
             ...checkFiles(item, context.packageRoot),
         ]),
         ...checkCycles(registry.items),
@@ -58,6 +60,31 @@ function checkRegistryDependencies(
             return [`${item.name}: registry dependency "${dependency}" is not declared`];
         }
         return [];
+    });
+}
+
+// An unversioned entry installs whatever is latest, which may be a major Kuhaku was never built against.
+function checkDependencyVersions(
+    item: RegistryItem,
+    packageDependencies: ReadonlyMap<string, string>
+): string[] {
+    return (item.dependencies ?? []).flatMap((specifier) => {
+        const name = packageName(specifier);
+        const range = packageDependencies.get(name);
+        if (range === undefined) {
+            return [
+                `${item.name}: dependency "${name}" is missing from package.json dependencies`,
+            ];
+        }
+        if (!range.startsWith("^")) {
+            return [
+                `${item.name}: package.json range "${range}" for "${name}" must be a caret range`,
+            ];
+        }
+        if (specifier === `${name}@${range}`) return [];
+        return [
+            `${item.name}: dependency "${specifier}" must be "${name}@${range}", matching package.json`,
+        ];
     });
 }
 
