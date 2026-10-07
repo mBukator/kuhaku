@@ -4,7 +4,7 @@
   "title": "Motion runtime",
   "description": "Motion tokens as TypeScript values, the spring definitions, and the reduced-motion/strict-mode suppression hook.",
   "dependencies": [
-    "motion"
+    "motion@^12.42.2"
   ],
   "files": [
     {

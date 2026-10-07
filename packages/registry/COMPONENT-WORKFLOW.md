@@ -118,7 +118,7 @@ here, since it lived in the spec and in your head while you wrote `Button.tsx`):
             "target": "@ui/button/Button.tsx",
         },
     ],
-    "dependencies": ["@base-ui/react", "motion"], // 5. npm dependencies
+    "dependencies": ["@base-ui/react@^1.7.0", "motion@^12.42.2"], // 5. npm dependencies
     "registryDependencies": ["motion", "cn", "swap", "spinner"], // 6. registryDependencies
 }
 ```
@@ -132,7 +132,7 @@ A composition makes `registryDependencies` concrete (`date-picker`):
     "files": [
         { "path": "ui/actions-forms/DatePicker.tsx", "type": "registry:component" },
     ],
-    "dependencies": ["motion"],
+    "dependencies": ["motion@^12.42.2"],
     "registryDependencies": ["popover", "calendar", "input"], // pulled in automatically on install
 }
 ```
@@ -244,7 +244,7 @@ A component item declares:
             "target": "@ui/button/Button.tsx", // a components.json placeholder, never a plain path
         },
     ],
-    "dependencies": ["@base-ui/react", "motion"], // npm deps, @version where pinned
+    "dependencies": ["@base-ui/react@^1.7.0", "motion@^12.42.2"], // npm deps, each at its package.json range
     "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn", "@kuhaku/swap"], // namespaced: a bare name is shadcn's own item
 }
 ```
@@ -257,7 +257,10 @@ Rules that bind this entry:
   built-in item, never to a Kuhaku one. The graph MUST be acyclic and complete - a reference to an
   undeclared item fails the build, not the adopter (security invariant 5).
 - npm `dependencies` is how the runtime reaches adopters with no peer-dependency ceremony: anything
-  animating lists `motion`; heavy deps stay scoped to their one component.
+  animating lists `motion`; heavy deps stay scoped to their one component. Every entry carries the
+  range from `packages/registry/package.json` (`motion@^12.42.2`), so an adopter installs the major
+  Kuhaku was built against rather than whatever is latest. Add the package to `package.json` first,
+  then copy its range here.
 - Foundational items a component leans on: the base payload (`init` installs it), the
   `registry:theme` item (which carries the token CSS plus the `@theme inline` mapping - `theme.css`
   deliberately keeps mode-dependent values out of `@theme inline`), the `registry:lib` cn, and the
@@ -279,7 +282,8 @@ Run `bun run build` from the root (`turbo run build`; `docs#build` waits on
    `include` so every item passes the checks,
 2. require item names to be unique and kebab-case (the name becomes the output filename),
 3. require every `registryDependencies` entry to be `@kuhaku/<declared item>` and the graph to be
-   acyclic,
+   acyclic, and every `dependencies` entry to be `name@range` with the range `package.json`
+   declares,
 4. require every `files[].path` to exist inside `packages/registry` and every `target` to start
    with a placeholder,
 5. check that TypeScript imports are complete: an `@/` import must resolve to a file some item ships, and that

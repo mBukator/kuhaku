@@ -8,7 +8,7 @@
             "type": "registry:lib",
             "title": "cn",
             "description": "Class composition. Later Tailwind utilities win.",
-            "dependencies": ["cn"],
+            "dependencies": ["cn@^0.2.5"],
             "files": [
                 {
                     "path": "src/lib/cn.ts",
@@ -22,7 +22,7 @@
             "type": "registry:lib",
             "title": "Motion runtime",
             "description": "Motion tokens as TypeScript values, the spring definitions, and the reduced-motion/strict-mode suppression hook.",
-            "dependencies": ["motion"],
+            "dependencies": ["motion@^12.42.2"],
             "files": [
                 {
                     "path": "src/lib/motion/index.ts",
@@ -58,7 +58,7 @@
                     "target": "@ui/swap/index.ts"
                 }
             ],
-            "dependencies": ["motion"],
+            "dependencies": ["motion@^12.42.2"],
             "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
         },
         {
@@ -83,7 +83,7 @@
                     "target": "@ui/spinner/index.ts"
                 }
             ],
-            "dependencies": ["motion"],
+            "dependencies": ["motion@^12.42.2"],
             "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
         },
         {
@@ -108,7 +108,7 @@
                     "target": "@ui/checkmark/index.ts"
                 }
             ],
-            "dependencies": ["motion"],
+            "dependencies": ["motion@^12.42.2"],
             "registryDependencies": ["@kuhaku/motion", "@kuhaku/cn"]
         },
         {
@@ -147,10 +147,10 @@
                 }
             ],
             "dependencies": [
-                "@base-ui/react",
-                "class-variance-authority",
-                "lucide-react",
-                "motion"
+                "@base-ui/react@^1.7.0",
+                "class-variance-authority@^0.7.1",
+                "lucide-react@^1.47.0",
+                "motion@^12.42.2"
             ],
             "registryDependencies": [
                 "@kuhaku/cn",

@@ -4,7 +4,7 @@
   "title": "cn",
   "description": "Class composition. Later Tailwind utilities win.",
   "dependencies": [
-    "cn"
+    "cn@^0.2.5"
   ],
   "files": [
     {

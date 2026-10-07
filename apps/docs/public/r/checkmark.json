@@ -4,7 +4,7 @@
   "title": "Checkmark",
   "description": "A check drawn in writing order. One grammar for every confirmation.",
   "dependencies": [
-    "motion"
+    "motion@^12.42.2"
   ],
   "registryDependencies": [
     "@kuhaku/motion",
