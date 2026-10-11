@@ -11,6 +11,7 @@
         "build": "turbo run build",
         "lint": "turbo run lint",
         "typecheck": "turbo run typecheck",
+        "test": "turbo run test",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "knip": "knip",
@@ -35,6 +36,6 @@
         "postcss": "8.5.23"
     },
     "engines": {
-        "node": ">=20"
+        "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
     }
 }

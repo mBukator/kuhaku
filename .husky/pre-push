@@ -3,3 +3,4 @@ if [ -n "$(git status --porcelain -- apps/docs/public/r)" ]; then
     echo "apps/docs/public/r is stale: commit the rebuilt registry output."
     exit 1
 fi
+bun run test

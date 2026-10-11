@@ -11,6 +11,9 @@
         "dev": { "cache": false, "persistent": true },
         "lint": {},
         "typecheck": {},
+        "test": {
+            "dependsOn": ["^build"]
+        },
         "@kuhaku/registry#build": {
             "cache": false
         },

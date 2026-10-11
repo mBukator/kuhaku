@@ -19,7 +19,7 @@ distribution through a shadcn-compatible registry, built on Base UI, opinionated
 | ----------- | ---------------------------------------------------- |
 | Repo        | Turborepo monorepo (`apps/*`, `packages/*`)          |
 | Package mgr | `bun@1.3.11`                                         |
-| Node        | >=20                                                 |
+| Node        | ^22.12, ^24 or >=26 (what Vitest 5 supports)         |
 | Language    | TypeScript strict, ESM (`moduleResolution: bundler`) |
 | CLI         | `kuhaku` · packages `@kuhaku/*`                      |
 | License     | MIT                                                  |
@@ -125,6 +125,7 @@ working in that area.
 | `.claude/rules/docs.md`          | `apps/docs/**`                                                     |
 | `.claude/rules/documentation.md` | `packages/**`, `apps/docs/content/**`                              |
 | `.claude/rules/writing.md`       | `**/*.{md,mdx}` (prose voice and formatting)                       |
+| `.claude/rules/testing.md`       | `**/*.test.{ts,tsx}`, `packages/registry/test/**`                  |
 
 ---
 
@@ -136,6 +137,7 @@ bun run dev                 # turbo run dev (all workspaces, persistent)
 bun run build               # turbo run build
 bun run lint                # turbo run lint
 bun run typecheck           # turbo run typecheck
+bun run test                # turbo run test (Vitest Browser Mode, real Chromium)
 bun run format              # prettier --write across the repo
 bun run format:check        # prettier --check
 bun run knip                # unused files/deps/exports (manual for now)
@@ -143,14 +145,15 @@ bun run knip                # unused files/deps/exports (manual for now)
 bun run --filter docs dev   # a single workspace
 ```
 
-There is **no `test` script yet** — no test runner is wired up (the decided stack, installed with
-the first component, is Vitest + Vitest Browser Mode + `vitest-axe` + Playwright; see
-`.claude/maintenance/codebase-map.md`). Do not reference a `test` command until it exists.
+Tests run in Vitest Browser Mode on the Playwright provider, against real Chromium with the shipped
+token CSS, and axe-core gates every component's variant × state × mode matrix. Vitest runs on Node
+(`^22.12`), never `bun --bun`. Install the browser once from `packages/registry` with `bunx playwright install chromium`.
+Full detail: `.claude/rules/testing.md`
 
 **Before opening a PR:**
 
 ```bash
-bun run lint && bun run typecheck && bun run format:check && bun run build
+bun run lint && bun run typecheck && bun run format:check && bun run build && bun run test
 ```
 
 ---

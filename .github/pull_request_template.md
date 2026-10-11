@@ -28,7 +28,7 @@ Examples:
 ## Testing
 
 ```bash
-bun run lint && bun run typecheck && bun run format:check && bun run build
+bun run lint && bun run typecheck && bun run format:check && bun run build && bun run test
 ```
 
 **How to verify:**
@@ -42,7 +42,7 @@ Closes #
 ## Checklist
 
 - [ ] Title/commits follow Conventional Commits with a valid scope
-- [ ] `bun run lint && bun run typecheck && bun run format:check && bun run build` passes
+- [ ] `bun run lint && bun run typecheck && bun run format:check && bun run build && bun run test` passes
 - [ ] Components consume semantic tokens, not `--neutral-*`
 - [ ] No public API references `@base-ui/*` (the never-leak boundary holds)
 - [ ] Motion follows the tier contract (Tier 2 tuned via `--motion-*` tokens only)

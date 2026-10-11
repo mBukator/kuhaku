@@ -68,7 +68,7 @@ Full rules in `.claude/rules/writing.md`. For commits and PRs:
 ## Before opening a PR
 
 ```bash
-bun run lint && bun run typecheck && bun run format:check && bun run build
+bun run lint && bun run typecheck && bun run format:check && bun run build && bun run test
 ```
 
 Merge strategy: **squash and merge** into `develop` for a clean, linear history.

@@ -4,6 +4,7 @@ out/
 dist/
 .turbo/
 coverage/
+.vitest/
 *.log
 .env
 .env.*
