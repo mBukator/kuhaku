@@ -16,7 +16,7 @@ resolved.
 | `commitlint.config.mjs`  | Conventional Commits + kuhaku scope enum                       |
 | `knip.json`              | Unused files/deps/exports config (`bun run knip`, manual)      |
 | `.husky/`                | pre-commit, commit-msg, pre-push hooks                         |
-| `.github/`               | PR + issue templates (CI/CodeQL/dependabot deferred)           |
+| `.github/`               | Templates, CI gate, CodeQL, dependabot, CODEOWNERS             |
 | `AGENTS.md`              | Tool-agnostic agent source of truth (overview, critical rules) |
 | `CLAUDE.md` + `.claude/` | Claude layer: imports AGENTS.md + path-scoped `.claude/rules/` |
 | `.claude/skills/`        | Project skills (`kuhaku-writing`)                              |
@@ -38,6 +38,9 @@ resolved.
 | `scripts/registry-build.ts`  | `build`: runs the checks, then `shadcn build` into `apps/docs/public/r/`                    |
 | `scripts/registry-checks.ts` | Namespaced graph, file/target and import-completeness checks                                |
 | `scripts/never-leak.ts`      | Never-leak lint over in-memory declaration emit                                             |
+| `src/**/*.test.{ts,tsx}`     | Tests beside their source; never shipped (the build reads only declared paths)              |
+| `vitest.config.ts`           | Vitest Browser Mode, Playwright provider, headless Chromium                                 |
+| `test/`                      | Harness via `#test/*`: setup, token CSS, axe matcher, color modes                           |
 | `COMPONENT-WORKFLOW.md`      | End-to-end component authoring path                                                         |
 
 ## `packages/cli`
@@ -70,21 +73,16 @@ resolved.
 
 ## Open items (deferred, tracked so they are not forgotten)
 
-- No test runner yet (stack decided). Install with the first component (nothing to test while the
-  registry is empty). Decided stack: **Vitest** (runner; what Base UI uses) · **Vitest Browser Mode**
-  with the Playwright provider + `vitest-axe` for component/a11y tests (real Chromium, not jsdom) ·
-  **Playwright** for the APG keyboard matrix + E2E · visual-regression screenshots deferred. Run
-  Vitest **on Node** (`bun run test`), not `bun run --bun vitest` (known bun:test/fake-timer issues).
-  When it lands: add a `test` script, a `pre-push`/CI test step, and `.claude/rules/testing.md`.
+- Standalone Playwright (`@playwright/test`) for E2E against docs pages lands with the first docs
+  component page. Keyboard contracts already run in Vitest Browser Mode. Visual-regression
+  screenshots stay deferred (spec, QA & audit).
 - knip is a manual check for now. `bun run knip` reports expected scaffold items (the `cn` util,
   fumadocs exports) until feature code exists; it is not a `pre-push` gate yet. Wire it into
   `pre-push`/CI once components land.
 - CLI is a stub. `packages/cli/src/index.ts` prints a placeholder; init/add/apply/diff unbuilt.
 - Root ESLint gap. Only `apps/docs` has ESLint. lint-staged runs Prettier only (no ESLint) for
   now; add a root `eslint.config.mjs` and wire ESLint into lint-staged when non-docs TS grows.
-- GitHub CI + meta deferred. `.github/` has PR + issue templates only. The husky hooks run the
-  same lint/typecheck/format/build gate locally and there are no external contributors yet. Add
-  `workflows/ci.yml`, `codeql.yml`, `dependabot.yml`, and `CODEOWNERS` closer to launch, and the
-  npm-publish `release.yml` when packages go public.
+- npm-publish `release.yml` lands when packages go public. `ci.yml` (the gates, the `public/r`
+  stale check and the test suite), `codeql.yml`, `dependabot.yml` and `CODEOWNERS` are in place.
 - Dark strict-mode status hues are an open tuning item - flagged in `theme.css` at the point of
   use.

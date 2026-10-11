@@ -11,7 +11,7 @@ infrastructure. The design intent is fully specified in `apps/docs/spec/kuhaku-s
 
 ---
 
-## Status as of 2026-10-04
+## Status as of 2026-10-08
 
 The registry has its items and its pipeline, but not yet its docs pages. Read the workflow with
 this in mind:
@@ -29,8 +29,9 @@ this in mind:
 - `apps/docs` serves `public/r/` as static files at `/r/[name].json`, but has no component MDX pages
   (only `content/docs/index.mdx` and `test.mdx`) and no `meta.json` navigation.
 - `packages/cli/src/index.ts` is a stub; `kuhaku add` does not exist yet.
-- No test runner is wired. The stack is decided (Vitest + Vitest Browser Mode + `vitest-axe` +
-  Playwright) and installs with the first component.
+- `bun run test` runs Vitest in Browser Mode (Playwright provider, real Chromium) with the shipped
+  token CSS. Button carries a smoke test and its axe matrix; the standalone Playwright runner for
+  E2E against docs pages arrives with the first docs page.
 - The one real build in the repo is `packages/tokens/scripts/build-springs.ts`, which reads the
   spring parameters from `motion.css` and emits `springs.generated.css`. That is the pattern the
   registry build follows.
@@ -332,12 +333,18 @@ surface and the ecosystem install door, without a route handler. The `/llms.txt`
 
 ## Phase 5 - test
 
-Once the stack lands (decided in the codebase-map open items, installed with the first component):
-Vitest runner, Vitest Browser Mode with the Playwright provider plus `vitest-axe` for component and
-accessibility tests in real Chromium, and Playwright for the APG keyboard matrix
-(`.claude/rules/accessibility.md`: every interactive primitive carries a Playwright spec asserting
-its full APG contract). Run Vitest on Node (`bun run test`), not `bun run --bun vitest`. There is no
-`test` script yet - do not reference one until it exists.
+Tests sit next to the source (`Button.test.tsx` beside `Button.tsx`) and run in Vitest Browser Mode:
+the Playwright provider drives real Chromium, and `test/setup.ts` loads the shipped token CSS, so
+axe-core measures the colors an adopter sees. Full rules in `.claude/rules/testing.md`. Each
+component carries:
+
+- an axe matrix: every variant × every state × light, dark, strict and strict-dark, asserted with
+  `toHaveNoViolations` (`Button.axe.test.tsx` is the reference);
+- its contract: roles, accessible names, `data-state`, focus behavior;
+- its APG keyboard contract through `userEvent`, which sends real Playwright key events.
+
+Run `bun run test` (Vitest on Node, never `bun run --bun vitest`). End-to-end specs against the
+docs pages run on standalone Playwright once those pages exist.
 
 ---
 
@@ -346,13 +353,13 @@ its full APG contract). Run Vitest on Node (`bun run test`), not `bun run --bun 
 The pre-PR gate from `AGENTS.md`, in order:
 
 ```bash
-bun run lint && bun run typecheck && bun run format:check && bun run build
+bun run lint && bun run typecheck && bun run format:check && bun run build && bun run test
 ```
 
 Plus `bun run format` (Prettier writes). On Windows, `format:check` can trip on CRLF while CI passes
 on LF - a known local-only artifact. `bun run knip` is a manual unused-files/deps check for now. The
-`build` step is the real test today: it runs the schema validation, never-leak lint, and graph
-check, and the docs demo rendering is the integration proof.
+`build` step runs the schema validation, never-leak lint, and graph check; `test` runs the component
+and axe suites; the docs demo rendering is the integration proof.
 
 ---
 
@@ -392,9 +399,9 @@ Steady state: read the spec Part, place the `.tsx` under the right category, aut
 wrap Base UI without leaking, semantic plus `--motion-*` tokens, tier and accessibility contract),
 add its item to `registry.json` with `dependencies` and `registryDependencies`, run `bun run build`
 (schema, graph, import and never-leak checks, then `shadcn build` to `public/r`), write the demo plus the
-templated MDX page plus `meta.json`, test (Vitest Browser Mode plus Playwright APG), pass the four
-gates, then branch, conventional commit with a body, and open a PR from the template, and update the
+templated MDX page plus `meta.json`, test (axe matrix, contract and keyboard in Vitest Browser Mode), pass
+the five gates, then branch, conventional commit with a body, and open a PR from the template, and update the
 codebase map.
 
-The current asterisk: the registry pipeline exists, but the docs component-page template and the
-test stack do not yet; the next component to reach its docs page builds them.
+The current asterisk: the registry pipeline and the test stack exist, but the docs component-page
+template does not yet; Button's page builds it.

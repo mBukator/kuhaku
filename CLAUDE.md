@@ -33,3 +33,4 @@ referenced throughout AGENTS.md live here.
 - @.claude/rules/docs.md — `apps/docs/**`
 - @.claude/rules/documentation.md — `packages/**`, `apps/docs/content/**`
 - @.claude/rules/writing.md — `**/*.{md,mdx}` (prose voice and formatting)
+- @.claude/rules/testing.md - `**/*.test.{ts,tsx}`, `packages/registry/test/**` (Vitest Browser Mode, axe)

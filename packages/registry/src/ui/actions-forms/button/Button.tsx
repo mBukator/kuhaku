@@ -21,17 +21,13 @@ import type { ComponentType } from "react";
 
 import type { ButtonProps, ButtonRenderedElement, ButtonState } from "./types";
 
-// Spec 5.6: press compresses to 0.97 in 100ms `ease-out`; hover lifts one pixel,
-// the minimum detectable lift, on the tint's 150ms timeline.
 const PRESS_SCALE = 0.97;
 const PRESS_DURATION_SECONDS = 0.1;
 const HOVER_LIFT_PX = -1;
 
-// Spec 5.6 error shake: three cycles at +-4px, 240ms total, translateX only.
 const SHAKE_OFFSETS = [0, -4, 4, -4, 4, -4, 4, 0];
 const SHAKE_SECONDS = 0.24;
 
-// The check starts drawing 50ms into Swap's entrance, never before it is visible.
 const CHECK_DRAW_DELAY = SWAP_ENTER_DELAY + hold.tight;
 
 const buttonVariants = cva(
@@ -208,8 +204,6 @@ export function Button({
                 );
                 const MotionElement = getMotionElement(element.type);
 
-                // Motion props come after the spread: an adopter's element carries
-                // Button's motion, never its own (Tier 2).
                 return (
                     <MotionElement
                         {...element.props}
@@ -241,7 +235,7 @@ export function Button({
                     initial={false}
                     animate={{ opacity: isIdle ? 1 : 0 }}
                     transition={isIdle ? labelEnter : labelExit}
-                    className="inline-flex items-center gap-1"
+                    className="relative z-10 inline-flex items-center gap-1"
                 >
                     {children}
                 </motion.span>
