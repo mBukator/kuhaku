@@ -6,8 +6,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     resolve: {
-        // `@/components/ui/*` maps to several category folders; only tsconfig
-        // resolution follows all of them.
+        // `@/components/ui/*` spans several folders; only tsconfig paths try each.
         tsconfigPaths: true,
         dedupe: ["react", "react-dom"],
     },

@@ -1,24 +1,17 @@
 @import "./springs.generated.css";
-/* kuhaku — the --motion-* namespace. Reduced-motion compliance is token-level:
-   the table collapses here once, and every component complies through the
-   tokens it already reads. Spring linear() curves are build output — never
-   hand-write them. Rationale: kuhaku.dev/foundations/motion */
 
 :root {
-    /* Durations */
     --motion-duration-instant: 50ms;
     --motion-duration-fast: 150ms;
     --motion-duration-default: 250ms;
     --motion-duration-slow: 400ms;
     --motion-duration-slower: 600ms;
 
-    /* Easings */
     --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --motion-ease-in-out: cubic-bezier(0.66, 0, 0.34, 1);
     --motion-ease-anticipate: cubic-bezier(0.44, -0.24, 0.28, 1);
 
-    /* Springs - declared once here; scripts/build-springs.ts reads them and
-       lib/motion mirrors them */
+    /* lib/motion/springs.ts mirrors these by hand; nothing checks that they agree. */
     --motion-spring-snappy-stiffness: 500;
     --motion-spring-snappy-damping: 32;
     --motion-spring-snappy-mass: 1;
@@ -26,18 +19,15 @@
     --motion-spring-soft-damping: 26;
     --motion-spring-soft-mass: 1;
 
-    /* Choreography */
     --motion-stagger-tight: 25ms;
     --motion-stagger-default: 45ms;
     --motion-stagger-loose: 80ms;
-    /* The micro-scale hold: a 100ms exit, 50ms, and a 150ms entrance land on the
-       300ms ceiling exactly; --motion-hold's 80ms would overrun it. */
+    /* hold-tight: a swap's 100ms exit + 50ms + 150ms entrance hit the 300ms ceiling. */
     --motion-hold-tight: 50ms;
     --motion-hold: 80ms;
     --motion-delay-hint: 400ms;
 }
 
-/* Reduced motion: cut to end-state */
 @media (prefers-reduced-motion: reduce) {
     :root {
         --motion-duration-instant: 0ms;
@@ -50,11 +40,10 @@
         --motion-stagger-loose: 0ms;
         --motion-hold-tight: 0ms;
         --motion-hold: 0ms;
-        /* --motion-delay-hint stays 400ms: intent confirmation is not motion. */
+        /* --motion-delay-hint stays 400ms: a hover-intent wait, not motion. */
     }
 }
 
-/* Strict mode: the same collapse, as a page-level decision */
 [data-a11y="strict"] {
     --motion-duration-instant: 0ms;
     --motion-duration-fast: 0ms;
@@ -67,7 +56,3 @@
     --motion-hold-tight: 0ms;
     --motion-hold: 0ms;
 }
-
-/* Two survivors live as component-level literals, not tokens: the 100ms
-   overlay fade and the 200ms Tier 1 mount fade. Springs collapse to instant
-   in lib/motion, reading the same two signals. */

@@ -11,7 +11,7 @@ import type { SwapProps } from "./types";
 export const SWAP_TIMELINE = {
     enter: duration.fast,
     hold: hold.tight,
-    exit: (duration.fast * 2) / 3, // Exits run at two-thirds of their entrance
+    exit: (duration.fast * 2) / 3,
 } as const;
 
 export const SWAP_ENTER_DELAY = SWAP_TIMELINE.exit + SWAP_TIMELINE.hold;
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== "production" && TOTAL > 0.3) {
     console.warn(`Swap exceeds 300ms micro-interaction ceiling (${TOTAL * 1000}ms)`);
 }
 
-const OFFSET = 8; // Vertical travel for numeric swaps
+const OFFSET_PX = 8; // Vertical travel for numeric swaps
 
 export const Swap = forwardRef<HTMLSpanElement, SwapProps>(function Swap(
     { value, children, inline = true, className, ...props },
@@ -70,7 +70,7 @@ export const Swap = forwardRef<HTMLSpanElement, SwapProps>(function Swap(
                     initial={{
                         opacity: 0,
                         scale: 1.04,
-                        y: direction * OFFSET,
+                        y: direction * OFFSET_PX,
                     }}
                     animate={{
                         opacity: 1,
@@ -81,7 +81,7 @@ export const Swap = forwardRef<HTMLSpanElement, SwapProps>(function Swap(
                     exit={{
                         opacity: 0,
                         scale: 0.94,
-                        y: direction * -OFFSET,
+                        y: direction * -OFFSET_PX,
                         transition: exitTransition,
                     }}
                 >

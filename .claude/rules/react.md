@@ -36,8 +36,7 @@ Every name is declared before it is read, and related declarations sit together.
 reads top to bottom in this order:
 
 1. `"use client"` (when needed), then imports.
-2. Module constants - timing values first (with the spec reference that justifies each number),
-   then derived constants built from them. A helper a constant is computed with sits directly
+2. Module constants - timing values first, then derived constants built from them. A helper a constant is computed with sits directly
    above that constant (`strokeBetween` in `Checkmark.tsx`), since it must exist first.
 3. Style definitions - the `cva` variants, then lookup records keyed by the same props (typed with
    `satisfies Record<…>` so a missing key fails where it is written).

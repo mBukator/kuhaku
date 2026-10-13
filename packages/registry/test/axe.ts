@@ -1,7 +1,6 @@
 import axe, { type AxeResults, type Result } from "axe-core";
 
-// The AA floor the spec audits against; best-practice rules such as `region`
-// judge page structure, which a component rendered alone does not have.
+// No best-practice tags: rules like `region` judge page structure a lone component lacks.
 const WCAG_AA_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 type MatcherResult = { pass: boolean; message: () => string };
@@ -18,7 +17,6 @@ declare module "vitest" {
 
 const CONTRAST_RULES = new Set(["color-contrast", "color-contrast-enhanced"]);
 
-// Strict mode promises AAA contrast, so it is held to 7:1 on top of the AA floor.
 export function runAxe(element: Element): Promise<AxeResults> {
     const isStrict = document.documentElement.dataset.a11y === "strict";
     const tags = isStrict ? [...WCAG_AA_TAGS, "wcag2aaa"] : WCAG_AA_TAGS;
@@ -34,9 +32,7 @@ function formatResult(result: Result): string {
     return [`${result.id}: ${result.help}`, ...nodes].join("\n");
 }
 
-// axe reports contrast it cannot measure (an overlapping element, a background
-// image) as incomplete, not as a violation; passing on it would let the gate
-// pass without having measured anything.
+// axe reports unmeasured contrast as incomplete, not a violation, so count it here.
 function isUnmeasuredContrast(result: Result): boolean {
     return CONTRAST_RULES.has(result.id) && result.nodes.length > 0;
 }

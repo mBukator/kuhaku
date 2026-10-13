@@ -1,5 +1,3 @@
-/* The shipped token layer, unmodified: axe measures contrast against the
-   colors an adopter's app renders. */
 @import "@kuhaku/tokens/css/tailwind.css";
 
 @source "../src";

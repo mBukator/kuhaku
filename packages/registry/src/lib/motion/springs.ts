@@ -1,16 +1,4 @@
-/**
- * Spring definitions — the single source of truth.
- *
- * Consumed by three places, deliberately:
- *   - lib/motion, for components running motion/react (the real simulation)
- *   - scripts/build-springs.ts, which emits linear() curves for CSS consumers
- *   - motion.css, whose --motion-spring-*-{stiffness,damping,mass} values are
- *     validated against this file at build time
- *
- * Change a number here and rerun `bun run build:springs`. Never edit the
- * generated CSS, and never let motion.css drift from these values.
- */
-
+// Hand-mirrored from motion.css --motion-spring-*; nothing checks that they agree.
 export type SpringToken = {
     stiffness: number;
     damping: number;
@@ -18,7 +6,7 @@ export type SpringToken = {
 };
 
 /**
- * snappy — ζ 0.716, ~4% overshoot, settles in 455ms.
+ * snappy - ζ 0.716, ~4% overshoot, settles in 455ms.
  * Direct manipulation and confirmation: presses, toggles, grabs, pops.
  */
 export const springSnappy: SpringToken = {
@@ -28,7 +16,7 @@ export const springSnappy: SpringToken = {
 };
 
 /**
- * soft — ζ 0.806, ~1.4% overshoot, settles in 529ms.
+ * soft - ζ 0.806, ~1.4% overshoot, settles in 529ms.
  * Systems reorganising themselves: indicators travelling, stacks reflowing.
  */
 export const springSoft: SpringToken = {

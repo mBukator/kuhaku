@@ -19,7 +19,7 @@
     },
     {
       "path": "src/ui/feedback-status/spinner/types.ts",
-      "content": "import type { ComponentProps } from \"react\";\n\nexport type SpinnerProps = {\n    size?: \"sm\" | \"md\" | \"lg\";\n    variant?: \"spinner\" | \"dots\" | \"bars\" | \"dither\" | \"ascii\" | \"ripple\" | \"orbit\";\n    label?: string;\n} & ComponentProps<\"span\">;\n",
+      "content": "import type { ComponentProps } from \"react\";\n\nexport type SpinnerProps = {\n    /**\n     * Indicator size: `sm` 16px, `md` 20px, `lg` 24px.\n     *\n     * @default \"sm\"\n     */\n    size?: \"sm\" | \"md\" | \"lg\";\n    /**\n     * The indicator's form. Every variant draws in `currentColor`.\n     *\n     * @default \"spinner\"\n     */\n    variant?: \"spinner\" | \"dots\" | \"bars\" | \"dither\" | \"ascii\" | \"ripple\" | \"orbit\";\n    /**\n     * Visible text beside the indicator, announced as the status. Without it, assistive\n     * technology hears \"Loading\".\n     */\n    label?: string;\n} & ComponentProps<\"span\">;\n",
       "type": "registry:component",
       "target": "@ui/spinner/types.ts"
     },

@@ -1,19 +1,9 @@
 name: Dependabot lockfile
 
-# Dependabot bumps package.json but does not regenerate the workspace
-# bun.lock, so the CI frozen install (ci.yml) fails. And a bun.lock
-# regenerated on Windows does not satisfy the frozen install on Linux, so
-# it cannot be fixed from a local checkout. This job regenerates bun.lock
-# on the Linux runner and commits it back to the Dependabot PR branch.
-#
-# The push uses a PAT (stored as a Dependabot secret) rather than the
-# default GITHUB_TOKEN, because commits pushed with GITHUB_TOKEN do not
-# re-trigger workflows - and CI must re-run on the corrected commit for
-# the required "ci" check to report.
-#
-# Setup (one time): create a PAT with Contents read/write on this repo and
-# add it under Settings -> Secrets and variables -> Dependabot as
-# DEPENDABOT_LOCKFILE_PAT.
+# Dependabot bumps package.json without regenerating bun.lock, and a lockfile rebuilt on
+# Windows fails the Linux frozen install, so it is rebuilt here on Linux.
+# Pushes use a PAT: commits pushed with GITHUB_TOKEN never re-trigger CI. The PAT
+# (Contents read/write) is a Dependabot secret named DEPENDABOT_LOCKFILE_PAT.
 
 on:
     pull_request:
@@ -28,9 +18,7 @@ jobs:
         if: github.actor == 'dependabot[bot]'
         runs-on: ubuntu-latest
 
-        # The developer git hooks (husky) must not run for this automated
-        # bot commit - ci.yml is the real gate. HUSKY=0 skips hook install
-        # during bun install; --no-verify bypasses any that remain.
+        # Husky hooks must not run on the bot commit; ci.yml is the gate.
         env:
             HUSKY: "0"
 

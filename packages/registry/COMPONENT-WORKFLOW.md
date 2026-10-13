@@ -216,8 +216,8 @@ tokens it already consumes. Per-component accessibility branches are a rule viol
 
 1.7 TypeScript (`.claude/rules/typescript.md`): `type` over `interface`; never `any` (use `unknown`
 plus narrowing); `===`/`!==`; `??` not `||`; early-return guards; functions under about 50 lines;
-`import type` for type-only imports; explicit return types on exported functions; comment the why,
-not the what. Do not hand-format - Prettier owns it (4-space, double quotes, 90 columns).
+`import type` for type-only imports; explicit return types on exported functions; no comments by
+default, one line for a non-obvious why. Do not hand-format - Prettier owns it (4-space, double quotes, 90 columns).
 
 1.8 Supporting files. If the component needs a shared hook or lib, create it as its own registry
 item (`src/hooks/useX.ts` for `registry:hook`, `src/lib/...` for `registry:lib`) and wire it through

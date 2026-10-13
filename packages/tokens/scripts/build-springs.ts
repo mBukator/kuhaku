@@ -1,16 +1,3 @@
-/**
- * Emits CSS linear() approximations of the motion spring tokens.
- *
- *   bun run packages/tokens/scripts/build-springs.ts
- *
- * Springs are physics, CSS transitions take easing functions, and linear() is
- * the bridge. Components using motion/react get the real simulation; CSS-only
- * consumers get these curves. Never hand-write the output - rerun the script.
- *
- * The spring parameters are read from motion.css, where they are declared once.
- * lib/motion in the registry mirrors the same values for motion/react.
- */
-
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -97,7 +84,6 @@ function solve({ stiffness, damping, mass }: Spring) {
     let position: (t: number) => number;
 
     if (zeta < 1) {
-        // Underdamped (bouncy)
         const wd = w0 * Math.sqrt(1 - zeta * zeta);
         position = (t) =>
             1 -
@@ -107,10 +93,8 @@ function solve({ stiffness, damping, mass }: Spring) {
         const tPeak = Math.PI / wd;
         peak = position(tPeak);
     } else if (zeta === 1) {
-        // Critically damped
         position = (t) => 1 - Math.exp(-w0 * t) * (1 + w0 * t);
     } else {
-        // Overdamped
         const r1 = -w0 * (zeta - Math.sqrt(zeta * zeta - 1));
         const r2 = -w0 * (zeta + Math.sqrt(zeta * zeta - 1));
 
@@ -120,10 +104,7 @@ function solve({ stiffness, damping, mass }: Spring) {
         position = (t) => 1 + c1 * Math.exp(r1 * t) + c2 * Math.exp(r2 * t);
     }
 
-    // Settling time: last moment outside the rest threshold, scanned backwards.
-    // The curve oscillates, so its envelope is not monotonic - a linear scan of
-    // the true position is correct where a binary search on it would not be. Two
-    // constant springs at build time make its cost irrelevant.
+    // A linear scan, not a binary search: the oscillating curve is not monotonic.
     let timeSeconds = 10;
     while (timeSeconds > 0 && Math.abs(position(timeSeconds) - 1) <= REST_THRESHOLD)
         timeSeconds -= 0.001;
@@ -135,9 +116,9 @@ function solve({ stiffness, damping, mass }: Spring) {
 }
 
 /**
- * Place points by curvature, not evenly: recursively split the segment with the
- * largest interpolation error. Roughly halves the point count at equal fidelity,
- * because the settled tail needs almost no resolution.
+ * Places stops where they matter, not evenly: repeatedly splits the segment with
+ * the largest interpolation error until every segment is within TOLERANCE or
+ * MAX_POINTS is reached. The settled tail needs almost no stops.
  */
 function sample(position: (t: number) => number, durationMs: number) {
     const at = (x: number) => position((x * durationMs) / 1000);
@@ -242,7 +223,6 @@ for (const [name, spring] of Object.entries(springs)) {
 
 lines.push("}", "");
 
-// Reduced motion and strict mode collapse springs to instant, matching motion.css.
 lines.push(
     "@media (prefers-reduced-motion: reduce) {",
     "  :root {",
