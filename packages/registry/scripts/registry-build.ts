@@ -1,13 +1,3 @@
-/**
- * Builds the registry served at /r:
- *
- *   bun run packages/registry/scripts/registry-build.ts
- *
- * Kuhaku checks what shadcn cannot know (namespaced graph, import completeness,
- * the Base UI boundary), then delegates inlining and emit to `shadcn build`, so
- * the served JSON is the protocol's own output, byte for byte.
- */
-
 import { readFileSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";

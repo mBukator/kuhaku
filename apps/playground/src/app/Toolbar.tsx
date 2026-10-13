@@ -6,8 +6,6 @@ export function Toolbar(): React.JSX.Element {
     const [isDark, setIsDark] = useState(true);
     const [isStrict, setIsStrict] = useState(false);
 
-    // Theme and strict mode live on <html>, where the tokens and
-    // useMotionSuppressed look for them.
     useEffect(() => {
         const root = document.documentElement;
         root.classList.toggle("dark", isDark);

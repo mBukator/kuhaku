@@ -63,7 +63,6 @@ function checkRegistryDependencies(
     });
 }
 
-// An unversioned entry installs whatever is latest, which may be a major Kuhaku was never built against.
 function checkDependencyVersions(
     item: RegistryItem,
     packageDependencies: ReadonlyMap<string, string>

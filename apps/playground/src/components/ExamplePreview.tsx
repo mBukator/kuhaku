@@ -28,7 +28,6 @@ export function ExamplePreview({ example }: { example: Example }): React.JSX.Ele
                         </button>
                     ))}
                 </div>
-                {/* Remounting replays entrance motion without a page reload. */}
                 <button
                     aria-label={`Remount ${example.title}`}
                     className="rounded-sm px-2 py-1 text-xs text-muted-foreground hover:text-foreground"

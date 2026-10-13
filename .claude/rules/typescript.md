@@ -52,6 +52,9 @@ export function parseCount(value: unknown, fallback = 0): number {
 
 ## Comments
 
-Explain **why**, not **what**. The token CSS files are the model: every non-obvious value carries a
-one-line rationale (e.g. a contrast ratio, a perceptual threshold). Match that density — comment the
-argument, not the syntax.
+Default to none. Names and types carry the meaning; a comment is the exception, kept to one line,
+for a **why** the code cannot show (a workaround, a trap that invites a regression). Never restate
+the code or cite the spec. Three things stay: JSDoc on functions, exported constants and public
+props (the docs API table reads the public ones), measured values (contrast ratios, spring
+overshoot), and tool directives (`/// <reference>`, `/** @type */` in JS config, `@ts-expect-error`,
+lint disables).

@@ -19,7 +19,7 @@
     },
     {
       "path": "src/ui/feedback-status/checkmark/types.ts",
-      "content": "import type { ComponentProps } from \"react\";\n\nexport type CheckmarkProps = {\n    /**\n     * Seconds before the draw begins. The draw itself is fixed grammar; only\n     * its start belongs to the composing component - after a swap's entrance,\n     * or 50ms into a checkbox fill.\n     *\n     * @default 0\n     */\n    delay?: number;\n} & ComponentProps<\"svg\">;\n",
+      "content": "import type { ComponentProps } from \"react\";\n\nexport type CheckmarkProps = {\n    /**\n     * Seconds before the draw starts; the 200ms draw itself is fixed. Button starts it\n     * 50ms into the swap's entrance.\n     *\n     * @default 0\n     */\n    delay?: number;\n} & ComponentProps<\"svg\">;\n",
       "type": "registry:component",
       "target": "@ui/checkmark/types.ts"
     },

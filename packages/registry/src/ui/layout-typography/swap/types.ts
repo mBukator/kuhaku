@@ -12,10 +12,10 @@ export type SwapProps = Omit<React.HTMLAttributes<HTMLSpanElement>, "children"> 
     /** The content for the current value. */
     children: React.ReactNode;
     /**
-     * Lay out as an inline element (default) or a block.
+     * Lay out as an inline element or a block.
      * Inline suits icons and digits inside text; block suits standalone slots.
      *
-     * \@default true
+     * @default true
      */
     inline?: boolean;
 };

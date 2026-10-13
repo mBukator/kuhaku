@@ -1,19 +1,13 @@
-/* kuhaku — the Tailwind v4 exposure layer. Import this file and nothing else.
-   `inline` is required: without it Tailwind resolves colours once at :root
-   against light values, and dark mode silently breaks. */
-
 @import "tailwindcss";
 @import "./theme.css";
 @import "./motion.css";
 
-/* `strict:` exists for the rare case where the token swap isn't enough. */
 @custom-variant dark (&:is(.dark *));
 @custom-variant strict (&:is([data-a11y="strict"] *));
 
+/* Without `inline`, colors resolve at :root, so .dark and strict scopes below it break. */
 @theme inline {
-    /* Semantic colour. The neutral ramp is deliberately not exposed — semantic
-     pairs are the interface, and mapping --neutral-* would hijack Tailwind's
-     own neutral palette. Raw steps stay reachable as bg-[var(--neutral-800)]. */
+    /* --neutral-* stays unmapped: it would hijack Tailwind's own neutral palette. */
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
@@ -31,7 +25,6 @@
     --color-accent: var(--accent);
     --color-accent-foreground: var(--accent-foreground);
 
-    /* Status — fill role */
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
     --color-destructive-hover: var(--destructive-hover);
@@ -40,8 +33,7 @@
     --color-warning: var(--warning);
     --color-warning-foreground: var(--warning-foreground);
 
-    /* Status text role. Use text-danger / text-caution / text-positive for
-     text, icons, and borders; text-warning would reintroduce a 2.43:1 fail. */
+    /* Colored text uses these; text-warning on light measures 2.43:1 and fails AA. */
     --color-danger: var(--destructive-text);
     --color-caution: var(--warning-text);
     --color-positive: var(--success-text);
@@ -65,21 +57,16 @@
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
 
-    /* Radius. Re-derived from --radius, not referencing theme.css's --radius-sm:
-     Tailwind's namespace IS --radius-*, so that would be a self-reference.
-     These formulas must match theme.css; the build asserts equality. */
+    /* Radius and font repeat theme.css: var(--radius-sm) here would reference itself. */
     --radius-sm: calc(var(--radius) - 6px);
     --radius-md: calc(var(--radius) - 3px);
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 6px);
     --radius-2xl: calc(var(--radius) + 12px);
 
-    /* Typeface — same namespace collision, same resolution. */
     --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
     --font-mono: var(--font-geist-mono, ui-monospace, "SF Mono", monospace);
 
-    /* Type scale, mapped from --type-*. The double-dash form is Tailwind's
-     syntax for paired sub-values; values live in theme.css, once. */
     --text-xs: var(--type-xs);
     --text-xs--line-height: var(--type-xs-leading);
     --text-xs--letter-spacing: var(--type-xs-tracking);
@@ -136,20 +123,17 @@
     --text-display--line-height: var(--type-display-leading);
     --text-display--letter-spacing: var(--type-display-tracking);
 
-    /* Weight */
     --font-weight-normal: var(--weight-normal);
     --font-weight-medium: var(--weight-medium);
     --font-weight-semibold: var(--weight-semibold);
     --font-weight-bold: var(--weight-bold);
 
-    /* Overrides Tailwind's ease-out and ease-in-out deliberately: `ease-out`
-     should mean Kuhaku's curve. */
+    /* Overrides Tailwind's ease-out and ease-in-out so stock utilities use these. */
     --ease-out: var(--motion-ease-out);
     --ease-in-out: var(--motion-ease-in-out);
     --ease-anticipate: var(--motion-ease-anticipate);
 }
 
-/* Tailwind v4 has no --duration-* namespace, so these are utilities. */
 @utility duration-instant {
     transition-duration: var(--motion-duration-instant);
 }
@@ -184,9 +168,8 @@
         text-rendering: optimizeLegibility;
     }
 
-    /* Focus ring, :focus-visible only. Strict mode swaps --ring and adds an
-     outline; both are token work, so this rule never varies. */
     :focus-visible {
+        /* Not none: forced-colors mode drops the box-shadow and paints this outline. */
         outline: 2px solid transparent;
         outline-offset: 2px;
         box-shadow:
@@ -199,7 +182,6 @@
         outline-offset: 2px;
     }
 
-    /* Ligatures off in code: glyphs that merge != misrepresent the stream. */
     code,
     kbd,
     pre,
@@ -208,7 +190,6 @@
         font-variant-ligatures: none;
     }
 
-    /* Compositor hints stay opt-in per component, never global. */
     html {
         -webkit-text-size-adjust: 100%;
     }

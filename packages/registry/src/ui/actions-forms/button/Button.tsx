@@ -85,7 +85,7 @@ const buttonVariants = cva(
     }
 );
 
-// Coarse pointers get a 44px target (WCAG 2.5.8); lg sizes are already 48px.
+// Coarse pointers get a 44px target (WCAG 2.5.5); lg sizes are already 48px.
 const HIT_AREA_CLASSES = {
     sm: "inset-x-0 -inset-y-1.5",
     md: "inset-x-0 -inset-y-0.5",
@@ -97,9 +97,7 @@ const HIT_AREA_CLASSES = {
 
 type MotionElementType = ComponentType<MotionProps & Record<string, unknown>>;
 
-// One motion wrapper per element type, created once: a new wrapper per render is a new
-// component identity, and React remounts the button on every state change. A component
-// type defined inline in a parent's render misses this cache on every render.
+// Cached per element type: a new motion.create() wrapper would remount the button.
 const MOTION_ELEMENTS = new Map<ButtonRenderedElement["type"], MotionElementType>();
 
 function getMotionElement(type: ButtonRenderedElement["type"]): MotionElementType {

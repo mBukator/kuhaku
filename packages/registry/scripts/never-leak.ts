@@ -42,7 +42,7 @@ export function checkNeverLeak(
         true
     );
 
-    // TS2742 and friends: a public type that cannot be named without Base UI.
+    // Every emit diagnostic fails; TS2742 is the one a Base UI type typically triggers.
     for (const diagnostic of diagnostics) {
         const message = ts.flattenDiagnosticMessageText(diagnostic.messageText, " ");
         const location = diagnostic.file

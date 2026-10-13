@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * lib/motion — the motion runtime.
- *
- * CSS gets its motion values from motion.css. JavaScript gets them from here.
- * The two must agree, so this file is written to mirror the token table
- * exactly; the build validates that it does.
- */
 import type { Transition } from "motion/react";
 import * as React from "react";
 
@@ -29,18 +22,20 @@ export const ease = {
     anticipate: [0.44, -0.24, 0.28, 1],
 } as const;
 
-// Mirrors --motion-stagger-*, --motion-hold, --motion-delay-hint
+/** Seconds. Mirrors --motion-stagger-*. */
 export const stagger = {
     tight: 0.025,
     default: 0.045,
     loose: 0.08,
 } as const;
 
+/** Seconds. Mirrors --motion-hold-tight and --motion-hold. */
 export const hold = {
     tight: 0.05,
     default: 0.08,
 } as const;
 
+/** Seconds. Mirrors --motion-delay-hint. */
 export const delayHint = 0.4;
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -57,7 +52,6 @@ function subscribeToMotionSuppression(onChange: () => void): () => void {
     const query = window.matchMedia(REDUCED_MOTION_QUERY);
     query.addEventListener("change", onChange);
 
-    // Strict mode is an attribute, not a media query, so watch for it.
     const observer = new MutationObserver(onChange);
     const options = { attributes: true, attributeFilter: ["data-a11y"] };
     observer.observe(document.documentElement, options);
@@ -69,8 +63,7 @@ function subscribeToMotionSuppression(onChange: () => void): () => void {
     };
 }
 
-// The server cannot see either signal; hydration renders the motion-on
-// markup and React re-reads the real value straight after.
+/** The server sees neither signal, so SSR and hydration render with motion on. */
 function readServerMotionSuppressed(): boolean {
     return false;
 }
@@ -96,10 +89,7 @@ export function useMotionSuppressed(): boolean {
     );
 }
 
-/**
- * Collapses a transition to an instant cut when motion is suppressed.
- * Components pass their normal transition and get the honest one back.
- */
+/** Returns `transition`, or an instant cut with no delay when `suppressed`. */
 export function withSuppression(transition: Transition, suppressed: boolean): Transition {
     return suppressed ? { duration: 0, delay: 0 } : transition;
 }
