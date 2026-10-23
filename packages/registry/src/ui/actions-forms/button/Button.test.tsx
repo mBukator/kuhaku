@@ -13,6 +13,7 @@ const STATES = Object.keys({
     error: true,
 } satisfies Record<ActionState, true>) as ActionState[];
 
+/** Renders Button as a div, the element its `nativeButton={false}` path is for. */
 const renderDiv = (props: ButtonRenderProps) => {
     return <div {...props} />;
 };
@@ -26,7 +27,10 @@ const CONFIRMATIONS = ["success", "error"] as const;
 
 const CONFIRMATION_HOLD_MILLISECONDS = 1500;
 
-/** Resolves after two real animation frames, by which time React has committed pending updates. */
+/**
+ * Resolves after two real animation frames, by which time React has committed pending
+ * updates and Chromium has moved focus off any element that stopped being focusable.
+ */
 function waitForFrames(): Promise<void> {
     return new Promise((resolve) => {
         requestAnimationFrame(() => {
@@ -61,14 +65,25 @@ test("keeps focus when it starts loading", async () => {
 
     const button = screen.getByRole("button", { name: "Save" });
     await screen.rerender(<Button state="loading">Save</Button>);
+    await waitForFrames();
 
-    await new Promise((resolve) => {
-        requestAnimationFrame(() => {
-            requestAnimationFrame(resolve);
-        });
-    });
+    expect(button.element()).toHaveFocus();
+});
 
-    expect(button).toHaveFocus();
+test("stays in the Tab order while loading", async () => {
+    const screen = await render(
+        <>
+            <Button>Before</Button>
+            <Button state="loading">Save</Button>
+            <Button>After</Button>
+        </>
+    );
+    const button = screen.getByRole("button", { name: "Save" });
+
+    await userEvent.tab();
+    await userEvent.tab();
+
+    await expect.element(button).toHaveFocus();
 });
 
 test("blocks clicks while loading", async () => {
@@ -95,9 +110,11 @@ test.each(STATES)("keeps the label as its name while %s", async (state) => {
 
 test("hides the indicator from assistive technology while loading", async () => {
     const screen = await render(<Button state="loading">Save</Button>);
-    const status = screen.getByRole("status");
 
-    await expect.element(status).not.toBeInTheDocument();
+    await expect
+        .element(screen.getByRole("status", { includeHidden: true }))
+        .toBeInTheDocument();
+    await expect.element(screen.getByRole("status")).not.toBeInTheDocument();
 });
 
 test("blocks clicks while disabled", async () => {

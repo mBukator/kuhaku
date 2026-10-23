@@ -14,36 +14,36 @@ afterEach(() => {
     vi.useRealTimers();
 });
 
-test.each(PASS_THROUGH_STATES)("passes %s through unchanged", async (state) => {
+test.each(PASS_THROUGH_STATES)("passes %s through unchanged", async (initialState) => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 
     const { result, act } = await renderHook(
         (state: ActionState = "idle") => useConfirmationHold(state),
-        { initialProps: state }
+        { initialProps: initialState }
     );
 
-    expect(result.current).toBe(state);
+    expect(result.current).toBe(initialState);
 
     await act(() => {
         vi.advanceTimersByTime(LONG_PAST_HOLD_MILLISECONDS);
     });
-    expect(result.current).toBe(state);
+    expect(result.current).toBe(initialState);
 });
 
-test.each(CONFIRMATIONS)("holds %s for 1.5s then shows idle", async (state) => {
+test.each(CONFIRMATIONS)("holds %s for 1.5s then shows idle", async (initialState) => {
     vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 
     const { result, act } = await renderHook(
         (state: ActionState = "idle") => useConfirmationHold(state),
-        { initialProps: state }
+        { initialProps: initialState }
     );
 
-    expect(result.current).toBe(state);
+    expect(result.current).toBe(initialState);
 
     await act(() => {
         vi.advanceTimersByTime(CONFIRMATION_HOLD_MILLISECONDS - 1);
     });
-    expect(result.current).toBe(state);
+    expect(result.current).toBe(initialState);
 
     await act(() => {
         vi.advanceTimersByTime(1);
