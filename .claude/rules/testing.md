@@ -49,6 +49,12 @@ in a browser, with the shipped token CSS, never against jsdom's imitation of lay
   events: Tab stops, Enter and Space activation, disabled skips.
 - Timers: fake only what the test owns - `vi.useFakeTimers({ toFake: ["setTimeout",
 "clearTimeout"] })`. Faking `requestAnimationFrame` or `performance` freezes `motion`.
+- While timers are fake, never assert with `expect.element` or `expect.poll`: every retry advances
+  the fake clock, so a check waits its way past the value it should catch. Move the clock inside
+  `act` (the one `renderHook` returns) or follow it with a two-frame wait, then assert once with a
+  plain `expect`.
+- Focus leaves a newly disabled element only at Chromium's next frame. Wait two animation frames
+  before asserting focus after a state change, or the check passes before the bug can show.
 - Deterministic motion: `applyColorMode("strict")` sets `data-a11y="strict"`, and
   `useMotionSuppressed` collapses every transition to an instant cut. Keep at least one test per
   component on the default timeline.
