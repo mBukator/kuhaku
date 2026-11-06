@@ -32,7 +32,8 @@ jobs:
             - name: Install dependencies
               run: bun install --frozen-lockfile
 
-            # From the registry, so the pinned Playwright picks the browser build.
+            # From the registry, so the pinned Playwright picks the browser build. The docs
+            # E2E runner shares the same playwright-core, so one install serves both.
             - name: Install Chromium
               working-directory: packages/registry
               run: bunx playwright install --with-deps chromium
@@ -59,3 +60,14 @@ jobs:
 
             - name: Test
               run: bun run test
+
+            - name: Upload E2E report
+              if: failure()
+              uses: actions/upload-artifact@v7
+              with:
+                  name: playwright-report
+                  path: |
+                      apps/docs/playwright-report/
+                      apps/docs/test-results/
+                  retention-days: 7
+                  if-no-files-found: ignore

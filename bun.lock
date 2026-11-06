@@ -21,24 +21,32 @@
       "name": "docs",
       "version": "0.0.8",
       "dependencies": {
+        "@base-ui/react": "^1.7.0",
+        "@kuhaku/tokens": "workspace:*",
+        "class-variance-authority": "^0.7.1",
         "cn": "^0.2.5",
         "fumadocs-core": "16.14.2",
         "fumadocs-mdx": "15.2.2",
         "fumadocs-ui": "npm:@fumadocs/base-ui@16.12.1",
-        "lucide-react": "^1.25.0",
+        "lucide-react": "^1.47.0",
+        "motion": "^12.42.2",
         "next": "16.3.8",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
       },
       "devDependencies": {
+        "@playwright/test": "~1.63.0",
         "@tailwindcss/postcss": "^4.3.3",
+        "@types/mdast": "^4.0.4",
         "@types/mdx": "^2.0.14",
         "@types/node": "^26.1.1",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
         "eslint": "^9.39.4",
         "eslint-config-next": "16.3.8",
+        "mdast-util-mdx-jsx": "^3.2.0",
         "postcss": "^8.5.21",
+        "shadcn": "^4.21.1",
         "tailwindcss": "^4.3.3",
         "typescript": "^6.0.3",
       },
@@ -535,6 +543,8 @@
     "@oxc-resolver/binding-win32-arm64-msvc": ["@oxc-resolver/binding-win32-arm64-msvc@11.24.2", "", { "os": "win32", "cpu": "arm64" }, "sha512-uokJqro2iBqkFvJdKQLP7d8/BUmFwESQFVmIJUQKj1Xn1a/LysJoe1vmeECLF5b3jsV8CAL5sEMJXX6SdK9Nhg=="],
 
     "@oxc-resolver/binding-win32-x64-msvc": ["@oxc-resolver/binding-win32-x64-msvc@11.24.2", "", { "os": "win32", "cpu": "x64" }, "sha512-UqGPmo56KDfLlfXFAFIrNflHT8tFxWGEivWg3Zeyp4Uy2NlKN1FGPr6/BxcLGG3+kZ6Wp14g5Uj+n71boqZfiw=="],
+
+    "@playwright/test": ["@playwright/test@1.63.0", "", { "dependencies": { "playwright": "1.63.0" }, "bin": { "playwright": "cli.js" } }, "sha512-oxMK4vllB9RK5NQ2l1pq1IfOf2AvnEuj/vYGDj0H2nMtmtZpKtCwt/l00GEO6xjGfpBNAvjovvYdCm50dRQkpQ=="],
 
     "@polka/url": ["@polka/url@1.0.0-next.29", "", {}, "sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww=="],
 

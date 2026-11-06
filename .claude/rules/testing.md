@@ -3,6 +3,8 @@ paths:
     - "**/*.test.{ts,tsx}"
     - "packages/registry/test/**"
     - "packages/registry/vitest.config.ts"
+    - "apps/docs/e2e/**"
+    - "apps/docs/playwright.config.ts"
 ---
 
 # Testing
@@ -21,6 +23,22 @@ in a browser, with the shipped token CSS, never against jsdom's imitation of lay
   browser once from `packages/registry` with `bunx playwright install chromium`, so the pinned
   Playwright picks the build.
 - `pre-push` and CI run the suite after the build.
+
+## Docs E2E
+
+- `apps/docs/e2e/*.spec.ts` run on `@playwright/test` against the production build, never the dev
+  server: `docs#test` depends on `docs#build`, and `playwright.config.ts` starts `next start` on
+  port 3100, clear of a dev server on 3000. `bun run test` runs them beside the Vitest suite.
+- While writing specs, build once (`bun run build` from the root), then run `bunx playwright test`
+  (or `--ui`) from `apps/docs`. Turbo leaves `e2e/` and `playwright.config.ts` out of the docs
+  build hash, so a spec edit replays the cached build.
+- Chromium only. The docs runner and Vitest share one `playwright-core`, so the browser install
+  from `packages/registry` serves both; keep `bun.lock` at a single `playwright-core`.
+- An empty `e2e/` fails the run with "No tests found". That is deliberate.
+- Query with `getByRole(role, { name, exact: true })`. A name that repeats on the page needs a
+  scope: the playground preview and the demos all render "Save changes", and the controls live in
+  the `Customize` region.
+- A failed CI run uploads the HTML report and traces as the `playwright-report` artifact.
 
 ## Layout
 

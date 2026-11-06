@@ -7,6 +7,9 @@ coverage/
 bun.lock
 apps/docs/.source/
 apps/docs/public/r/
+apps/docs/installed/
+apps/docs/playwright-report/
+apps/docs/test-results/
 apps/docs/spec/
 **/next-env.d.ts
 LICENSE
