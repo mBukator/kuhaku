@@ -111,21 +111,21 @@ Deeper, area-specific rules live in `.claude/rules/*.md`. Claude Code auto-loads
 `paths:` glob matches the file you are editing; other agents should open the relevant file when
 working in that area.
 
-| File                             | Applies to                                                         |
-| -------------------------------- | ------------------------------------------------------------------ |
-| `.claude/rules/naming.md`        | all code (unconditional)                                           |
-| `.claude/rules/security.md`      | all code (unconditional)                                           |
-| `.claude/rules/typescript.md`    | `**/*.{ts,tsx}`                                                    |
-| `.claude/rules/react.md`         | `**/*.tsx` (Server/Client boundaries, hooks, hot/cold split)       |
-| `.claude/rules/tokens.md`        | `packages/tokens/**`                                               |
-| `.claude/rules/motion.md`        | `packages/registry/**/*.tsx`, `packages/tokens/src/css/motion.css` |
-| `.claude/rules/accessibility.md` | `packages/registry/**/*.tsx`, `apps/docs/**/*.tsx`                 |
-| `.claude/rules/registry.md`      | `packages/registry/**`                                             |
-| `.claude/rules/cli.md`           | `packages/cli/**`                                                  |
-| `.claude/rules/docs.md`          | `apps/docs/**`                                                     |
-| `.claude/rules/documentation.md` | `packages/**`, `apps/docs/content/**`                              |
-| `.claude/rules/writing.md`       | `**/*.{md,mdx}` (prose voice and formatting)                       |
-| `.claude/rules/testing.md`       | `**/*.test.{ts,tsx}`, `packages/registry/test/**`                  |
+| File                             | Applies to                                                            |
+| -------------------------------- | --------------------------------------------------------------------- |
+| `.claude/rules/naming.md`        | all code (unconditional)                                              |
+| `.claude/rules/security.md`      | all code (unconditional)                                              |
+| `.claude/rules/typescript.md`    | `**/*.{ts,tsx}`                                                       |
+| `.claude/rules/react.md`         | `**/*.tsx` (Server/Client boundaries, hooks, hot/cold split)          |
+| `.claude/rules/tokens.md`        | `packages/tokens/**`                                                  |
+| `.claude/rules/motion.md`        | `packages/registry/**/*.tsx`, `packages/tokens/src/css/motion.css`    |
+| `.claude/rules/accessibility.md` | `packages/registry/**/*.tsx`, `apps/docs/**/*.tsx`                    |
+| `.claude/rules/registry.md`      | `packages/registry/**`                                                |
+| `.claude/rules/cli.md`           | `packages/cli/**`                                                     |
+| `.claude/rules/docs.md`          | `apps/docs/**`                                                        |
+| `.claude/rules/documentation.md` | `packages/**`, `apps/docs/content/**`                                 |
+| `.claude/rules/writing.md`       | `**/*.{md,mdx}` (prose voice and formatting)                          |
+| `.claude/rules/testing.md`       | `**/*.test.{ts,tsx}`, `packages/registry/test/**`, `apps/docs/e2e/**` |
 
 ---
 
@@ -137,7 +137,7 @@ bun run dev                 # turbo run dev (all workspaces, persistent)
 bun run build               # turbo run build
 bun run lint                # turbo run lint
 bun run typecheck           # turbo run typecheck
-bun run test                # turbo run test (Vitest Browser Mode, real Chromium)
+bun run test                # turbo run test (Vitest Browser Mode + docs E2E, real Chromium)
 bun run format              # prettier --write across the repo
 bun run format:check        # prettier --check
 bun run knip                # unused files/deps/exports (manual for now)
@@ -147,7 +147,8 @@ bun run --filter docs dev   # a single workspace
 
 Tests run in Vitest Browser Mode on the Playwright provider, against real Chromium with the shipped
 token CSS, and axe-core gates every component's variant × state × mode matrix. Vitest runs on Node
-(`^22.12`), never `bun --bun`. Install the browser once from `packages/registry` with `bunx playwright install chromium`.
+(`^22.12`), never `bun --bun`. Docs E2E specs (`apps/docs/e2e`) run on `@playwright/test` against
+the production build. Install the browser once from `packages/registry` with `bunx playwright install chromium`; it serves both runners.
 Full detail: `.claude/rules/testing.md`
 
 **Before opening a PR:**

@@ -15,6 +15,9 @@
         "jsx": "react-jsx",
         "incremental": true,
         "paths": {
+            "@/lib/*": ["./installed/lib/*", "./lib/*"],
+            "@/components/ui/*": ["./installed/ui/*"],
+            "@/hooks/*": ["./installed/hooks/*"],
             "@/*": ["./*"],
             "collections/*": ["./.source/*"]
         },

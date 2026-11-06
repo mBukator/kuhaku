@@ -1,6 +1,9 @@
-@import "tailwindcss";
+@import "@kuhaku/tokens/css/tailwind.css";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
+
+/* installed/ is gitignored, which hides it from Tailwind's automatic detection. */
+@source "../installed";
 
 html {
     scrollbar-gutter: stable;

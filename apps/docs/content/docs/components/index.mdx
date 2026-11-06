@@ -1,0 +1,10 @@
+---
+title: Components
+description: Every Kuhaku component, grouped by the job it does.
+---
+
+Every component page follows one order: a live preview, both install commands, usage, the API table generated from the TypeScript source, the motion behavior, the accessibility contract with its tests, examples, and related components. The API table is read from the installed source at build time, so the props on a page cannot disagree with the props you install.
+
+Each component belongs to one motion tier. Tier 1 components are their motion and live behind content. Tier 2 components carry motion as information, on by default and tuned only through `--motion-*` tokens. Tier 3 components are still, with no prop to add motion.
+
+<ComponentIndex />

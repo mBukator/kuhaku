@@ -60,7 +60,8 @@ that floor in `packages/cli` once it shells out, and state it on the CLI and reg
 
 ## Component conventions
 
-- Class composition uses **`cn` from the `cn` package** (the repo's util) — see `apps/docs/lib/cn.ts`.
+- Class composition uses **`cn` from the `cn` package**, through the `registry:lib` cn item
+  (`src/lib/cn.ts`).
 - Variant styling uses `cva` (`class-variance-authority`) when a component has enumerated style
   props (`variant`, `size`). Booleans and values derived from other props stay as `cn`
   conditionals - cva only sees props, and a single boolean gains nothing from a config object.
