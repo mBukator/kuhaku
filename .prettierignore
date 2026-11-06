@@ -7,6 +7,7 @@ coverage/
 bun.lock
 apps/docs/.source/
 apps/docs/public/r/
+apps/docs/installed/
 apps/docs/spec/
 **/next-env.d.ts
 LICENSE

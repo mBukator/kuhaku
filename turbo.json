@@ -19,7 +19,7 @@
         },
         "docs#build": {
             "dependsOn": ["^build", "@kuhaku/registry#build"],
-            "outputs": [".next/**", "!.next/cache/**"]
+            "outputs": [".next/**", "!.next/cache/**", "installed/**"]
         }
     }
 }
