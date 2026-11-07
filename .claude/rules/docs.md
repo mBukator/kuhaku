@@ -25,7 +25,14 @@ machine interface (registry routes, llms surfaces, search, OG).
 
 - Live demos import from **built registry output** (`public/r`), not a forked copy of component
   source. A demo that renders proves the component installs — that is the integration test.
-- Do not duplicate component source into the docs app.
+- `scripts/install-registry.ts` runs before `dev`, `build` and `typecheck`: it validates each
+  `public/r` item against shadcn's `registryItemSchema`, checks every npm range against
+  `apps/docs/package.json`, and writes the files to the gitignored `installed/`, resolving
+  `@ui/`, `@lib/` and `@hooks/` the way shadcn's default aliases do. It never rewrites imports;
+  `tsconfig.json` maps `@/components/ui/*`, `@/hooks/*` and `@/lib/*` onto `installed/`.
+- Import components, hooks and `cn` the way an adopter does (`@/components/ui/button`,
+  `@/lib/cn`). Do not duplicate component source into the docs app, and never edit `installed/`.
+- After a registry source change, run `bun run build` so `public/r` and `installed/` catch up.
 
 ## The component page template (all 115 pages)
 
@@ -37,7 +44,7 @@ Animated (Tier 1) pages foreground the tuning props instead of the API table.
 
 ## Machine surfaces are first-class
 
-Keep these working: `/r/[name].json` (registry), `/llms.txt`, `/llms-full.txt`, per-page
+Keep these working: `/r/[name].json` (registry, static files from `public/r`), `/llms.txt`, `/llms-full.txt`, per-page
 `/llms.mdx`, `/api/search`, and the OG image routes. They already scaffold in `app/`.
 
 ## The docs obey their own foundations

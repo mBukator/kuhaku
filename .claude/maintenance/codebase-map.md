@@ -60,14 +60,16 @@ resolved.
 
 ## `apps/docs`
 
-| Path                  | Purpose                                                      |
-| --------------------- | ------------------------------------------------------------ |
-| `app/`                | App Router: docs, home, `/r`, llms, OG, search               |
-| `content/docs/`       | MDX content                                                  |
-| `source.config.ts`    | Fumadocs collections + schemas                               |
-| `lib/`                | `source.ts` (loader), `cn.ts` (re-exports cn), layout/shared |
-| `components/mdx.tsx`  | MDX component overrides                                      |
-| `spec/kuhaku-spec.md` | The full v1.0 design specification                           |
+| Path                          | Purpose                                                              |
+| ----------------------------- | -------------------------------------------------------------------- |
+| `app/`                        | App Router: docs, home, llms, OG, search                             |
+| `public/r/`                   | Built registry output, served as static `/r/[name].json` (committed) |
+| `scripts/install-registry.ts` | Validates `public/r` and writes it to the gitignored `installed/`    |
+| `content/docs/`               | MDX content                                                          |
+| `source.config.ts`            | Fumadocs collections + schemas                                       |
+| `lib/`                        | `source.ts` (loader), layout config                                  |
+| `components/mdx.tsx`          | MDX component overrides                                              |
+| `spec/kuhaku-spec.md`         | The full v1.0 design specification                                   |
 
 ---
 

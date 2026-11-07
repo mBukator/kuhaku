@@ -11,10 +11,10 @@ infrastructure. The design intent is fully specified in `apps/docs/spec/kuhaku-s
 
 ---
 
-## Status as of 2026-10-08
+## Status as of 2026-11-03
 
-The registry has its items and its pipeline, but not yet its docs pages. Read the workflow with
-this in mind:
+The registry has its items and its pipeline, and the docs install its built output, but it has no
+docs pages yet. Read the workflow with this in mind:
 
 - `registry.json` declares seven items: `cn` and `motion` (`registry:lib`), `use-confirmation-hold`
   (`registry:hook`), and `swap`, `spinner`, `checkmark` and `button` (`registry:component`).
@@ -26,8 +26,14 @@ this in mind:
 - `bun run build` in `packages/registry` runs `scripts/registry-build.ts`: the Phase 3 checks, then
   `shadcn build` into `apps/docs/public/r/`, which is committed so the served payload is reviewable
   in every PR.
-- `apps/docs` serves `public/r/` as static files at `/r/[name].json`, but has no component MDX pages
-  (only `content/docs/index.mdx` and `test.mdx`) and no `meta.json` navigation.
+- `apps/docs` serves `public/r/` as static files at `/r/[name].json`. Before `dev`, `build` and
+  `typecheck`, `scripts/install-registry.ts` validates every built item against shadcn's
+  `registryItemSchema` and writes its files into the gitignored `apps/docs/installed/`, resolving
+  each target placeholder the way shadcn's default aliases do. Docs code imports them through
+  `@/components/ui/*`, `@/lib/*` and `@/hooks/*`, like an adopter. This proves the payload, not
+  the import rewriting: shadcn's CLI transform is exercised once `packages/cli` shells out to it.
+- `apps/docs` has no component MDX pages yet (only `content/docs/index.mdx` and `test.mdx`) and no
+  `meta.json` navigation.
 - `packages/cli/src/index.ts` is a stub; `kuhaku add` does not exist yet.
 - `bun run test` runs Vitest in Browser Mode (Playwright provider, real Chromium) with the shipped
   token CSS. Button carries a smoke test and its axe matrix; the standalone Playwright runner for
@@ -180,8 +186,8 @@ a Server Component, only the interactive piece is a Client Component.
   `--neutral-*`, which is internal wiring.
 - Status tokens have two roles: `--{status}` is a fill (with `--{status}-foreground`);
   `--{status}-text` is for colored text, icons, and meaningful borders. Do not conflate them.
-- Class composition uses `cn` from the `cn` package (in-repo it is the `registry:lib` cn item; the docs
-  re-export at `apps/docs/lib/cn.ts`).
+- Class composition uses `cn` from the `cn` package, through the `registry:lib` cn item
+  (`src/lib/cn.ts`). The docs import the installed copy from `@/lib/cn`, like an adopter.
 
 1.4 Obey the tier's motion contract (`.claude/rules/motion.md`, the differentiation wedge):
 
@@ -377,9 +383,8 @@ Git workflow (`.claude/guides/git-workflow.md`):
   why, not how). Author with `bunx merlin`.
 - Never mention Claude or AI anywhere, including a `Co-Authored-By` trailer.
 - The PR uses `.github/pull_request_template.md` in full - every section and the checklist.
-- Update `.claude/maintenance/codebase-map.md`. The registry table currently reads "Manifest
-  (currently `items: []`)"; that line and the "Registry is empty" open item change once real
-  components land.
+- Update `.claude/maintenance/codebase-map.md` when the change adds a file kind or resolves an open
+  item.
 
 ---
 
