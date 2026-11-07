@@ -3,6 +3,8 @@ import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { registryItemSchema, registrySchema } from "shadcn/schema";
 
+import { ITEM_NAME_PATTERN } from "../lib/read-item-name";
+
 type RegistryItem = ReturnType<typeof registryItemSchema.parse>;
 
 type PlannedFile = {
@@ -13,8 +15,6 @@ type PlannedFile = {
 const APP_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRY_DIRECTORY = join(APP_ROOT, "public", "r");
 const INSTALL_DIRECTORY = join(APP_ROOT, "installed");
-// Each name becomes a file path under public/r.
-const ITEM_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 // Mirrors the `paths` in tsconfig.json; a placeholder without an alias there must fail here.
 const TARGET_DIRECTORIES: Record<string, string> = {
     "@ui/": "ui",

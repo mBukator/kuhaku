@@ -1,0 +1,90 @@
+---
+title: Button
+description: The action primitive. Every imperative in the interface, with motion that confirms the input.
+---
+
+Button presses, lifts, and reports progress through `state` at one width.
+
+## Installation
+
+<InstallCommand name="button" />
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+<Button>Save changes</Button>;
+```
+
+### Action state
+
+Set `state` to report the action. `loading` lasts until you change it; `success` and `error` hold for 1.5s, then return to the label without changing your prop.
+
+### Composition
+
+`render` swaps the element, and Button's motion and state come with it. Spread the props it receives.
+
+```tsx
+<Button nativeButton={false} render={(props) => <div {...props} />}>
+    Choose file
+</Button>
+```
+
+<Callout title="Navigation uses a link element">
+    A link rendered through `render` announces as a button. Navigate with `<a href>` or your router's link component.
+</Callout>
+
+## API reference
+
+<ApiTable name="button" />
+
+Button accepts every `<button>` attribute except `onAnimationStart`, `onDrag`, `onDragStart` and `onDragEnd`, which motion claims for its own events.
+
+## Motion behavior
+
+Button has no motion props. It is tuned only through `--motion-*` tokens.
+
+| Interaction  | Motion                                                  | Timing                                        |
+| ------------ | ------------------------------------------------------- | --------------------------------------------- |
+| Press        | Scales from 1 to 0.97                                   | 100ms `ease-out`                              |
+| Release      | Returns to 1 with a ~4% overshoot                       | `spring-snappy`, settles in ~250ms            |
+| Hover        | Lifts 1px and tints the surface                         | 150ms `ease-in-out`                           |
+| Focus        | The ring fades in                                       | 150ms `ease-in-out`                           |
+| State change | Label and indicator cross-fade in place                 | 100ms exit, 50ms hold, 150ms entrance (300ms) |
+| Error        | The button shakes ±4px for three cycles on `translateX` | 240ms                                         |
+
+Reduced motion and strict mode cut every transition to instant. The spinner keeps turning, slower.
+
+## Accessibility
+
+- The label is the accessible name in every state; the indicators are hidden from assistive technology.
+- An icon-only button needs an `aria-label`.
+- Button announces nothing on success or error. Report the outcome with a Toast, or a Field message for validation.
+
+| Key               | Action                                            |
+| ----------------- | ------------------------------------------------- |
+| `Tab`             | Moves focus to the button, skipping disabled ones |
+| `Enter` / `Space` | Activates the button                              |
+
+[80 axe checks across 5 variants, 4 states and 4 color modes](https://github.com/mBukator/kuhaku/blob/main/packages/registry/src/ui/actions-forms/button/Button.axe.test.tsx).
+
+## Examples
+
+### Async submit
+
+A form submit runs `loading`, then `success`. Focus stays on the button.
+
+<ComponentPreview name="button-async-submit" />
+
+### Action group
+
+One primary action beside a secondary one, 8px apart.
+
+<ComponentPreview name="button-action-group" />
+
+### Icon only
+
+`size="icon"` with an `aria-label`.
+
+<ComponentPreview name="button-icon-only" />

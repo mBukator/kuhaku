@@ -19,7 +19,11 @@
         },
         "docs#build": {
             "dependsOn": ["^build", "@kuhaku/registry#build"],
+            "inputs": ["$TURBO_DEFAULT$", "!e2e/**", "!playwright.config.ts"],
             "outputs": [".next/**", "!.next/cache/**", "installed/**"]
+        },
+        "docs#test": {
+            "dependsOn": ["docs#build"]
         }
     }
 }

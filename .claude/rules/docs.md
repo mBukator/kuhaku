@@ -17,8 +17,9 @@ machine interface (registry routes, llms surfaces, search, OG).
   `---Section---` separators, `...` to include the rest).
 - Collections are defined in `source.config.ts` with typed frontmatter/meta via the fumadocs Zod
   schemas (`pageSchema`, `metaSchema`) already wired up; the loader is in `lib/source.ts`.
-- Register custom MDX components in the root `mdx-components.tsx` (used without import syntax in MDX);
-  shared demo components live in `components/`.
+- Register custom MDX components in `getMDXComponents` (`components/mdx.tsx`) so MDX uses them
+  without import syntax. `<CodeBlock>` is not registered (Fumadocs maps `pre`): use fenced code,
+  with blank lines around a fence inside a JSX tag.
 - Server/Client boundaries follow @.claude/rules/react.md — pages are RSC-first.
 
 ## The docs consume built registry output
@@ -39,13 +40,28 @@ machine interface (registry routes, llms surfaces, search, OG).
 Live preview → install (**both commands** — `kuhaku add` and `shadcn add @kuhaku/…`) → usage →
 **API table generated from the TypeScript source** (types and docs cannot disagree) → **Motion
 behavior** (Tier 2: the quantified motion behavior restated; Tier 3: the stillness statement) → Accessibility
-(the contract + its Playwright matrix link) → Examples gallery → Related (the disambiguation lines).
-Animated (Tier 1) pages foreground the tuning props instead of the API table.
+(the contract + its axe matrix link) → Examples gallery → Related (the disambiguation lines).
+Animated (Tier 1) pages foreground the tuning props instead of the API table. Related appears once
+a related component has a page.
+
+Pages live at `content/docs/components/<item>.mdx`; `button.mdx` is the reference. The template's
+parts are MDX components keyed by registry item name:
+
+| Component                         | Renders                                                      |
+| --------------------------------- | ------------------------------------------------------------ |
+| `<InstallCommand name="..." />`   | Package manager × door picker, choice kept in `localStorage` |
+| `<ApiTable name="..." />`         | The exported `<Name>Props`, read from `installed/ui/<item>/` |
+| `<ComponentPreview name="..." />` | A demo beside its source; entry in `DEMOS`                   |
+
+`<ApiTable>` and `<InstallCommand>` are expanded by remark plugins (`lib/remark-api-table.ts`,
+`lib/remark-install-command.ts`), so the build fails on an unknown item name or a public prop
+with no JSDoc, and `/llms.mdx` gets the props as a Markdown table and both npm install commands.
 
 ## Machine surfaces are first-class
 
-Keep these working: `/r/[name].json` (registry, static files from `public/r`), `/llms.txt`, `/llms-full.txt`, per-page
-`/llms.mdx`, `/api/search`, and the OG image routes. They already scaffold in `app/`.
+Keep these working: `/r/[name].json` (registry, static files from `public/r`), `/llms.txt`,
+`/llms-full.txt`, per-page `/llms.mdx/docs/<slug>/content.md`, `/api/search`, and the OG image
+routes.
 
 ## The docs obey their own foundations
 
