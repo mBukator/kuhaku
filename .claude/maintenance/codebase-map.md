@@ -9,7 +9,7 @@ resolved.
 
 | Path                     | Purpose                                                        |
 | ------------------------ | -------------------------------------------------------------- |
-| `turbo.json`             | Turbo task graph (build/dev/lint/typecheck)                    |
+| `turbo.json`             | Turbo task graph (build/dev/lint/typecheck/test)               |
 | `tsconfig.base.json`     | Shared TS config (strict, ES2022, bundler)                     |
 | `package.json`           | Workspaces + root scripts; dev tooling incl. `merlin-commit`   |
 | `.prettierrc`            | Formatting: 4-space, double quotes, 90 cols, import sort       |
@@ -60,24 +60,28 @@ resolved.
 
 ## `apps/docs`
 
-| Path                          | Purpose                                                              |
-| ----------------------------- | -------------------------------------------------------------------- |
-| `app/`                        | App Router: docs, home, llms, OG, search                             |
-| `public/r/`                   | Built registry output, served as static `/r/[name].json` (committed) |
-| `scripts/install-registry.ts` | Validates `public/r` and writes it to the gitignored `installed/`    |
-| `content/docs/`               | MDX content                                                          |
-| `source.config.ts`            | Fumadocs collections + schemas                                       |
-| `lib/`                        | `source.ts` (loader), layout config                                  |
-| `components/mdx.tsx`          | MDX component overrides                                              |
-| `spec/kuhaku-spec.md`         | The full v1.0 design specification                                   |
+| Path                            | Purpose                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `app/`                          | App Router: docs, home, llms, OG, search                                                         |
+| `public/r/`                     | Built registry output, served as static `/r/[name].json` (committed)                             |
+| `scripts/install-registry.ts`   | Validates `public/r` and writes it to the gitignored `installed/`                                |
+| `content/docs/components/`      | One MDX page per component, `index.mdx` and `meta.json` sections                                 |
+| `source.config.ts`              | Fumadocs collections, schemas and the two remark plugins                                         |
+| `lib/`                          | `source.ts` (loader), layout config, API reference reader, install command model, remark plugins |
+| `components/mdx.tsx`            | MDX components available without imports                                                         |
+| `components/InstallCommand.tsx` | Package manager × door install picker                                                            |
+| `components/playground/`        | `ComponentPreview` and its `PreviewFrame`                                                        |
+| `components/demos/`             | Example demos per component, registered in `DEMOS`                                               |
+| `e2e/`                          | Playwright specs against the production build, one per component page                            |
+| `playwright.config.ts`          | Chromium only; starts `next start` on port 3100                                                  |
+| `spec/kuhaku-spec.md`           | The full v1.0 design specification                                                               |
 
 ---
 
 ## Open items (deferred, tracked so they are not forgotten)
 
-- Standalone Playwright (`@playwright/test`) for E2E against docs pages lands with the first docs
-  component page. Keyboard contracts already run in Vitest Browser Mode. Visual-regression
-  screenshots stay deferred (spec, QA & audit).
+- Visual-regression screenshots stay deferred (spec, QA & audit). Docs E2E and the Vitest
+  keyboard contracts assert behavior, not pixels.
 - knip is a manual check for now. `bun run knip` reports expected scaffold items (the `cn` util,
   fumadocs exports) until feature code exists; it is not a `pre-push` gate yet. Wire it into
   `pre-push`/CI once components land.

@@ -6,6 +6,8 @@
 
 # test & build
 /coverage
+/playwright-report
+/test-results
 /.next/
 /out/
 /build

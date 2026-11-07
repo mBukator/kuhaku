@@ -13,8 +13,8 @@ infrastructure. The design intent is fully specified in `apps/docs/spec/kuhaku-s
 
 ## Status as of 2026-11-03
 
-The registry has its items and its pipeline, and the docs install its built output, but it has no
-docs pages yet. Read the workflow with this in mind:
+The registry has its items, its pipeline and its first docs page. Read the workflow with this in
+mind:
 
 - `registry.json` declares seven items: `cn` and `motion` (`registry:lib`), `use-confirmation-hold`
   (`registry:hook`), and `swap`, `spinner`, `checkmark` and `button` (`registry:component`).
@@ -32,12 +32,13 @@ docs pages yet. Read the workflow with this in mind:
   each target placeholder the way shadcn's default aliases do. Docs code imports them through
   `@/components/ui/*`, `@/lib/*` and `@/hooks/*`, like an adopter. This proves the payload, not
   the import rewriting: shadcn's CLI transform is exercised once `packages/cli` shells out to it.
-- `apps/docs` has no component MDX pages yet (only `content/docs/index.mdx` and `test.mdx`) and no
-  `meta.json` navigation.
+- Button has the first component page (`content/docs/components/button.mdx`), which built the
+  template: install picker, generated API table, motion and accessibility sections,
+  demos. `content/docs/components/index.mdx` is the component index.
 - `packages/cli/src/index.ts` is a stub; `kuhaku add` does not exist yet.
 - `bun run test` runs Vitest in Browser Mode (Playwright provider, real Chromium) with the shipped
-  token CSS. Button carries a smoke test and its axe matrix; the standalone Playwright runner for
-  E2E against docs pages arrives with the first docs page.
+  token CSS, and Button carries its behavior tests and axe matrix. It also runs the docs E2E specs
+  (`apps/docs/e2e`) on `@playwright/test` against the production build.
 - The one real build in the repo is `packages/tokens/scripts/build-springs.ts`, which reads the
   spring parameters from `motion.css` and emits `springs.generated.css`. That is the pattern the
   registry build follows.
@@ -309,31 +310,35 @@ because its output lies outside the package.
 
 ## Phase 4 - document it (the docs are the integration test)
 
-Per `.claude/rules/docs.md`, live demos import from built registry output (`apps/docs/public/r`),
-never a forked copy of the source. A demo that renders proves the component installs.
+Per `.claude/rules/docs.md`, the docs consume built registry output (`apps/docs/public/r`), never
+a forked copy of the source. `bun run build` regenerates `public/r`; the docs `dev`, `build` and
+`typecheck` scripts install it into `apps/docs/installed/` first. A demo that renders proves the
+component installs.
 
-4.1 Demo component. Author it in `apps/docs/components/`, importing the component from the built
-output. Register it in `apps/docs/components/mdx.tsx` (`getMDXComponents`) so MDX can use it without
-an import.
+4.1 Demos. One file per example in `apps/docs/components/demos/<item>/` (`button/AsyncSubmit.tsx`),
+importing the component the way an adopter does (`@/components/ui/button`). Register it in `DEMOS`
+(`components/demos/index.ts`) as `<item>-<example>`; `<ComponentPreview name="button-async-submit" />`
+renders it beside its source, read from the same file.
 
-4.2 Component page. An MDX file in `apps/docs/content/docs/` following the fixed template: live
-preview, then install with both doors (`kuhaku add button` and `shadcn add @kuhaku/button`), then
-usage, then an API table generated from the TypeScript source (types and docs cannot disagree), then
-Motion behavior (Tier 2: the quantified behavior restated; Tier 3: the stillness statement), then
-Accessibility (the contract plus its Playwright matrix link), then an Examples gallery, then Related
-(the disambiguation lines). Tier 1 pages foreground the tuning props instead of an API table.
+4.2 Component page. `content/docs/components/<item>.mdx`, in the fixed template order: lead
+sentence; Installation (`<InstallCommand name="button" />`, both doors under each
+package manager); Usage; API reference (`<ApiTable name="button" />`); Motion behavior (Tier 2:
+the quantified behavior restated; Tier 3: the stillness statement); Accessibility (the contract
+plus a link to its axe matrix); Examples (`<ComponentPreview />` demos); Related (the
+disambiguation lines, as Fumadocs `<Cards>`, once a related component has a page). Tier 1 pages
+foreground the tuning props instead of an API table. `<ApiTable>` and `<InstallCommand>` are
+remark plugins: the build fails on an unknown item name and on a public prop with no JSDoc.
 
-4.3 Navigation. Add or adjust `meta.json` in `content/docs/` (Fumadocs ordering, `---Section---`
-separators, `...` for the rest). The collection is already defined in `apps/docs/source.config.ts`
-(the `docs` collection, `pageSchema`/`metaSchema`).
+4.3 Navigation and index. Add the page to its section in `content/docs/components/meta.json`
+(`---Section---` separators, the spec's Part 7 groupings) and a `<Card>` to that section of
+`content/docs/components/index.mdx`.
 
 4.4 The page obeys its own foundations - 96px section rhythm, 65ch prose, dark by default. A docs
 page that violates a foundation falsifies the book it hosts.
 
-First-component infrastructure: the component-page template/layout and the component index get
-built here the first time. Next.js already serves `public/r/*.json` at `/r/[name].json`, the machine
-surface and the ecosystem install door, without a route handler. The `/llms.txt`,
-`/llms-full.txt`, and search surfaces already scaffold in `app/`.
+Next.js serves `public/r/*.json` at `/r/[name].json`, the machine surface and the ecosystem install
+door, without a route handler. Each page also serves its Markdown at
+`/llms.mdx/docs/<slug>/content.md`, where `<InstallCommand>` becomes the two npm commands.
 
 ---
 
@@ -349,8 +354,10 @@ component carries:
 - its contract: roles, accessible names, `data-state`, focus behavior;
 - its APG keyboard contract through `userEvent`, which sends real Playwright key events.
 
-Run `bun run test` (Vitest on Node, never `bun run --bun vitest`). End-to-end specs against the
-docs pages run on standalone Playwright once those pages exist.
+The page itself gets E2E specs in `apps/docs/e2e/<item>.spec.ts`: the install picker today, run
+on `@playwright/test` against the production docs build.
+
+Run `bun run test` (Vitest on Node, never `bun run --bun vitest`); it runs both suites.
 
 ---
 
@@ -408,5 +415,6 @@ templated MDX page plus `meta.json`, test (axe matrix, contract and keyboard in 
 the five gates, then branch, conventional commit with a body, and open a PR from the template, and update the
 codebase map.
 
-The current asterisk: the registry pipeline and the test stack exist, but the docs component-page
-template does not yet; Button's page builds it.
+The current asterisk: the registry pipeline, the test stack and the component-page template exist,
+but the CLI does not. `npx kuhaku add` fails until `packages/cli` lands, and shadcn's import
+rewriting stays untested until then.
