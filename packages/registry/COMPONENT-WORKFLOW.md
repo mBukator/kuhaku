@@ -335,8 +335,10 @@ foreground the tuning props instead of an API table. `<ApiTable>` and `<InstallC
 remark plugins: the build fails on an unknown item name and on a public prop with no JSDoc.
 
 4.4 Navigation and index. Add the page to its section in `content/docs/components/meta.json`
-(`---Section---` separators, the spec's Part 7 groupings) and a `<Card>` to that section of
-`content/docs/components/index.mdx`.
+(`---Section---` separators, the spec's Part 7 groupings). The component index
+(`<ComponentIndex />` in `content/docs/components/index.mdx`) reads the same file, so the page
+joins the index with no further edit; the build fails when `meta.json` lists a page with no MDX
+file or no built registry item.
 
 4.5 The page obeys its own foundations - 96px section rhythm, 65ch prose, dark by default. A docs
 page that violates a foundation falsifies the book it hosts.
