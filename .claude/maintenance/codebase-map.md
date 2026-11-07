@@ -70,7 +70,7 @@ resolved.
 | `lib/`                          | `source.ts` (loader), layout config, API reference reader, install command model, remark plugins |
 | `components/mdx.tsx`            | MDX components available without imports                                                         |
 | `components/InstallCommand.tsx` | Package manager × door install picker                                                            |
-| `components/playground/`        | `ComponentPreview` and its `PreviewFrame`                                                        |
+| `components/playground/`        | `ComponentPlayground`, `ComponentPreview` and one entry per component                            |
 | `components/demos/`             | Example demos per component, registered in `DEMOS`                                               |
 | `e2e/`                          | Playwright specs against the production build, one per component page                            |
 | `playwright.config.ts`          | Chromium only; starts `next start` on port 3100                                                  |

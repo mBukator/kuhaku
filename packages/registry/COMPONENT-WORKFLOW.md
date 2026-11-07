@@ -33,7 +33,7 @@ mind:
   `@/components/ui/*`, `@/lib/*` and `@/hooks/*`, like an adopter. This proves the payload, not
   the import rewriting: shadcn's CLI transform is exercised once `packages/cli` shells out to it.
 - Button has the first component page (`content/docs/components/button.mdx`), which built the
-  template: install picker, generated API table, motion and accessibility sections,
+  template: playground, install picker, generated API table, motion and accessibility sections,
   demos. `content/docs/components/index.mdx` is the component index.
 - `packages/cli/src/index.ts` is a stub; `kuhaku add` does not exist yet.
 - `bun run test` runs Vitest in Browser Mode (Playwright provider, real Chromium) with the shipped
@@ -320,8 +320,13 @@ importing the component the way an adopter does (`@/components/ui/button`). Regi
 (`components/demos/index.ts`) as `<item>-<example>`; `<ComponentPreview name="button-async-submit" />`
 renders it beside its source, read from the same file.
 
-4.2 Component page. `content/docs/components/<item>.mdx`, in the fixed template order: lead
-sentence; Installation (`<InstallCommand name="button" />`, both doors under each
+4.2 Playground. A client entry in `components/playground/entries/` (`ButtonPlayground.tsx`),
+registered in `PLAYGROUND_ENTRIES` (`components/playground/ComponentPlayground.tsx`) under the
+item name. `<ComponentPlayground name="button" />` passes it the props read from the installed
+source, so a union value added to the props type reaches the controls with no docs edit.
+
+4.3 Component page. `content/docs/components/<item>.mdx`, in the fixed template order: lead
+sentence and playground; Installation (`<InstallCommand name="button" />`, both doors under each
 package manager); Usage; API reference (`<ApiTable name="button" />`); Motion behavior (Tier 2:
 the quantified behavior restated; Tier 3: the stillness statement); Accessibility (the contract
 plus a link to its axe matrix); Examples (`<ComponentPreview />` demos); Related (the
@@ -329,11 +334,11 @@ disambiguation lines, as Fumadocs `<Cards>`, once a related component has a page
 foreground the tuning props instead of an API table. `<ApiTable>` and `<InstallCommand>` are
 remark plugins: the build fails on an unknown item name and on a public prop with no JSDoc.
 
-4.3 Navigation and index. Add the page to its section in `content/docs/components/meta.json`
+4.4 Navigation and index. Add the page to its section in `content/docs/components/meta.json`
 (`---Section---` separators, the spec's Part 7 groupings) and a `<Card>` to that section of
 `content/docs/components/index.mdx`.
 
-4.4 The page obeys its own foundations - 96px section rhythm, 65ch prose, dark by default. A docs
+4.5 The page obeys its own foundations - 96px section rhythm, 65ch prose, dark by default. A docs
 page that violates a foundation falsifies the book it hosts.
 
 Next.js serves `public/r/*.json` at `/r/[name].json`, the machine surface and the ecosystem install
@@ -354,8 +359,8 @@ component carries:
 - its contract: roles, accessible names, `data-state`, focus behavior;
 - its APG keyboard contract through `userEvent`, which sends real Playwright key events.
 
-The page itself gets E2E specs in `apps/docs/e2e/<item>.spec.ts`: the install picker today, run
-on `@playwright/test` against the production docs build.
+The page itself gets E2E specs in `apps/docs/e2e/<item>.spec.ts`: playground controls, URL sync,
+copy and the install picker, run on `@playwright/test` against the production docs build.
 
 Run `bun run test` (Vitest on Node, never `bun run --bun vitest`); it runs both suites.
 
