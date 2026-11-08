@@ -66,7 +66,7 @@ resolved.
 | `public/r/`                     | Built registry output, served as static `/r/[name].json` (committed)                             |
 | `scripts/install-registry.ts`   | Validates `public/r` and writes it to the gitignored `installed/`                                |
 | `content/docs/components/`      | One MDX page per component, `index.mdx` and `meta.json` sections                                 |
-| `source.config.ts`              | Fumadocs collections, schemas and the two remark plugins                                         |
+| `source.config.ts`              | Fumadocs collections, schemas and the remark plugins                                             |
 | `lib/`                          | `source.ts` (loader), layout config, API reference reader, install command model, remark plugins |
 | `components/mdx.tsx`            | MDX components available without imports                                                         |
 | `components/InstallCommand.tsx` | Package manager × door install picker                                                            |

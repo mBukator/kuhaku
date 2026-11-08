@@ -58,6 +58,12 @@ parts are MDX components keyed by registry item name:
 `lib/remark-install-command.ts`), so the build fails on an unknown item name or a public prop
 with no JSDoc, and `/llms.mdx` gets the props as a Markdown table and both npm install commands.
 
+The component index (`content/docs/components/index.mdx`) is `<ComponentIndex />`, expanded by
+`lib/remark-component-index.ts` into one heading and one dense list of names per category, in
+the order `components/meta.json` gives the sidebar. A page added there joins the index with no
+edit, each category gets a table-of-contents entry, and the build fails on a listed page with no
+MDX file or no built registry item.
+
 ## Machine surfaces are first-class
 
 Keep these working: `/r/[name].json` (registry, static files from `public/r`), `/llms.txt`,
