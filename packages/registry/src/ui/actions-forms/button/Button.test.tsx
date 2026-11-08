@@ -1,10 +1,23 @@
 import type { ActionState } from "@/hooks/use-confirmation-hold";
+import { Plus } from "lucide-react";
 import { afterEach, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
 import { userEvent } from "vitest/browser";
 
 import { Button } from "./Button";
-import type { ButtonRenderProps } from "./types";
+import { buttonVariants } from "./button-variants";
+import type { ButtonProps, ButtonRenderProps } from "./types";
+
+type ButtonSize = NonNullable<ButtonProps["size"]>;
+
+const SIZES = Object.keys({
+    sm: true,
+    md: true,
+    lg: true,
+    "icon-sm": true,
+    icon: true,
+    "icon-lg": true,
+} satisfies Record<ButtonSize, true>) as ButtonSize[];
 
 const STATES = Object.keys({
     idle: true,
@@ -25,6 +38,8 @@ const ACTIVATION_CASES = [
 
 const CONFIRMATIONS = ["success", "error"] as const;
 
+const INDICATOR_STATES = ["loading", ...CONFIRMATIONS] as const;
+
 const CONFIRMATION_HOLD_MILLISECONDS = 1500;
 
 /**
@@ -37,6 +52,15 @@ function waitForFrames(): Promise<void> {
             requestAnimationFrame(() => resolve());
         });
     });
+}
+
+/** Returns the rendered size of the first svg inside an element, in CSS pixels. */
+function measureIcon(container: Element): { width: number; height: number } {
+    const icon = container.querySelector("svg");
+    if (icon === null) throw new Error("expected an svg inside the element");
+
+    const { width, height } = icon.getBoundingClientRect();
+    return { width, height };
 }
 
 afterEach(() => {
@@ -200,4 +224,50 @@ test.each(CONFIRMATIONS)("returns to idle 1.5s after %s", async (state) => {
     vi.advanceTimersByTime(1);
     await waitForFrames();
     expect(button.element()).toHaveAttribute("data-state", "idle");
+});
+
+test.each(SIZES)("renders an unsized icon at 16px in a %s button", async (size) => {
+    const screen = await render(
+        <Button size={size} aria-label="Add item">
+            <Plus />
+        </Button>
+    );
+    const button = screen.getByRole("button", { name: "Add item" });
+
+    expect(measureIcon(button.element())).toEqual({ width: 16, height: 16 });
+});
+
+test.each(INDICATOR_STATES)(
+    "renders the %s indicator at the 16px slot size",
+    async (state) => {
+        const screen = await render(<Button state={state}>Save</Button>);
+        const button = screen.getByRole("button", { name: "Save" });
+
+        await expect
+            .poll(() => measureIcon(button.element()))
+            .toEqual({ width: 16, height: 16 });
+    }
+);
+
+test("keeps an icon's own size class", async () => {
+    const screen = await render(
+        <Button size="icon" aria-label="Add item">
+            <Plus className="size-5" />
+        </Button>
+    );
+    const button = screen.getByRole("button", { name: "Add item" });
+
+    expect(measureIcon(button.element())).toEqual({ width: 20, height: 20 });
+});
+
+test("styles a link as a 40px button by default", async () => {
+    const screen = await render(
+        <a href="/docs/components" className={buttonVariants()}>
+            Browse components
+        </a>
+    );
+    const link = screen.getByRole("link", { name: "Browse components" });
+
+    await expect.element(link).toBeVisible();
+    expect(link.element().getBoundingClientRect().height).toBe(40);
 });

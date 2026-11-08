@@ -5,6 +5,7 @@ import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 
 import { Button } from "./Button";
+import { buttonVariants } from "./button-variants";
 import type { ButtonProps } from "./types";
 
 type ButtonVariant = NonNullable<ButtonProps["variant"]>;
@@ -35,6 +36,19 @@ describe.each(COLOR_MODES)("Button in %s mode", (mode) => {
             <Button variant={variant} state={state}>
                 Save
             </Button>
+        );
+
+        expect(await runAxe(screen.container)).toHaveNoViolations();
+    });
+});
+
+describe.each(COLOR_MODES)("buttonVariants on a link in %s mode", (mode) => {
+    test.each(VARIANTS)("%s has no axe violations", async (variant) => {
+        applyColorMode(mode);
+        const screen = await render(
+            <a href="/docs/components" className={buttonVariants({ variant })}>
+                Browse components
+            </a>
         );
 
         expect(await runAxe(screen.container)).toHaveNoViolations();

@@ -567,3 +567,54 @@ test.describe("install picker", () => {
         );
     });
 });
+
+test.describe("examples", () => {
+    function getLinkDemo(page: Page): Locator {
+        return page.getByRole("link", { name: "Browse components", exact: true });
+    }
+
+    test("the link styled as a button stays a link at 48px", async ({ page }) => {
+        await page.goto(PAGE_PATH);
+        const link = getLinkDemo(page);
+
+        await expect(link).toBeVisible();
+        await expect(link).toHaveAttribute("href", "/docs/components");
+        await expect(
+            page.getByRole("button", { name: "Browse components", exact: true })
+        ).toHaveCount(0);
+        expect((await link.boundingBox())?.height).toBe(48);
+    });
+
+    test("the link styled as a button shows the focus ring", async ({ page }) => {
+        await page.goto(PAGE_PATH);
+        const link = getLinkDemo(page);
+        const readRingOpacity = (): Promise<string> =>
+            link.evaluate((element) => getComputedStyle(element, "::after").opacity);
+
+        expect(await readRingOpacity()).toBe("0");
+        // A key press first, so the scripted focus counts as keyboard focus.
+        await page.keyboard.press("Tab");
+        await link.focus();
+
+        await expect.poll(readRingOpacity).toBe("1");
+    });
+
+    test("Enter on the link styled as a button navigates", async ({ page }) => {
+        await page.goto(PAGE_PATH);
+
+        await getLinkDemo(page).focus();
+        await page.keyboard.press("Enter");
+
+        await expect(page).toHaveURL(/\/docs\/components$/);
+    });
+
+    test("the icon-only demo renders its icon at 16px", async ({ page }) => {
+        await page.goto(PAGE_PATH);
+        const icon = page
+            .getByRole("button", { name: "Add item", exact: true })
+            .locator("svg");
+
+        await expect(icon).toBeVisible();
+        expect(await icon.boundingBox()).toMatchObject({ width: 16, height: 16 });
+    });
+});
