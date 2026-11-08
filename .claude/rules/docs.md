@@ -47,11 +47,12 @@ a related component has a page.
 Pages live at `content/docs/components/<item>.mdx`; `button.mdx` is the reference. The template's
 parts are MDX components keyed by registry item name:
 
-| Component                         | Renders                                                      |
-| --------------------------------- | ------------------------------------------------------------ |
-| `<InstallCommand name="..." />`   | Package manager × door picker, choice kept in `localStorage` |
-| `<ApiTable name="..." />`         | The exported `<Name>Props`, read from `installed/ui/<item>/` |
-| `<ComponentPreview name="..." />` | A demo beside its source; entry in `DEMOS`                   |
+| Component                            | Renders                                                        |
+| ------------------------------------ | -------------------------------------------------------------- |
+| `<ComponentPlayground name="..." />` | Controls, live preview and code; entry in `PLAYGROUND_ENTRIES` |
+| `<InstallCommand name="..." />`      | Package manager × door picker, choice kept in `localStorage`   |
+| `<ApiTable name="..." />`            | The exported `<Name>Props`, read from `installed/ui/<item>/`   |
+| `<ComponentPreview name="..." />`    | A demo beside its source; entry in `DEMOS`                     |
 
 `<ApiTable>` and `<InstallCommand>` are expanded by remark plugins (`lib/remark-api-table.ts`,
 `lib/remark-install-command.ts`), so the build fails on an unknown item name or a public prop

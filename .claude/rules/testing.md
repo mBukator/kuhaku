@@ -36,7 +36,8 @@ in a browser, with the shipped token CSS, never against jsdom's imitation of lay
   from `packages/registry` serves both; keep `bun.lock` at a single `playwright-core`.
 - An empty `e2e/` fails the run with "No tests found". That is deliberate.
 - Query with `getByRole(role, { name, exact: true })`. A name that repeats on the page needs a
-  scope, such as the group that holds it.
+  scope: the playground preview and the demos all render "Save changes", and the controls live in
+  the `Customize` region.
 - A failed CI run uploads the HTML report and traces as the `playwright-report` artifact.
 
 ## Layout
