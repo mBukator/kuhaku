@@ -34,14 +34,35 @@ Set `state` to report the action. `loading` lasts until you change it; `success`
 ```
 
 <Callout title="Navigation uses a link element">
-    A link rendered through `render` announces as a button. Navigate with `<a href>` or your router's link component.
+    A link rendered through `render` announces as a button. Navigate with `<a href>` or your router's link component, styled with `buttonVariants`.
 </Callout>
+
+### Links styled as buttons
+
+`buttonVariants` returns Button's classes for any element, so a link looks like a button and still announces as a link.
+
+```tsx
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+
+<Link href="/pricing" className={buttonVariants({ variant: "secondary", size: "lg" })}>
+    See pricing
+</Link>;
+```
+
+The link takes the surface, hover tint and focus ring. Press and lift stay with Button: a link confirms by navigating. Its touch target is its own height, so use `lg` where touch comes first.
+
+### Icons
+
+An icon without a `size-*` class renders at 16px in every size, the same box as the state indicators, so a state change replaces it in place. Give the icon a `size-*` class to keep another size; Lucide's `size` prop and `h-*`/`w-*` classes are overridden.
 
 ## API reference
 
 <ApiTable name="button" />
 
 Button accepts every `<button>` attribute except `onAnimationStart`, `onDrag`, `onDragStart` and `onDragEnd`, which motion claims for its own events.
+
+`buttonVariants({ variant, size })` takes the same `variant` and `size` values, defaults to `primary` and `md`, and returns a class string.
 
 ## Motion behavior
 
@@ -69,7 +90,7 @@ Reduced motion and strict mode cut every transition to instant. The spinner keep
 | `Tab`             | Moves focus to the button, skipping disabled ones |
 | `Enter` / `Space` | Activates the button                              |
 
-[80 axe checks across 5 variants, 4 states and 4 color modes](https://github.com/mBukator/kuhaku/blob/main/packages/registry/src/ui/actions-forms/button/Button.axe.test.tsx).
+[100 axe checks: 5 variants, 4 states and 4 color modes, plus each variant on a link in each mode](https://github.com/mBukator/kuhaku/blob/main/packages/registry/src/ui/actions-forms/button/Button.axe.test.tsx).
 
 ## Examples
 
@@ -90,3 +111,9 @@ One primary action beside a secondary one, 8px apart.
 `size="icon"` with an `aria-label`.
 
 <ComponentPreview name="button-icon-only" />
+
+### Link styled as a button
+
+Next's `Link` styled with `buttonVariants` at `lg`, a 48px touch target.
+
+<ComponentPreview name="button-link" />

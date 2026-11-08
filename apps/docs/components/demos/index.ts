@@ -3,6 +3,7 @@ import type { ComponentType } from "react";
 import { ActionGroup } from "./button/ActionGroup";
 import { AsyncSubmit } from "./button/AsyncSubmit";
 import { IconOnly } from "./button/IconOnly";
+import { LinkAsButton } from "./button/LinkAsButton";
 
 type Demo = {
     /** The demo rendered in the Preview tab. */
@@ -24,6 +25,10 @@ export const DEMOS = {
     "button-icon-only": {
         component: IconOnly,
         sourcePath: "button/IconOnly.tsx",
+    },
+    "button-link": {
+        component: LinkAsButton,
+        sourcePath: "button/LinkAsButton.tsx",
     },
 } satisfies Record<string, Demo>;
 
