@@ -94,8 +94,13 @@ function checkFiles(item: RegistryItem, packageRoot: string): string[] {
             return [`${item.name}: ${file.path} resolves outside packages/registry`];
         }
         const violations: string[] = [];
-        if (!existsSync(resolve(packageRoot, file.path))) {
+        const sourcePath = resolve(packageRoot, file.path);
+        if (!existsSync(sourcePath)) {
             violations.push(`${item.name}: ${file.path} does not exist`);
+        } else if (readFileSync(sourcePath, "utf8").includes("\r\n")) {
+            violations.push(
+                `${item.name}: ${file.path} has CRLF line endings; save it with LF, or the inlined content differs from CI's LF checkout`
+            );
         }
         if (
             !TARGET_PLACEHOLDERS.some((placeholder) =>
