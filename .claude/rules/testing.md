@@ -44,6 +44,8 @@ in a browser, with the shipped token CSS, never against jsdom's imitation of lay
 
 - Tests sit next to their source: `Button.tsx`, `Button.test.tsx`. The registry build reads only
   the paths `registry.json` declares, so a test file never ships.
+- Token pair audits live in `packages/registry/test/token-contrast.test.ts`: `packages/tokens` has
+  no runner, and the registry harness already loads the shipped token CSS.
 - Harness code lives in `packages/registry/test/` and is imported through the `#test/*` subpath
   (`import { runAxe } from "#test/axe"`), never through `@/`, which is the adopter's alias space.
 - `test/setup.ts` loads `test/styles.css` (the token layer plus `@source "../src"`), registers

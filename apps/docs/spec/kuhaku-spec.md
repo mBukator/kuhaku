@@ -120,7 +120,7 @@ One ramp serves both modes; the modes differ only in which steps the semantic la
 | `--neutral-200` | 0.925 | 0.004 | 95 | Light borders |
 | `--neutral-300` | 0.87 | 0.005 | 95 | Light input borders |
 | `--neutral-400` | 0.71 | 0.006 | 95 | Dark-mode muted foreground |
-| `--neutral-500` | 0.56 | 0.006 | 95 | Light muted foreground |
+| `--neutral-500` | 0.53 | 0.006 | 95 | Light muted foreground |
 | `--neutral-600` | 0.45 | 0.005 | 95 | Strong secondary text |
 | `--neutral-700` | 0.37 | 0.005 | 95 | Reserved (icons, tertiary) |
 | `--neutral-800` | 0.28 | 0.004 | 95 | Dark-mode hover wash (`--accent`) |
@@ -209,7 +209,7 @@ Ordering interleaves warm and cool so adjacent series maximize hue distance. Col
 
 ## Contrast audit notes
 
-The normative floor is WCAG 2.2 AA, verified in sRGB luminance after OKLCH → sRGB conversion, because that is the space the WCAG arithmetic lives in. The standing pairs: `foreground`/`background` exceeds 12:1 in both modes — headroom, not compliance, because body text is where generosity costs nothing. `muted-foreground` clears 4.5:1 against both `background` and `muted` in both modes (neutral-500 on warm white ≈ 4.7:1; neutral-400 on 0.145 ≈ 6.5:1) — muted text that fails on muted surfaces is the most common audit hole in shipped systems, so Kuhaku audits the pair, not the token. Every `-foreground` clears 4.5:1 on its base at the values above, with dark-mode destructive flipping to dark text precisely because L 0.69 red cannot carry white at AA. Non-text contrast (WCAG 1.4.11) is handled honestly: decorative hairlines are exempt and Kuhaku's default borders are decorative; the boundaries that *must* meet 3:1 — input borders against background, focus indication — are carried by `--input` (passing in light; the 16% alpha hairline in dark is reinforced by the field's surface-level shift) and by `--ring`, audited as the load-bearing focus indicator in both modes. The AAA story (`data-a11y="strict"` swapping muted-foreground and ring for 7:1-capable values) is specified in Part 6.
+The normative floor is WCAG 2.2 AA, verified in sRGB luminance after OKLCH → sRGB conversion, because that is the space the WCAG arithmetic lives in. The standing pairs: `foreground`/`background` exceeds 12:1 in both modes — headroom, not compliance, because body text is where generosity costs nothing. `muted-foreground` clears 4.5:1 against both `background` and `muted` in both modes (neutral-500 holds 4.74:1 on `muted` and 5.03:1 on `background`, which is why it sits at L 0.53: at 0.56 it measured 4.21:1 on `muted`; neutral-400 holds 5.64:1 at its lowest, on the `accent` hover wash) — muted text that fails on muted surfaces is the most common audit hole in shipped systems, so Kuhaku audits the pair, not the token. Every `-foreground` clears 4.5:1 on its base at the values above, with dark-mode destructive flipping to dark text precisely because L 0.69 red cannot carry white at AA. Non-text contrast (WCAG 1.4.11) is handled honestly: decorative hairlines are exempt and Kuhaku's default borders are decorative; the boundaries that *must* meet 3:1 — input borders against background, focus indication — are carried by `--input` (passing in light; the 16% alpha hairline in dark is reinforced by the field's surface-level shift) and by `--ring`, audited as the load-bearing focus indicator in both modes. The AAA story (`data-a11y="strict"` swapping muted-foreground and ring for 7:1-capable values) is specified in Part 6.
 
 ## Token naming conventions
 
@@ -531,8 +531,8 @@ Strict mode is one attribute on the root (`<html data-a11y="strict">`), implemen
 
 | Token | Standard | Strict | Effect |
 |---|---|---|---|
-| `--muted-foreground` (light) | neutral-500 | oklch(0.40 0.005 95) | 7.2:1 on `background` and `muted` |
-| `--muted-foreground` (dark) | neutral-400 | oklch(0.78 0.005 95) | 7.4:1 on dark surfaces |
+| `--muted-foreground` (light) | neutral-500 | oklch(0.40 0.005 95) | 8.28:1 at its lowest, on `muted` |
+| `--muted-foreground` (dark) | neutral-400 | oklch(0.78 0.005 95) | 7.27:1 at its lowest, on the `accent` hover wash |
 | `--destructive` (light) | L 0.55 | oklch(0.44 0.19 27) | 7:1-capable as text; fill keeps white fg at 7:1 |
 | `--destructive-hover` (light) | oklch(0.50 0.20 27) | oklch(0.43 0.19 27) | 8.58:1 against `--destructive-foreground`, one lightness step below the strict fill |
 | `--destructive-hover` (dark) | oklch(0.64 0.19 25) | oklch(0.72 0.14 25) | 7.51:1 against `--destructive-foreground`, one lightness step below the strict fill |
