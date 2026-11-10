@@ -158,7 +158,7 @@ function ControlRow({
 
     return (
         <div className="flex min-h-12 items-center justify-between gap-4 rounded-lg bg-secondary py-2 pr-2 pl-4">
-            <label htmlFor={inputId} className="truncate text-sm text-foreground/70">
+            <label htmlFor={inputId} className="truncate text-sm text-muted-foreground">
                 {control.name}
             </label>
             <ControlInput

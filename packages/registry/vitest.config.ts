@@ -11,7 +11,7 @@ export default defineConfig({
         dedupe: ["react", "react-dom"],
     },
     test: {
-        include: ["src/**/*.test.{ts,tsx}"],
+        include: ["src/**/*.test.{ts,tsx}", "test/**/*.test.ts"],
         setupFiles: ["./test/setup.ts"],
         browser: {
             enabled: true,
