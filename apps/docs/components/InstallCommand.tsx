@@ -8,6 +8,7 @@ import {
     toInstallPreference,
     type InstallPreference,
 } from "@/lib/install-command";
+import { CODE_THEMES } from "@/lib/shared";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { useId, useSyncExternalStore } from "react";
 
@@ -147,6 +148,7 @@ export function InstallCommand({ name }: InstallCommandProps): React.JSX.Element
             <DynamicCodeBlock
                 lang="bash"
                 code={command}
+                options={{ themes: CODE_THEMES }}
                 codeblock={{
                     className: "my-0 -mx-px -mb-px rounded-t-none bg-fd-secondary",
                 }}

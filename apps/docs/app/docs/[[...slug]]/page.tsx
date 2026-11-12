@@ -1,5 +1,5 @@
 import { getMDXComponents } from "@/components/mdx";
-import { gitConfig } from "@/lib/shared";
+import { DOCS_CONTENT_DIRECTORY, gitConfig } from "@/lib/shared";
 import { getPageImageUrl, getPageMarkdownUrl, source } from "@/lib/source";
 import {
     DocsBody,
@@ -29,7 +29,7 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
                 <MarkdownCopyButton markdownUrl={markdownUrl} />
                 <ViewOptionsPopover
                     markdownUrl={markdownUrl}
-                    githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/content/docs/${page.path}`}
+                    githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/${gitConfig.docsAppDirectory}/${DOCS_CONTENT_DIRECTORY}/${page.path}`}
                 />
             </div>
             <DocsBody>
