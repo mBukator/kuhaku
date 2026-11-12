@@ -1,3 +1,4 @@
+import { CODE_THEMES } from "@/lib/shared";
 import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 import type { ReactNode } from "react";
@@ -21,7 +22,11 @@ export function PreviewFrame({ children, code }: PreviewFrameProps): React.JSX.E
                 </div>
             </Tab>
             <Tab value={CODE_TAB}>
-                <DynamicCodeBlock lang="tsx" code={code} />
+                <DynamicCodeBlock
+                    lang="tsx"
+                    code={code}
+                    options={{ themes: CODE_THEMES }}
+                />
             </Tab>
         </Tabs>
     );

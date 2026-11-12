@@ -18,6 +18,7 @@ const SELECT_NAMES = ["variant", "size", "state"] as const;
 const STORAGE_KEY = "kuhaku-install-preference";
 const HYDRATION_ERROR_PATTERN = /hydrat|#418|#423|#425/i;
 const COPY_CONFIRMATION_MILLISECONDS = 1500;
+const HIGHLIGHT_TIMEOUT_MILLISECONDS = 15_000;
 
 const INSTALL_COMMANDS = [
     { packageManager: "npm", door: "kuhaku", command: "npx kuhaku add button" },
@@ -83,7 +84,10 @@ async function openCode(page: Page): Promise<Locator> {
 async function expectSnippet(page: Page, snippet: string): Promise<void> {
     const codeBlock = await openCode(page);
 
-    await expect.poll(() => codeBlock.textContent()).toBe(snippet);
+    // Until Shiki loads its theme the block is a placeholder whose lines carry no newlines.
+    await expect
+        .poll(() => codeBlock.textContent(), { timeout: HIGHLIGHT_TIMEOUT_MILLISECONDS })
+        .toBe(snippet);
 }
 
 /** Waits out the debounced `replaceState` until the URL carries `name=value`. */
