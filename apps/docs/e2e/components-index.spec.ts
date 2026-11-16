@@ -27,14 +27,8 @@ function readCategories(): Category[] {
     return categories;
 }
 
-/**
- * A category heading. Fumadocs puts a Copy Anchor Link button inside each h2, so the
- * heading has no plain name; it is found by the anchor link it holds instead.
- */
 function getCategoryHeading(page: Page, title: string): Locator {
-    return page
-        .getByRole("heading", { level: 2 })
-        .filter({ has: page.getByRole("link", { name: title, exact: true }) });
+    return page.getByRole("heading", { level: 2, name: title, exact: true });
 }
 
 /** The list of links under a category heading; the sidebar repeats each name. */

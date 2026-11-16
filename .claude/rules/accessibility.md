@@ -43,7 +43,7 @@ follow pointer selection (no two-class interface).
 - 40px default control height (`h-10`); `sm` 32px is a dense-context tool, not a style.
 - 44px minimum touch target on coarse pointers — where the visual is smaller (checkbox, radio
   dot, slider thumb), extend the hit area with an invisible pseudo-element.
-- 8px minimum gap between adjacent interactives; 24px card padding; 96px section rhythm.
+- 8px minimum gap between adjacent interactives; 24px card padding; 96px section rhythm (64px on docs pages).
 - Never set interface text below 12px.
 
 ## Reduced motion & strict mode
