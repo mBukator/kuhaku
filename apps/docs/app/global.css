@@ -40,6 +40,22 @@
     visibility: hidden;
 }
 
+/* The TOC scroll box clips sideways; 5px of padding fits the focus ring, the margins hold the links in place. */
+#toc-title + div,
+[data-toc-popover-content] > div > div {
+    padding-inline: 5px;
+    margin-inline: -4px -5px;
+}
+
+/* A sidebar folder clips while its height animates; settled open (height auto), it lets focus rings out. The server serializes the style without the space. */
+:is(#nd-sidebar, #nd-sidebar-mobile)
+    :is(
+        [style*="--collapsible-panel-height:auto"],
+        [style*="--collapsible-panel-height: auto"]
+    ) {
+    overflow: visible;
+}
+
 :root {
     --docs-section-rhythm: calc(var(--spacing) * 16);
 }

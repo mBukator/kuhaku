@@ -7,6 +7,7 @@ import { Heading } from "./Heading";
 import { InstallCommand } from "./InstallCommand";
 import { ComponentPlayground } from "./playground/ComponentPlayground";
 import { ComponentPreview } from "./playground/ComponentPreview";
+import { ScrollCodeBlock } from "./ScrollCodeBlock";
 import { ScrollTable } from "./ScrollTable";
 
 type HeadingElementProps = ComponentProps<"h2">;
@@ -21,6 +22,7 @@ export function getMDXComponents(components?: MDXComponents) {
         h4: (props: HeadingElementProps) => <Heading as="h4" {...props} />,
         h5: (props: HeadingElementProps) => <Heading as="h5" {...props} />,
         h6: (props: HeadingElementProps) => <Heading as="h6" {...props} />,
+        pre: ScrollCodeBlock,
         table: ScrollTable,
         ComponentPlayground,
         ComponentPreview,
