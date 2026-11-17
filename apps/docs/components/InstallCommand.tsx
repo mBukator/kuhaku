@@ -1,5 +1,6 @@
 "use client";
 
+import { ScrollDynamicCodeBlock } from "@/components/ScrollCodeBlock";
 import {
     DEFAULT_INSTALL_PREFERENCE,
     INSTALL_DOORS,
@@ -8,8 +9,6 @@ import {
     toInstallPreference,
     type InstallPreference,
 } from "@/lib/install-command";
-import { CODE_THEMES } from "@/lib/shared";
-import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
 import { useId, useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "kuhaku-install-preference";
@@ -145,13 +144,10 @@ export function InstallCommand({ name }: InstallCommandProps): React.JSX.Element
                     onValueChange={(door) => writePreference({ ...preference, door })}
                 />
             </div>
-            <DynamicCodeBlock
+            <ScrollDynamicCodeBlock
                 lang="bash"
                 code={command}
-                options={{ themes: CODE_THEMES }}
-                codeblock={{
-                    className: "my-0 -mx-px -mb-px rounded-t-none bg-fd-secondary",
-                }}
+                className="-mx-px -mb-px rounded-t-none bg-fd-secondary"
             />
         </div>
     );
