@@ -1094,7 +1094,7 @@ SemVer on the registry as a whole; no cadence; release when ready — with regis
 
 The documentation site is not documentation *of* the product; for wedge two, it *is* the product. Kuhaku's bet is that a system whose reasoning is legible earns adoption that a token dump never will. The site is therefore built as three surfaces sharing one codebase: a **book** (the Foundations, written to be read in order), a **reference** (every component, exhaustively specified), and a **machine interface** (the registry routes, the llms surfaces, search, OG images — the site as consumed by CLIs and agents).
 
-The register governs all three. The docs are the first Kuhaku application, and every page is a proof: Section rhythm at 96px, Prose at 65ch, dark by default, motion demonstrating itself. A docs site that violated its own foundations would falsify the book it hosts.
+The register governs all three. The docs are the first Kuhaku application, and every page is a proof: section rhythm at 64px (the compact step Part 4 assigns docs pages), Prose at 65ch, dark by default, motion demonstrating itself. A docs site that violated its own foundations would falsify the book it hosts.
 
 ## Site map
 

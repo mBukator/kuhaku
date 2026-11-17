@@ -340,7 +340,7 @@ remark plugins: the build fails on an unknown item name and on a public prop wit
 joins the index with no further edit; the build fails when `meta.json` lists a page with no MDX
 file or no built registry item.
 
-4.5 The page obeys its own foundations - 96px section rhythm, 65ch prose, dark by default. A docs
+4.5 The page obeys its own foundations - 64px section rhythm, 65ch prose, dark by default. A docs
 page that violates a foundation falsifies the book it hosts.
 
 Next.js serves `public/r/*.json` at `/r/[name].json`, the machine surface and the ecosystem install

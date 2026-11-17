@@ -72,5 +72,6 @@ routes.
 
 ## The docs obey their own foundations
 
-Section rhythm 96px, Prose measure 65ch, dark by default, motion demonstrating itself. A docs page
-that violates a foundation falsifies the book it hosts — treat that as a bug.
+Section rhythm 64px (the spec's compact step for docs pages; 96px is the marketing `Section`
+default), Prose measure 65ch, dark by default, motion demonstrating itself. A docs page that
+violates a foundation falsifies the book it hosts - treat that as a bug.

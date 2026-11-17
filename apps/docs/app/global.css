@@ -31,6 +31,23 @@
     --color-fd-primary-foreground: var(--sidebar-primary-foreground);
 }
 
+/* Fumadocs fades the collapsed-sidebar toolbar out but leaves its buttons in the Tab order. */
+[data-sidebar-panel] {
+    transition-property: opacity, visibility;
+}
+
+[data-sidebar-panel].opacity-0 {
+    visibility: hidden;
+}
+
+:root {
+    --docs-section-rhythm: calc(var(--spacing) * 16);
+}
+
+.prose h2:not(:first-child, :where(.not-prose, .not-prose *)) {
+    margin-top: var(--docs-section-rhythm);
+}
+
 html {
     scrollbar-gutter: stable;
 }
