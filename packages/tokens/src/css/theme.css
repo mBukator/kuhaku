@@ -117,7 +117,7 @@
 
     --border: var(--neutral-200);
     --input: var(--neutral-300);
-    --ring: oklch(0.56 0.006 95 / 60%);
+    --ring: var(--neutral-500); /* 4.74:1 on --accent, its lowest neighbor */
 
     --chart-1: oklch(0.6 0.12 262);
     --chart-2: oklch(0.6 0.14 50);
@@ -167,7 +167,7 @@
 
     --border: oklch(1 0 0 / 12%);
     --input: oklch(1 0 0 / 16%);
-    --ring: oklch(0.71 0.006 95 / 60%);
+    --ring: var(--neutral-400); /* 5.64:1 on --accent, its lowest neighbor */
 
     --chart-1: oklch(0.72 0.12 262);
     --chart-2: oklch(0.72 0.14 50);
