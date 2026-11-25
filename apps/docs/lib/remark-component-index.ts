@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Heading, List, ListItem, Parent, Root, RootContent } from "mdast";
 
@@ -9,8 +9,10 @@ const APP_ROOT = process.cwd();
 const COMPONENTS_DIRECTORY = join(APP_ROOT, "content", "docs", "components");
 const REGISTRY_DIRECTORY = join(APP_ROOT, "public", "r");
 const COMPONENTS_URL = "/docs/components";
-// Fumadocs separators may carry a lucide icon: `---[Layers]Overlays---`.
-const SEPARATOR_PATTERN = /^---(?:\[[^\]]+\])?(.+)---$/;
+// Fumadocs' own group test; it drops these segments from URLs, so links stay flat.
+const GROUP_PATTERN = /^\(.+\)$/;
+const INDEX_PAGE_NAME = "index";
+const MDX_EXTENSION = ".mdx";
 const LIST_CLASS_NAME =
     "not-prose my-4 grid list-none grid-cols-2 gap-x-8 p-0 sm:grid-cols-3";
 const ITEM_CLASS_NAME = "border-b";
@@ -30,51 +32,108 @@ function readJson(path: string): unknown {
     }
 }
 
-/** The `pages` of components/meta.json, the sidebar order the index follows. */
-function readMetaPages(): string[] {
-    const meta = readJson(join(COMPONENTS_DIRECTORY, "meta.json"));
-    const pages =
-        typeof meta === "object" && meta !== null && "pages" in meta ? meta.pages : null;
+/** The title and pages of a meta.json, given relative to content/docs/components. */
+function readMeta(relativePath: string): { title: unknown; pages: string[] } {
+    const meta = readJson(join(COMPONENTS_DIRECTORY, relativePath));
+    if (typeof meta !== "object" || meta === null) {
+        throw new Error(`<${ELEMENT_NAME}>: components/${relativePath} is not an object`);
+    }
+    const pages = "pages" in meta ? meta.pages : null;
     if (!Array.isArray(pages) || !pages.every((page) => typeof page === "string")) {
-        throw new Error(`<${ELEMENT_NAME}>: components/meta.json needs a pages array`);
-    }
-    return pages;
-}
-
-/** Groups the pages under their separators; every page must sit under one. */
-function toCategories(pages: string[]): Category[] {
-    const categories: Category[] = [];
-
-    for (const page of pages) {
-        const separator = SEPARATOR_PATTERN.exec(page);
-        if (separator !== null) {
-            categories.push({ title: separator[1].trim(), itemNames: [] });
-            continue;
-        }
-        if (!ITEM_NAME_PATTERN.test(page)) {
-            throw new Error(
-                `<${ELEMENT_NAME}>: "${page}" in components/meta.json is not a separator or a kebab-case page`
-            );
-        }
-        const category = categories.at(-1);
-        if (category === undefined) {
-            throw new Error(
-                `<${ELEMENT_NAME}>: "${page}" needs a category separator above it`
-            );
-        }
-        category.itemNames.push(page);
-    }
-
-    return categories;
-}
-
-/** The registry title of a component that has both a page and a built registry item. */
-function readItemTitle(itemName: string): string {
-    if (!existsSync(join(COMPONENTS_DIRECTORY, `${itemName}.mdx`))) {
         throw new Error(
-            `<${ELEMENT_NAME}>: components/meta.json lists "${itemName}", which has no page`
+            `<${ELEMENT_NAME}>: components/${relativePath} needs a pages array`
         );
     }
+    return { title: "title" in meta ? meta.title : undefined, pages };
+}
+
+/** The (group) folders components/meta.json lists, in sidebar order. */
+function readGroupFolderNames(): string[] {
+    const folderNames: string[] = [];
+    for (const page of readMeta("meta.json").pages) {
+        if (page === INDEX_PAGE_NAME) continue;
+        if (!GROUP_PATTERN.test(page)) {
+            throw new Error(
+                `<${ELEMENT_NAME}>: "${page}" in components/meta.json is not "index" or a (group) folder`
+            );
+        }
+        folderNames.push(page);
+    }
+    return folderNames;
+}
+
+/** Fails on a page or folder in components/ that the sidebar would drop without a word. */
+function assertNoUnlistedEntries(groupFolderNames: string[]): void {
+    for (const entry of readdirSync(COMPONENTS_DIRECTORY, { withFileTypes: true })) {
+        const isLoosePage =
+            entry.isFile() &&
+            entry.name.endsWith(MDX_EXTENSION) &&
+            entry.name !== `${INDEX_PAGE_NAME}${MDX_EXTENSION}`;
+        if (isLoosePage) {
+            throw new Error(
+                `<${ELEMENT_NAME}>: components/${entry.name} sits outside a (group) folder`
+            );
+        }
+        if (entry.isDirectory() && !groupFolderNames.includes(entry.name)) {
+            throw new Error(
+                `<${ELEMENT_NAME}>: components/${entry.name} is not a (group) folder listed in components/meta.json`
+            );
+        }
+    }
+}
+
+/** A (group) folder's category; each listed page needs an MDX file, each MDX file a listing. */
+function readCategory(folderName: string): Category {
+    const folderPath = join(COMPONENTS_DIRECTORY, folderName);
+    if (!existsSync(folderPath)) {
+        throw new Error(
+            `<${ELEMENT_NAME}>: components/meta.json lists "${folderName}", which is not a folder`
+        );
+    }
+    const { title, pages } = readMeta(`${folderName}/meta.json`);
+    if (typeof title !== "string" || title.trim() === "") {
+        throw new Error(
+            `<${ELEMENT_NAME}>: components/${folderName}/meta.json needs a title`
+        );
+    }
+    if (pages.length === 0) {
+        throw new Error(
+            `<${ELEMENT_NAME}>: components/${folderName}/meta.json lists no pages`
+        );
+    }
+    for (const page of pages) {
+        if (!ITEM_NAME_PATTERN.test(page)) {
+            throw new Error(
+                `<${ELEMENT_NAME}>: "${page}" in ${folderName} is not a kebab-case page`
+            );
+        }
+        if (!existsSync(join(folderPath, `${page}${MDX_EXTENSION}`))) {
+            throw new Error(
+                `<${ELEMENT_NAME}>: ${folderName} lists "${page}", which has no page`
+            );
+        }
+    }
+    const unlistedFileName = readdirSync(folderPath).find(
+        (fileName) =>
+            fileName.endsWith(MDX_EXTENSION) &&
+            !pages.includes(fileName.slice(0, -MDX_EXTENSION.length))
+    );
+    if (unlistedFileName !== undefined) {
+        throw new Error(
+            `<${ELEMENT_NAME}>: components/${folderName}/${unlistedFileName} is not listed in its meta.json`
+        );
+    }
+    return { title, itemNames: pages };
+}
+
+function readCategories(): Category[] {
+    const groupFolderNames = readGroupFolderNames();
+    assertNoUnlistedEntries(groupFolderNames);
+    return groupFolderNames.map(readCategory);
+}
+
+/** The registry title of a built registry item. */
+function readItemTitle(itemName: string): string {
     const itemPath = join(REGISTRY_DIRECTORY, `${itemName}.json`);
     if (!existsSync(itemPath)) {
         throw new Error(
@@ -143,7 +202,7 @@ function expandComponentIndexes(parent: Parent): void {
             throw new Error(`<${ELEMENT_NAME}> must stand on its own line`);
         }
         if (child.type === "mdxJsxFlowElement" && child.name === ELEMENT_NAME) {
-            return toCategories(readMetaPages()).flatMap(toCategoryNodes);
+            return readCategories().flatMap(toCategoryNodes);
         }
         if ("children" in child) expandComponentIndexes(child);
         return [child];
@@ -151,9 +210,9 @@ function expandComponentIndexes(parent: Parent): void {
 }
 
 /**
- * Expands `<ComponentIndex />` into one heading and one dense list of links per category,
- * in the order components/meta.json gives the sidebar, so a page added there joins the
- * index with no edit to it.
+ * Expands `<ComponentIndex />` into one heading and one dense list of links per (group)
+ * folder, in the order components/meta.json lists the folders and each folder's meta.json
+ * lists its pages, so a page added to a folder joins the index with no edit to it.
  */
 export function remarkComponentIndex(): (tree: Root) => void {
     return (tree) => expandComponentIndexes(tree);

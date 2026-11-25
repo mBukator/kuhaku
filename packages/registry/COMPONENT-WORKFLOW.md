@@ -32,7 +32,7 @@ mind:
   each target placeholder the way shadcn's default aliases do. Docs code imports them through
   `@/components/ui/*`, `@/lib/*` and `@/hooks/*`, like an adopter. This proves the payload, not
   the import rewriting: shadcn's CLI transform is exercised once `packages/cli` shells out to it.
-- Button has the first component page (`content/docs/components/button.mdx`), which built the
+- Button has the first component page (`content/docs/components/(actions-forms)/button.mdx`), which built the
   template: playground, install picker, generated API table, motion and accessibility sections,
   demos. `content/docs/components/index.mdx` is the component index.
 - `packages/cli/src/index.ts` is a stub; `kuhaku add` does not exist yet.
@@ -325,7 +325,7 @@ registered in `PLAYGROUND_ENTRIES` (`components/playground/ComponentPlayground.t
 item name. `<ComponentPlayground name="button" />` passes it the props read from the installed
 source, so a union value added to the props type reaches the controls with no docs edit.
 
-4.3 Component page. `content/docs/components/<item>.mdx`, in the fixed template order: lead
+4.3 Component page. `content/docs/components/(<category>)/<item>.mdx`, in the fixed template order: lead
 sentence and playground; Installation (`<InstallCommand name="button" />`, both doors under each
 package manager); Usage; API reference (`<ApiTable name="button" />`); Motion behavior (Tier 2:
 the quantified behavior restated; Tier 3: the stillness statement); Accessibility (the contract
@@ -334,11 +334,14 @@ disambiguation lines, as Fumadocs `<Cards>`, once a related component has a page
 foreground the tuning props instead of an API table. `<ApiTable>` and `<InstallCommand>` are
 remark plugins: the build fails on an unknown item name and on a public prop with no JSDoc.
 
-4.4 Navigation and index. Add the page to its section in `content/docs/components/meta.json`
-(`---Section---` separators, the spec's Part 7 groupings). The component index
-(`<ComponentIndex />` in `content/docs/components/index.mdx`) reads the same file, so the page
-joins the index with no further edit; the build fails when `meta.json` lists a page with no MDX
-file or no built registry item.
+4.4 Navigation and index. Add the page to its category folder's `meta.json` (`pages`, in sidebar
+order). A category is a `(group)` folder under `content/docs/components/`, one per spec Part 7
+grouping; a new one needs a `meta.json` with a `title` and its place in
+`content/docs/components/meta.json`. The parenthesized segment never reaches the URL, so the page
+lives at `/docs/components/<item>`. The component index (`<ComponentIndex />` in
+`content/docs/components/index.mdx`) reads the same files, so the page joins the index with no
+further edit; the build fails on a page outside a folder, an unlisted page or folder, a listed
+page with no MDX file, and a page with no built registry item.
 
 4.5 The page obeys its own foundations - 64px section rhythm, 65ch prose, dark by default. A docs
 page that violates a foundation falsifies the book it hosts.

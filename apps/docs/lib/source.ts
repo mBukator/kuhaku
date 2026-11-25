@@ -8,6 +8,19 @@ export const source = loader({
     baseUrl: docsRoute,
     source: docs.toFumadocsSource(),
     plugins: [lucideIconsPlugin()],
+    pageTree: {
+        transformers: [
+            {
+                file(node, filePath) {
+                    if (filePath === undefined) return node;
+                    const file = this.storage.read(filePath);
+                    if (file?.format !== "page" || file.data.navTitle === undefined)
+                        return node;
+                    return { ...node, name: file.data.navTitle };
+                },
+            },
+        ],
+    },
 });
 
 export function getPageImageUrl(page: (typeof source)["$inferPage"]) {

@@ -65,7 +65,7 @@ resolved.
 | `app/`                          | App Router: docs, home, llms, OG, search                                                         |
 | `public/r/`                     | Built registry output, served as static `/r/[name].json` (committed)                             |
 | `scripts/install-registry.ts`   | Validates `public/r` and writes it to the gitignored `installed/`                                |
-| `content/docs/components/`      | One MDX page per component, `index.mdx` and `meta.json` sections                                 |
+| `content/docs/components/`      | `index.mdx`, `meta.json`, and one `(group)` folder per category holding its MDX pages            |
 | `source.config.ts`              | Fumadocs collections, schemas and the remark plugins                                             |
 | `lib/`                          | `source.ts` (loader), layout config, API reference reader, install command model, remark plugins |
 | `components/mdx.tsx`            | MDX components available without imports                                                         |

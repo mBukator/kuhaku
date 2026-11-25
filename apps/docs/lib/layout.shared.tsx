@@ -8,5 +8,14 @@ export function baseOptions(): BaseLayoutProps {
             title: appName,
         },
         githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+        // "nav" keeps it out of the docs sidebar, whose Components section already links the index.
+        links: [
+            {
+                text: "Components",
+                url: "/docs/components",
+                active: "nested-url",
+                on: "nav",
+            },
+        ],
     };
 }
