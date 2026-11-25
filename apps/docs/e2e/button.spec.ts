@@ -557,7 +557,10 @@ test.describe("install picker", () => {
         await expect(getInstallCommand(page)).toHaveText("npx kuhaku add button");
         await page.evaluate(() => Reflect.set(window, "isSamePageLoad", true));
 
-        await page.getByRole("link", { name: "Components", exact: true }).first().click();
+        await page
+            .locator("#nd-sidebar")
+            .getByRole("link", { name: "Overview", exact: true })
+            .click();
         await expect(page).toHaveURL(/\/docs\/components$/);
         const otherPage = await context.newPage();
         await otherPage.goto(PAGE_PATH);

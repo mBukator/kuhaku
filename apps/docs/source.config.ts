@@ -9,7 +9,10 @@ import { CODE_THEMES, DOCS_CONTENT_DIRECTORY } from "./lib/shared";
 export const docs = defineDocs({
     dir: DOCS_CONTENT_DIRECTORY,
     docs: {
-        schema: pageSchema,
+        schema: pageSchema.extend({
+            /** The sidebar label, when it differs from the page title. */
+            navTitle: pageSchema.shape.title.optional(),
+        }),
         postprocess: {
             includeProcessedMarkdown: true,
         },

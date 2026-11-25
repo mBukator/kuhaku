@@ -1101,6 +1101,7 @@ The register governs all three. The docs are the first Kuhaku application, and e
 | Section | Contents |
 |---|---|
 | **Home** | The positioning sentence, one Tier 1 composition behaving itself, the two wedges stated, one install command. A landing, not a tour; the docs are the tour |
+| **Get started** | Introduction, then Installation. The first sidebar section, and where `/docs` lands |
 | **Foundations** | Eight pages, locked order: Principles, Color, Typography, Spacing & Layout, Radius, Motion, Accessibility, Density |
 | **Primitives** | 84 pages in the five Part 7 categories, each category opening with its disambiguation block |
 | **Animated** | 30 pages in six sub-categories — Text, Interaction, Backgrounds, Effects, Cursors, Scroll & Page — opening with the Tier 1 contract and the fence, stated once where every showcase visitor will pass |
@@ -1109,6 +1110,8 @@ The register governs all three. The docs are the first Kuhaku application, and e
 | **Changelog** | SemVer log, migration notes per breaking change, written in the human "we" |
 | **Blocks** | *(Phase 2 — present in navigation from day one, marked, empty. An honest roadmap beats a surprise section)* |
 | *Machine surfaces* | `/r/[name].json`, `/llms.txt`, `/llms-full.txt`, per-page `/llms.mdx`, `/api/search`, OG image routes |
+
+The sidebar draws this map as sections. Primitives and Animated share one section, Components, which opens with the component index and holds one collapsible folder per category, the Part 7 categories first and the Animated sub-categories after them. Every component keeps the flat URL `/docs/components/<name>`, so moving a page between categories never breaks a link. A section with no pages yet is marked "Soon" rather than hidden, the rule Blocks sets for itself, so the map a reader sees is the map the site will fill.
 
 ## Foundations, page by page
 

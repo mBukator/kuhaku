@@ -3,28 +3,34 @@ import { join } from "node:path";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const PAGE_PATH = "/docs/components";
-const SEPARATOR_PATTERN = /^---(?:\[[^\]]+\])?(.+)---$/;
+const COMPONENTS_DIRECTORY = join("content", "docs", "components");
+const INDEX_PAGE_NAME = "index";
 const MIN_TARGET_HEIGHT_PIXELS = 44;
+
+type Meta = {
+    title?: string;
+    pages: string[];
+};
 
 type Category = {
     title: string;
     names: string[];
 };
 
-/** The categories and page names components/meta.json gives the sidebar. */
-function readCategories(): Category[] {
-    const meta: { pages: string[] } = JSON.parse(
-        readFileSync(join("content", "docs", "components", "meta.json"), "utf8")
+function readMeta(...pathSegments: string[]): Meta {
+    return JSON.parse(
+        readFileSync(join(COMPONENTS_DIRECTORY, ...pathSegments, "meta.json"), "utf8")
     );
-    const categories: Category[] = [];
+}
 
-    for (const page of meta.pages) {
-        const separator = SEPARATOR_PATTERN.exec(page);
-        if (separator !== null) categories.push({ title: separator[1], names: [] });
-        else categories.at(-1)?.names.push(page);
-    }
-
-    return categories;
+/** One category per (group) folder components/meta.json lists, with its pages in order. */
+function readCategories(): Category[] {
+    return readMeta()
+        .pages.filter((page) => page !== INDEX_PAGE_NAME)
+        .map((folderName) => {
+            const meta = readMeta(folderName);
+            return { title: meta.title ?? folderName, names: meta.pages };
+        });
 }
 
 function getCategoryHeading(page: Page, title: string): Locator {
@@ -56,10 +62,12 @@ test("lists Button under Actions & forms", async ({ page }) => {
     ).toHaveAttribute("href", "/docs/components/button");
 });
 
-test("lists every page in components/meta.json, in its order", async ({ page }) => {
+test("lists every page of every category folder, in its order", async ({ page }) => {
+    const categories = readCategories();
     await page.goto(PAGE_PATH);
 
-    for (const category of readCategories()) {
+    expect(categories.length).toBeGreaterThan(0);
+    for (const category of categories) {
         await expect(getCategoryList(page, category.title).getByRole("link")).toHaveText(
             category.names.map(readTitle)
         );
