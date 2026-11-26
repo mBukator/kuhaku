@@ -1,7 +1,7 @@
 # docs
 
 The Kuhaku documentation site and registry host — Next.js (App Router) + Fumadocs.
-Serves the docs at kuhaku.dev and the registry items at `/r/[name].json`.
+Serves the docs at kuhaku.sh and the registry items at `/r/[name].json`.
 
 Run from the repo root:
 

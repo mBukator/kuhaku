@@ -1,7 +1,7 @@
 {
     "$schema": "https://ui.shadcn.com/schema/registry.json",
     "name": "kuhaku",
-    "homepage": "https://kuhaku.dev",
+    "homepage": "https://kuhaku.sh",
     "items": [
         {
             "name": "cn",
