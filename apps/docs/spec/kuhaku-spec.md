@@ -1024,7 +1024,7 @@ This is not hedging; it is the distribution-layer expression of the token decisi
 
 ## The registry
 
-The registry is the product. It lives at `kuhaku.dev/r/[name].json`, served by the docs site's route handlers — Phase 1 hosts no separate infrastructure until scale demands it — with each item conforming to the standard registry-item schema. Six types carry the whole system.
+The registry is the product. It lives at `kuhaku.sh/r/[name].json`, served by the docs site's route handlers — Phase 1 hosts no separate infrastructure until scale demands it — with each item conforming to the standard registry-item schema. Six types carry the whole system.
 
 | Type | Kuhaku usage |
 |---|---|
