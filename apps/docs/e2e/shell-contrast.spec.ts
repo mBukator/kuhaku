@@ -1,7 +1,13 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const SHELL_PAGE_PATHS = ["/docs/components/button", "/docs/components"] as const;
+const SHELL_PAGE_PATHS = [
+    "/docs/components/button",
+    "/docs/components",
+    "/",
+    "/docs",
+    "/docs/installation",
+] as const;
 const COLOR_MODES = ["light", "dark"] as const;
 const THEME_STORAGE_KEY = "theme";
 const HIGHLIGHT_TIMEOUT_MILLISECONDS = 15_000;

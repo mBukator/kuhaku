@@ -1,0 +1,43 @@
+---
+title: Installation
+description: Add the registry to your project, then install components as source.
+icon: Download
+---
+
+<Callout type="warn" title="Pre-release">
+    The `kuhaku` CLI is not published and the registry is not live, so neither install
+    command works yet. The token layer is not installable either: until it ships, an
+    installed Button has no hover tint, and its CSS transitions ignore the reduced motion
+    setting.
+</Callout>
+
+## Requirements
+
+- React 19. Button takes `ref` as an ordinary prop, which earlier versions do not pass to a function component.
+- Tailwind CSS v4. Components are styled with its utilities.
+- A `components.json` file, which `npx shadcn@latest init` writes. Its aliases decide where installed files go.
+- shadcn 4.7.0 or later, if you install with shadcn. Earlier versions do not resolve the folder placeholders the registry uses.
+
+## Register the namespace
+
+Add the `registries` entry to your `components.json`, beside the keys already there. Every `@kuhaku/` name resolves through it.
+
+<RegistryConfig />
+
+## Add a component
+
+<InstallCommand name="button" />
+
+`kuhaku` and `shadcn` are two doors to one registry: Kuhaku's own CLI, and the one you may already use. Either command also installs what the component depends on, both other registry items and npm packages.
+
+## What lands in your project
+
+The component's source, written to the folders your `components.json` aliases name for components, hooks and library code. The files are yours. Updating means installing again, so nothing changes them unless you run a command.
+
+Import the component from your own tree. With the default aliases, Button is here:
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+<Button>Save changes</Button>;
+```

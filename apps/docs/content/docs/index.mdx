@@ -4,11 +4,24 @@ description: A motion-first design system, installed as source through a shadcn-
 icon: BookOpen
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+Kuhaku (空白) is the Japanese word for blank space. The system treats the empty parts of an interface as the material it is built from, so every component that interrupts that space has to earn its place.
 
-## What is Next?
+## Three ideas
 
-<Cards>
-    <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-    <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
-</Cards>
+Each one governs a single dimension of the system.
+
+- Kuhaku (空白) governs space. A layout starts generous and has to argue its way down to density.
+- Ma (間) governs time. The delay before a tooltip, the gap in a stagger and the hold before an exit are designed values, not leftovers.
+- Jo-ha-kyū (序破急) governs pacing. Motion begins gently, builds and closes decisively, and an exit is faster than its entrance.
+
+## How it ships
+
+Kuhaku distributes source code through a registry that speaks shadcn's protocol. Installing a component copies its files into your project, where they are yours to read and change. Behavior comes from Base UI, which stays inside the component: no public prop or type refers to it.
+
+Motion is a foundation of the system, not an add-on. Interactive components respond to input by contract, tuned through `--motion-*` tokens, and a surface whose job is to be still receives no motion.
+
+## Status
+
+Kuhaku is pre-release, and nothing is stable yet. Button is the first documented component. The CLI, the registry and the token layer are not published.
+
+Read [Installation](/docs/installation) for the setup, or browse the [components](/docs/components).
