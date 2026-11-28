@@ -19,3 +19,6 @@ export const CODE_THEMES = {
     light: "github-light-high-contrast",
     dark: "github-dark",
 } as const;
+
+/** The registry's origin. kuhaku.sh is provisional until the domain is settled. */
+export const REGISTRY_ORIGIN = "https://kuhaku.sh";

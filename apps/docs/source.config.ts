@@ -4,6 +4,7 @@ import { defineConfig, defineDocs } from "fumadocs-mdx/config";
 import { remarkApiTable } from "./lib/remark-api-table";
 import { remarkComponentIndex } from "./lib/remark-component-index";
 import { remarkInstallCommand } from "./lib/remark-install-command";
+import { remarkRegistryConfig } from "./lib/remark-registry-config";
 import { CODE_THEMES, DOCS_CONTENT_DIRECTORY } from "./lib/shared";
 
 export const docs = defineDocs({
@@ -24,7 +25,12 @@ export const docs = defineDocs({
 
 export default defineConfig({
     mdxOptions: {
-        remarkPlugins: [remarkComponentIndex, remarkApiTable, remarkInstallCommand],
+        remarkPlugins: [
+            remarkComponentIndex,
+            remarkApiTable,
+            remarkInstallCommand,
+            remarkRegistryConfig,
+        ],
         rehypeCodeOptions: { themes: CODE_THEMES },
     },
 });

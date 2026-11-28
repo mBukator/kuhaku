@@ -1,6 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
 const INTRODUCTION_PATH = "/docs";
+const INSTALLATION_PATH = "/docs/installation";
 const COMPONENT_PATH = "/docs/components/button";
 const SIDEBAR_SELECTOR = "#nd-sidebar";
 const MARKER_TEXT = "Soon";
@@ -27,6 +28,19 @@ test("the sections follow the site map, and only the empty one is marked", async
     await expect(
         getSectionLabel(page, "Foundations").getByText(MARKER_TEXT, { exact: true })
     ).toBeVisible();
+});
+
+test("Get started lists Introduction, then Installation", async ({ page }) => {
+    await page.goto(INTRODUCTION_PATH);
+
+    await expect(getSidebar(page).locator("p, a[href^='/docs']")).toHaveText([
+        "Get started",
+        "Introduction",
+        "Installation",
+        `Foundations${MARKER_TEXT}`,
+        "Components",
+        "Overview",
+    ]);
 });
 
 test("the sidebar names each page by its navigation title", async ({ page }) => {
@@ -76,7 +90,7 @@ test("the header links to Components, and the docs sidebar does not repeat it", 
 test("the page cards name the components index by its title, not its sidebar label", async ({
     page,
 }) => {
-    for (const path of [INTRODUCTION_PATH, COMPONENT_PATH]) {
+    for (const path of [INSTALLATION_PATH, COMPONENT_PATH]) {
         await page.goto(path);
         const card = page.locator("#nd-page").locator('a[href="/docs/components"]');
 

@@ -2,6 +2,7 @@
     "pages": [
         "---Get started---",
         "index",
+        "installation",
         "---Foundations---",
         "---Components---",
         "...components"
